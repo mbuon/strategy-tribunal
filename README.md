@@ -1,6 +1,16 @@
+<p align="center"><img src="docs/img/hero.svg" alt="Strategy Tribunal: one question in, a cross-examined decision record out" width="100%"></p>
+
 # Strategy Tribunal
 
 **Author:** Massimo Buonaiuto
+
+<p>
+<img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-2E5BFF">
+<img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-0FA3A3">
+<img alt="130 deterministic tests" src="https://img.shields.io/badge/tests-130%20deterministic-8AD425">
+<img alt="Runs in Claude Code" src="https://img.shields.io/badge/runs%20in-Claude%20Code-7C5CFF">
+<img alt="Multi-model via OpenCode" src="https://img.shields.io/badge/multi--model-OpenCode-F5A524">
+</p>
 
 ### Every strategic answer you get from an AI is a first draft that nobody cross‑examined.
 
@@ -21,6 +31,124 @@ claude                          # start Claude Code in this folder
 ```
 
 A quick run takes about fifteen minutes on the chat route and leaves you a report, a decision record, a dashboard, and a prompt to continue with. Read on for ten ways to use it, how a session runs, the modes, the settings and the CLI recipes.
+
+---
+
+## How it works, in six slides
+
+### Slide 1 — The pipeline. Every question walks the same road.
+
+```mermaid
+flowchart LR
+    Q([Your question]) --> F[FRAMING<br/>framer]
+    F --> P[POLICY<br/>gates + weighted criteria]
+    P --> B[BASELINE<br/>status quo + direct answer]
+    B --> R
+    subgraph R [one round, repeated until stable]
+        direction LR
+        G[GENERATING<br/>strategists, one lens each] --> RV[REVIEWING<br/>typed objections]
+        RV --> V[VERIFYING] --> RS[RESPONDING<br/>owners answer]
+        RS --> J[JUDGING<br/>one option at a time] --> RE[REVISING<br/>promote or keep]
+    end
+    R --> C[CHALLENGING<br/>make the leader lose]
+    C --> D([Decision record<br/>+ follow-up prompt])
+```
+
+The order is fixed and the controller enforces it. Nobody ranks before the rules are written; nobody wins before somebody has tried to make it lose.
+
+### Slide 2 — Models propose. The controller commits.
+
+```mermaid
+flowchart TB
+    subgraph Models [Language models, one role per request]
+        FR[framer] --- PS[policy setter] --- ST[strategists] --- RV[reviewers] --- VF[verifier] --- JD[judge] --- CH[challenger]
+    end
+    Models -- "one JSON reply per request" --> CTRL
+    subgraph CTRL [Deterministic Python controller]
+        direction LR
+        VAL[validate against the protocol] --> COMMIT[commit as records<br/>ids, versions, relations] --> BUDGET[charge the budget] --> NEXT[decide the next request]
+    end
+    CTRL -- "rejected: retry with the error and the previous reply" --> Models
+    COMMIT --> LOG[(append-only event log<br/>state.json · discussion.md)]
+```
+
+A model can only propose. Every id it cites must exist, every score must cite evidence or a stated assumption, every challenge must name a legal target. What fails is sent back with the error and the previous reply, and only the error is repaired.
+
+### Slide 3 — The judge never sees the ranking.
+
+```mermaid
+flowchart LR
+    POL[Policy registered before any option:<br/>gates · 3-6 criteria · 0/5/10 anchors · weights] --> J1
+    subgraph J1 [Judge, per option, per round]
+        G1[gate: pass / fail / unverified] --> S1[score 0-10 per criterion<br/>with confidence and evidence ids]
+    end
+    J1 --> AGG[Controller aggregates:<br/>weighted score + conservative bounds]
+    AGG --> RULE{"challenger low bound &gt;<br/>incumbent high bound + margin?"}
+    RULE -- yes --> PROMOTE[promoted]
+    RULE -- no --> KEEP[incumbent kept<br/>tie · loss · inconclusive]
+    EV[(evidence snapshot changed)] -. forces a rescore .-> J1
+```
+
+Scores are attribute by attribute, never an overall impression. The aggregate is arithmetic the controller does; a promotion needs the challenger's lower bound to clear the incumbent's upper bound. New evidence invalidates old scores.
+
+### Slide 4 — It is a discussion, not a loop of independent calls.
+
+```mermaid
+sequenceDiagram
+    participant C as Controller
+    participant S as Strategist (lens: inversion)
+    participant R as Reviewer
+    participant O as Option owner
+    C->>S: brief + policy + evidence + your documents + discussion so far (D1..D6)
+    S-->>C: two options, claims, assumptions, builds_on [D2, D5]
+    C->>C: validate, commit, write D7 to discussion.md
+    C->>R: candidates (pseudonymised) + discussion so far (D1..D7)
+    R-->>C: challenges with target, mechanism, severity, resolution condition
+    C->>O: your option + the open challenges + discussion so far
+    O-->>C: rebut with verified evidence / concede / revise / withdraw
+```
+
+Every contribution is written in order and travels into the next request. Later roles answer earlier ones by number. Your own files and folders enter as cited evidence.
+
+### Slide 5 — What lands in the run folder.
+
+```mermaid
+flowchart LR
+    RUN[("council_outcomes/&lt;date_time_slug&gt;/")] --> REP["report.md<br/>plain-words verdict first,<br/>follow-up prompt last"]
+    RUN --> DEC[decision.json<br/>machine-readable record]
+    RUN --> DISC[discussion.md + discussion/NNN_*.md<br/>every contribution in order]
+    RUN --> REQ[requests/ · responses/<br/>every prompt and raw reply]
+    RUN --> EVT[events.jsonl · state.json<br/>append-only audit trail]
+    RUN --> UI[index.html<br/>dashboard: verdict, rounds,<br/>objections, who answered]
+```
+
+Nothing is summarised away. You can read what the reviewer said in round 2, which model said it, and what the controller did with it.
+
+### Slide 6 — The decision is the start of the plan, not the end of the chat.
+
+```mermaid
+flowchart LR
+    DR[Decision record] --> FU[Follow-up prompt<br/>question · decision · why · open objections ·<br/>reversal conditions · next action · the ask]
+    FU -- "Copy prompt" --> CHAT[Back in Claude Code]
+    CHAT --> PLAN[Step-by-step plan<br/>owners · dates · metrics ·<br/>cheapest tests for what is open]
+```
+
+The report ends with a prompt that carries the whole context. One click copies it; paste it and the same chat plans the recommended action with the objections still in view.
+
+---
+
+## A single prompt versus the tribunal
+
+| | One prompt to one model | Strategy Tribunal |
+|---|---|---|
+| Who framed the decision | nobody | a framer, with user‑stated constraints kept verbatim and assumptions labelled |
+| When the scoring rules were written | never | before any option exists, as gates and weighted criteria |
+| Who argued the other side | nobody | reviewers with typed objections, then a challenger whose job is to make the leader lose |
+| How options were compared | one impression | per criterion, one option at a time, aggregated by the controller, matched across rounds |
+| What happens when evidence changes | nothing | affected options are rescored |
+| What you can audit afterwards | the answer | every request, reply, rejection, score, promotion and stop reason |
+| What tells you when to change your mind | nothing | reversal conditions and the objections still open |
+| How you continue | start over | a follow‑up prompt that carries the decision and its caveats into the next step |
 
 ---
 
@@ -513,78 +641,40 @@ The tab in view is kept in the URL (`#discussion`), so it survives the auto‑re
 
 ---
 
-## 10 examples
+## Compared with the other councils
 
-1. **Quick deliberation on a budget question (chat, one model)**
-   ```
-   /council Should we move 25% of our Meta budget into TikTok Shop ads for Q1 2027, keep the current mix, or do something else? --preset quick
-   ```
-   The dashboard opens in the browser and follows the run; the folder `council_outcomes/<date-time>_Should-we-move-25-of-our-Meta-budget/` fills up as it goes. A conditional or firm recommendation with alternatives, open objections and one next action, in about 15 minutes.
+Six open‑source projects explore the same idea, a panel of model personas deliberating on a question. Each was read in full, prompts and orchestration code included, before this engine was designed; several of their ideas are in it and are credited below. The difference is where the authority sits. In every one of them the model that writes the verdict also decides whether the debate is over, whether a reply counted, and how the options compare. Here those decisions are code.
 
-2. **Full standard deliberation with explicit lenses**
-   ```
-   /council Should we shift 30% of our Q1 paid-search budget into short-form video? --lenses staging,information_option,asymmetric_upside,inversion
-   ```
-   The strategists work through staging, an information‑gathering option, asymmetric upside and inversion; two reviewers, verification, matched judging and a leader challenge follow.
+| Project | Pattern | Where it stops | What Strategy Tribunal does at that point |
+|---|---|---|---|
+| [llm‑council](https://github.com/karpathy/llm-council) pattern as implemented by Geoffrey Byers for Claude Code | five advisors answer in parallel, blind to each other; a chairman synthesises | no peer review and no attack on the consensus; if all five share one bad assumption only the chairman can notice; the rebuttal round is sketched in prose and never wired; nothing is persisted | reviewers file typed objections against every candidate, a challenger must name the scenario in which the leader loses, owners answer, and every record is written to disk and resumable |
+| [council‑review](https://github.com/ngmeyer/skills) (Neal Meyer) | five reasoning methods, anonymous peer review, devil's advocate, mediating assessments, dissent preservation | the orchestrating model shuffles the answers "in its head", so anonymity is a promise, not a mechanism; convergence and diversity are numbers the model estimates about itself; the tests grep the prompt file | pseudonyms are assigned by the controller and the alias map never reaches a model; stability is measured on comparable judgements; 130 tests execute the engine |
+| [LLM‑Council‑Decide](https://github.com/danielrosehill/LLM-Council-Decide) (Daniel Rosehill) | fifteen formal frameworks, a selector picks five, cross‑review, a chairman dossier with kill criteria | a random model per call and the model is not recorded; the brief parser falls back to raw text in silence; cross‑review letters go out in panel order with the author's own analysis unmarked | per‑role routing with the actual provider and model recorded per participant; a parse failure is rejected and retried; review order is a seeded shuffle done by the controller |
+| [NeuralHats](https://github.com/georgekobaidze/neuralhats) (Giorgi Kobaidze) | Six Thinking Hats, sequential, multi‑round, local Ollama, live web UI | a facilitator model decides CONTINUE or STOP and an unparseable answer defaults to CONTINUE; each hat sees the previous ones, so anchoring is built in | continuation is a controller decision from ranking stability, open blocking objections and budget; a malformed reply never advances a run; hats are observer‑only lenses collected before review |
+| [council](https://github.com/dubs3c/council) (Michael Dubell) | personas propose, then REVISE / AGREE / CONCERN turns, a moderator consensus, an approval vote | proposals have no ids or versions, lists are replaced wholesale and state is replayed from the transcript; an approval that fails to parse counts as approval; a failed turn is written into the debate as a concern | immutable option versions with lineage (`parent_version_id`, `supersedes`); a reply that fails validation is rejected and retried; a failed request becomes an event, never a deliberation record |
+| [LLM‑as‑a‑Verifier](https://github.com/llm-as-a-verifier/llm-as-a-verifier) | ranks candidates you already have by criterion‑level pairwise scoring over log‑probabilities, swapped order, pivot tournament | a judge, not a council: it does not frame, generate or challenge; missing results are silently scored 0.5; log‑probability scoring needs backends most people do not have | criterion‑first scoring and swapped‑order tiebreaks adopted; a missing judgement is explicit and makes the comparison non‑comparable, never imputed; the log‑probability method is an optional setting for providers that expose it |
 
-3. **Matched single‑pass baseline (what deliberation adds)**
-   ```
-   /council <same question as example 2> --preset first_pass
-   ```
-   Frame → policy → generate → judge → report, with no review or challenge. Compare its `report.md` with the standard run's.
+### Why the controller matters
 
-4. **Objective decision with a known answer**
-   ```
-   /council We must pick one fulfilment vendor for 2027. Vendor A costs 120k EUR per year with a 97% on-time rate. Vendor B costs 100k EUR per year with an 80% on-time rate. Each late order costs us 15 EUR and we ship 40000 orders a year. Which vendor minimises total expected cost? --preset quick
-   ```
-   The framer marks the question trivial, the baseline is judged, and the run stops with `trivial_question` after about 7 calls (Vendor A).
+**The rules are written before the ranking.** A policy setter registers gates, three to six criteria, their anchors and weights before a single option exists, and nobody can amend them for the rest of the run. In the other five councils the chairman decides what mattered after reading the answers.
 
-5. **Hard‑gate failure**
-   ```
-   /council Our Q1 marketing budget is capped at 50k EUR by the board; no overspend is possible. Option 1: a 48k influencer campaign. Option 2: a 65k TV spot with 30% higher reach. Option 3: a 30k search campaign. Which should we run? --preset quick
-   ```
-   The 65k option fails the budget gate and is never recommended; the report shows the failed gate with its rationale.
+**Models propose, code commits.** Every reply is validated against a typed protocol: ids must exist, scores must cite evidence or a stated assumption, a challenge must name a legal target. What fails goes back with the error and the previous reply. In the reference projects a malformed answer is dropped, retried silently, or counted as a vote.
 
-6. **Route the judge to another model through OpenCode (explicit opt‑in)**
-   ```
-   /council Should we switch our email platform next quarter? --preset quick --opencode --set routing.roles.judge.provider=opencode --set 'routing.roles.judge.model="claude-agent/haiku"'
-   ```
-   Framer, strategists and reviewers stay on the chat model; every judgement is produced in an isolated OpenCode session; the participant table records provider, model and isolation.
+**Comparisons are matched.** Judgements are keyed by brief version, rubric version, evidence snapshot and judge configuration. A challenger is promoted only when its conservative lower bound clears the incumbent's upper bound. When new evidence lands, the affected options are rescored. None of the six projects compares across rounds on matched inputs; three of them have no rounds.
 
-7. **Everything on a local model, headless**
-   ```bash
-   council run "Our landing page headline misspells the brand name. Should we fix it before tomorrow's launch?" \
-     --preset first_pass --provider opencode --opencode \
-     --set 'routing.opencode.default_model="ollama/gemma4:26b"' --set 'routing.opencode.fallback="fail"' --run-id local_demo
-   council report local_demo
-   ```
-   No external API. Replies the local model gets wrong are rejected by the validator and retried; a judgement that never validates stays explicitly missing.
+**The verdict can be overturned.** The challenger's case is a record with a losing scenario, a strongest alternative and the evidence that would separate them. If it could alter the action and stays unanswered, a firm recommendation becomes a conditional one and the report says so. The devil's advocate in council‑review is the closest relative; its output is advice to the chairman.
 
-8. **Change saved settings, then inspect the effective configuration**
-   ```
-   /council-settings set limits.max_rounds=3 judge.jury_size=2 review.panel_size=3
-   /council-settings set 'policy.weight_overrides={"cost efficiency":5,"crit_speed":1}'
-   /council-settings routes
-   /council-settings set limits.min_rounds=9      # refused: min_rounds must be <= max_rounds, nothing written
-   ```
-   Every write validates the whole effective configuration first; rubric weights override the policy setter's weights by criterion name or id.
+**Stopping is a measured condition.** Two comparable rounds within the materiality threshold, no blocking objection, budget intact. Not agreement counts, not a model's CONTINUE token, not a fixed number of turns.
 
-9. **Resume after an interruption and cancel with a partial report**
-   ```bash
-   council runs                                  # every run with state, outcome, confidence, stop reason, rounds, calls
-   council status <run_id>
-   council next <run_id> --set routing.opencode.timeout_seconds=600   # re-print the pending request
-   council cancel <run_id>                                              # partial report: completed phases + outstanding checks
-   council dashboard <run_id> --open                                   # regenerate and open the dashboard
-   ```
+**Everything is auditable.** Append‑only event log, every request and raw reply, the discussion transcript in order, who answered with which model, measured tokens where the provider reports them. The reference projects keep a transcript at best.
 
-10. **Run a benchmark campaign and read the results**
-    ```bash
-    python benchmarks/run_campaign.py --cases obj_vendor_ev,trivial_overhead --repeat 3 --out benchmarks/results/my_campaign
-    python benchmarks/run_campaign.py --rescore benchmarks/results/my_campaign
-    open benchmarks/results/my_campaign/summary.md
-    ```
-    Runs every case under both systems on the OpenCode route within the declared limits, checks objective outcomes programmatically, evaluates open cases with a blinded independent model, and publishes wins / ties / losses, usage and mismatches. Results land in `benchmarks/results/<campaign>/summary.md` (campaign folders stay local; `docs/llm_council.md` §16.5 records the outcomes).
+### What was taken from them, with thanks
+
+The reasoning‑lens catalogue and the sycophancy guardrail (council‑review); the fifteen‑framework map, the kill criteria and the "option or gather X" verdict shape (LLM‑Council‑Decide); blind first‑pass generation, the "what did everyone miss" question and the single concrete next step (llm‑council); criterion‑level scoring and swapped‑order comparisons (LLM‑as‑a‑Verifier); the six hats as a bundle (NeuralHats); typed debate actions and per‑persona routing (council). Each is listed against its source, with the test that exercises it, in `docs/llm_council.md` §2.
+
+### Where they are still better
+
+llm‑council installs by copying markdown files and needs no code at all. NeuralHats streams the debate live into a browser and runs fully local on Ollama out of the box. LLM‑as‑a‑Verifier's log‑probability scoring is a sharper signal than integer scores when a backend exposes it. If one of those is the whole job, use that project.
 
 ---
 
