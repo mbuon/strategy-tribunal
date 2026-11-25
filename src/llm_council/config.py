@@ -56,7 +56,7 @@ class OpenCodeConfig(_Cfg):
     model_fallbacks: dict[str, str] = {}
     verify_version: bool = True
     discover_models: bool = True
-    # Run each call with a private server (``--standalone``). Verified 2026-11-24: the background
+    # Run each call with a private server (``--standalone``). Verified: the background
     # service resolves project config from the enclosing project root and does not see the
     # restricted agent defined in ``config_dir``; standalone mode loads it from the working directory.
     standalone: bool = True

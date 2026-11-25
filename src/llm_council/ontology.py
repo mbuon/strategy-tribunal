@@ -522,7 +522,7 @@ class GateResult(StrictModel):
     rationale: str = Field(default="", description="Why, 1-2 sentences.")
     evidence_ids: list[str] = Field(default=[], description="Evidence ids the outcome rests on.")
     # An "unverified" or "pass" gate may rest on a stated assumption; the live OpenCode probe
-    # (claude-agent/haiku, 2026-11-24) produced exactly that, so the contract allows it.
+    # (claude-agent/haiku) produced exactly that, so the contract allows it.
     assumption_ids: list[str] = Field(default=[], description="Assumption ids the outcome rests on.")
 
 

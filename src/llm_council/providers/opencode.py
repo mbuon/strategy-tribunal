@@ -1,6 +1,6 @@
 """Opt-in OpenCode adapter.
 
-Verified against ``opencode v2.3.2`` on 2026-11-24 (see docs/llm_council.md §10):
+Verified against ``opencode v2.3.2`` (see docs/llm_council.md §10):
 ``opencode run --format json`` emits newline-delimited events ``step_start``,
 ``text`` (part.text), ``step_finish`` (tokens, cost) or ``error`` (error.type,
 error.message); exit code 1 on an error event. A project ``opencode.json`` in the
@@ -67,7 +67,7 @@ class OpenCodeProvider(Provider):
     def _run(self, args: list[str], timeout: int, cwd: Optional[Path] = None) -> subprocess.CompletedProcess:
         # OpenCode resolves the project (and therefore the project opencode.json that defines the
         # restricted agent) from the PWD environment variable, not from the process cwd. Verified
-        # 2026-11-24 with v2.3.2: without PWD=cwd the agent is "not found".
+        # With v2.3.2: without PWD=cwd the agent is "not found".
         env = dict(os.environ)
         if cwd is not None:
             env["PWD"] = str(cwd)

@@ -1,5 +1,5 @@
 {
- "version": "2026-11-24.2",
+ "version": "2",
  "resource_limits": {
   "max_calls_per_run": 40,
   "max_tokens_estimate_per_run": 400000,

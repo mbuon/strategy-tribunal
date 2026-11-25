@@ -1,7 +1,6 @@
 # Strategy Tribunal — autonomous 360° decision engine
 
 **Author:** Massimo Buonaiuto
-**Status:** Run 1 (architecture, core engine, deterministic verification) and Run 2 (settings interface, live verification, benchmarks) delivered on 2026‑11‑24. Full design and delivery record: [`docs/llm_council.md`](docs/llm_council.md). Specification: [`docs/spec.md`](docs/spec.md).
 
 ---
 
@@ -491,10 +490,10 @@ The tab in view is kept in the URL (`#discussion`), so it survives the auto‑re
 9. **Resume after an interruption and cancel with a partial report**
    ```bash
    council runs                                  # every run with state, outcome, confidence, stop reason, rounds, calls
-   council status 2026-11-24_15-30-00_Should-we-move-25-of-our-Meta-budget
-   council next 2026-11-24_15-30-00_Should-we-move-25-of-our-Meta-budget --set routing.opencode.timeout_seconds=600   # re-print the pending request
-   council cancel 2026-11-24_15-30-00_Should-we-move-25-of-our-Meta-budget                                              # partial report: completed phases + outstanding checks
-   council dashboard 2026-11-24_15-30-00_Should-we-move-25-of-our-Meta-budget --open                                   # regenerate and open the dashboard
+   council status <run_id>
+   council next <run_id> --set routing.opencode.timeout_seconds=600   # re-print the pending request
+   council cancel <run_id>                                              # partial report: completed phases + outstanding checks
+   council dashboard <run_id> --open                                   # regenerate and open the dashboard
    ```
 
 10. **Run a benchmark campaign and read the results**
@@ -503,7 +502,7 @@ The tab in view is kept in the URL (`#discussion`), so it survives the auto‑re
     python benchmarks/run_campaign.py --rescore benchmarks/results/my_campaign
     open benchmarks/results/my_campaign/summary.md
     ```
-    Runs every case under both systems on the OpenCode route within the declared limits, checks objective outcomes programmatically, evaluates open cases with a blinded independent model, and publishes wins / ties / losses, usage and mismatches. Published results: `benchmarks/results/2026-11-24_final/summary.md`.
+    Runs every case under both systems on the OpenCode route within the declared limits, checks objective outcomes programmatically, evaluates open cases with a blinded independent model, and publishes wins / ties / losses, usage and mismatches. Results land in `benchmarks/results/<campaign>/summary.md` (campaign folders stay local; `docs/llm_council.md` §16.5 records the outcomes).
 
 ---
 

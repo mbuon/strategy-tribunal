@@ -1,4 +1,4 @@
-# Recorded OpenCode payloads (real infrastructure, 2026-11-24, opencode v2.3.2)
+# Recorded OpenCode payloads (real infrastructure, opencode v2.3.2)
 
 - `error_no_route.jsonl` — `opencode run --format json --model nonexistent/no-such-model` → `provider.no-route`, exit code 1.
 - `error_quota_402.jsonl` — Google provider with depleted prepayment credits → `provider.quota`, HTTP 402.
