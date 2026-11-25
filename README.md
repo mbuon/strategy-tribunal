@@ -110,19 +110,22 @@ sequenceDiagram
 
 Every contribution is written in order and travels into the next request. Later roles answer earlier ones by number. Your own files and folders enter as cited evidence.
 
-### What lands in the run folder.
+### Every word, every score, every rejection stays on disk.
 
 ```mermaid
-flowchart LR
-    RUN[("council_outcomes/&lt;date_time_slug&gt;/")] --> REP["report.md<br/>plain-words verdict first,<br/>follow-up prompt last"]
-    RUN --> DEC[decision.json<br/>machine-readable record]
-    RUN --> DISC[discussion.md + discussion/NNN_*.md<br/>every contribution in order]
-    RUN --> REQ[requests/ · responses/<br/>every prompt and raw reply]
-    RUN --> EVT[events.jsonl · state.json<br/>append-only audit trail]
-    RUN --> UI[index.html<br/>dashboard: verdict, rounds,<br/>objections, who answered]
+flowchart TB
+    subgraph RUN ["council_outcomes/&lt;date_time_slug&gt;/"]
+        direction LR
+        REP["report.md<br/>the verdict in plain words first,<br/>the follow-up prompt last"]
+        DEC["decision.json<br/>the machine-readable record"]
+        DISC["discussion.md<br/>every contribution, in order,<br/>as the other roles read it"]
+        REQ["requests/ · responses/<br/>every prompt sent,<br/>every raw reply received"]
+        EVT["events.jsonl · state.json<br/>append-only audit trail,<br/>resumable at any step"]
+        UI["index.html<br/>the dashboard: verdict, rounds,<br/>objections, who answered"]
+    end
 ```
 
-Nothing is summarised away. You can read what the reviewer said in round 2, which model said it, and what the controller did with it.
+Nothing is summarised away. You can read what the second reviewer said in round two, which model said it, and what the controller did with it.
 
 ### The decision is the start of the plan, not the end of the chat.
 
@@ -307,7 +310,7 @@ One protocol, three kinds of responder: the chat you are already in, models reac
 | 5 | **Muse** (agent host, or Muse models) | as an agent host: give Muse `docs/responder.md`; as models: route roles to `muse-code/<model>` through OpenCode (the project's validation fallback is `muse-code/muse-spark-1.3-contributor`) | host: the agent runs the loop; models: `routing.roles.<role>.model=muse-code/<model>` | fallback route verified |
 | 6 | **OpenCode** (agent host, or the multi‑model route) | host: start `opencode` in this folder with `docs/responder.md` as instructions; route: `opencode auth login`, then `council settings set routing.opencode.enabled=true routing.opencode.default_model=<provider/model>` | host: the agent runs the loop; route: `council run "<question>" --opencode --preset quick` with every role on OpenCode, or single roles via `routing.roles.<role>` | route verified (claude‑agent, OpenAI, Ollama, Muse models) |
 | 7 | **zsh / any shell** | the venv | copy‑paste loop with any chat; `council run … --opencode` fully autonomous; `council ui` for the dashboards | verified |
-| 8 | **Docker** | `docker build -t strategy-tribunal .` | `docker run --rm -p 127.0.0.1:8771:8771 -v "$PWD/work:/work" strategy-tribunal` serves the interface on loopback only (it has no authentication and can delete runs); `docker run --rm -i -v "$PWD/work:/work" strategy-tribunal council start --args "…"` and `… council submit <run> - --request-id req_x < reply.json` drive a run | verified (image built, CLI and interface exercised in the container) |
+| 8 | **Docker** | `docker build -t strategy-tribunal .` | `docker run --rm -p 127.0.0.1:8771:8771 -v "$PWD/work:/work" strategy-tribunal` serves the interface (bound off loopback inside the container, so it asks for a token on every request: printed at start, or set `COUNCIL_UI_TOKEN`; publish to loopback as shown); `docker run --rm -i -v "$PWD/work:/work" strategy-tribunal council start --args "…"` and `… council submit <run> - --request-id req_x < reply.json` drive a run | verified (image built, CLI and interface exercised in the container) |
 | 9 | **Local models through Ollama** | `ollama pull <model>`; configure OpenCode's Ollama provider; `council settings set routing.opencode.default_model=ollama/<model>` | as 6, whole run or single roles | verified for the judge role |
 | 10 | **Your own program** (Python, CI) | `pip install -e .` | `from llm_council.engine import Engine`; `council run --fixture tests/fixtures/main_run.json` replays a recorded deliberation with no model calls | verified (the test suite is this environment) |
 

@@ -38,13 +38,14 @@ def test_mcp_server_speaks_the_protocol_and_drives_a_run(tmp_path):
         names = {t["name"] for t in tools}
         assert {"council_start", "council_submit", "council_next", "council_status", "council_report", "council_cancel", "council_runs"} <= names
         assert all("inputSchema" in t and "description" in t for t in tools)
-        # fixtures are refused through the tool, as through the skill
-        bad = _rpc(proc, {"jsonrpc": "2.0", "id": 4, "method": "tools/call",
-                          "params": {"name": "council_start", "arguments": {"args": f"{QUESTION} --fixture x.json"}}})
-        assert bad["result"]["isError"] is True and "fixture" in bad["result"]["content"][0]["text"]
+        # only a short list of flags passes through the tool: fixtures, providers and config overrides are refused
+        for bad_args in (f"{QUESTION} --fixture x.json", f"{QUESTION} --provider fixture", f"{QUESTION} --set routing.opencode.binary=/tmp/evil"):
+            bad = _rpc(proc, {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "council_start", "arguments": {"args": bad_args}}})
+            assert bad["result"]["isError"] is True and "refused" in bad["result"]["content"][0]["text"], bad_args
+        assert not (root / "council_outcomes").exists() or not any((root / "council_outcomes").iterdir())
         # a chat-routed run: start, read the first request, submit the framer's reply, get the next request
         started = _rpc(proc, {"jsonrpc": "2.0", "id": 5, "method": "tools/call",
-                              "params": {"name": "council_start", "arguments": {"args": f"{QUESTION} --lenses {LENSES} --run-id mcp --provider chat",
+                              "params": {"name": "council_start", "arguments": {"args": f"{QUESTION} --lenses {LENSES} --run-id mcp",
                                                                                 "chat_model": "test-model"}}})
         text = started["result"]["content"][0]["text"]
         assert started["result"]["isError"] is False, text
@@ -93,3 +94,45 @@ def test_mcp_submit_refuses_ids_that_leave_the_run_folder(tmp_path):
         text, is_error = call_tool("council_submit", {"run_id": run_id, "request_id": request_id, "response": {}}, root)
         assert is_error and text.startswith("error:"), (run_id, request_id, text)
     assert not list(tmp_path.rglob("*.mcp.json"))
+
+
+def test_ui_requires_a_token_off_loopback_and_blocks_cross_origin_and_dangerous_keys(tmp_path):
+    import threading, urllib.request, urllib.error
+    from http.server import ThreadingHTTPServer
+    from llm_council.ui import Handler, web_form_allowed
+    root = make_root(tmp_path)
+    Handler.root = root
+    Handler.token = "s3cret"
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    port = httpd.server_address[1]
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    try:
+        base = f"http://127.0.0.1:{port}"
+        try:
+            urllib.request.urlopen(base + "/api/health", timeout=5)
+            raise AssertionError("no token must be refused")
+        except urllib.error.HTTPError as e:
+            assert e.code == 401
+        req = urllib.request.Request(base + "/api/health", headers={"Authorization": "Bearer s3cret"})
+        assert urllib.request.urlopen(req, timeout=5).status == 200
+        # cross-origin state change is refused even with the token
+        req = urllib.request.Request(base + "/settings", data=b"limits.max_rounds=3", method="POST",
+                                     headers={"Authorization": "Bearer s3cret", "Origin": "http://evil.example"})
+        try:
+            urllib.request.urlopen(req, timeout=5)
+            raise AssertionError("cross-origin POST must be refused")
+        except urllib.error.HTTPError as e:
+            assert e.code == 403
+        # the first visit with ?token= sets the cookie and redirects
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, *a, **k):
+                return None
+        opener = urllib.request.build_opener(NoRedirect)
+        try:
+            opener.open(base + "/?token=s3cret", timeout=5)
+        except urllib.error.HTTPError as e:
+            assert e.code == 302 and "council_token=s3cret" in e.headers.get("Set-Cookie", "")
+    finally:
+        httpd.shutdown()
+        Handler.token = None
+    assert web_form_allowed({"routing.opencode.binary": "/tmp/x"}) and web_form_allowed({"limits.max_rounds": "3"}) is None

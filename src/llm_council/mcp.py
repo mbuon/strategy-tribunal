@@ -23,6 +23,9 @@ from typing import Any, Optional
 
 PROTOCOL_VERSION = "2025-06-18"
 _RUN_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,120}")
+# Flags a chat may pass in the question string. --set, --provider, --fixture and --args-file stay terminal-only: they can
+# point the controller at executables, files or recorded transcripts.
+MCP_FLAGS = {"preset", "lenses", "docs", "opencode", "run_id"}
 _REQUEST_ID = re.compile(r"req_[0-9]{1,8}")
 
 INSTRUCTIONS = (
@@ -40,7 +43,7 @@ INSTRUCTIONS = (
 TOOLS: list[dict[str, Any]] = [
     {"name": "council_start",
      "description": "Start a deliberation. `args` is the question followed by optional flags (--preset quick|standard|deep|first_pass, "
-                    "--docs path,folder, --lenses a,b, --opencode, --set key=value). Returns the run id, the run folder and the first request block.",
+                    "--docs path,folder, --lenses a,b, --opencode, --run-id id). Other flags are refused. Returns the run id, the run folder and the first request block.",
      "inputSchema": {"type": "object", "properties": {
          "args": {"type": "string", "description": "question text plus optional flags"},
          "chat_model": {"type": "string", "description": "your model id, recorded as who answered (e.g. claude-opus-5-5)"},
@@ -91,12 +94,24 @@ def _cli(argv: list[str], root: Optional[Path]) -> tuple[int, str]:
 def call_tool(name: str, args: dict[str, Any], root: Optional[Path]) -> tuple[str, bool]:
     """Execute one tool. Returns (text, is_error)."""
     if name == "council_start":
-        argv = ["start", "--args", str(args.get("args", "")).strip()]
+        from .cli import split_args_text
+        question, flags = split_args_text(str(args.get("args", "")).strip())
+        refused = sorted(k for k, v in flags.items() if v not in (None, [], False, "") and k not in MCP_FLAGS)
+        if refused:
+            return (f"refused: {', '.join('--' + k.replace('_', '-') for k in refused)} cannot be set through this tool "
+                    f"(allowed: {', '.join('--' + k.replace('_', '-') for k in sorted(MCP_FLAGS))}); change settings with "
+                    "`council settings set` in the terminal.", True)
+        if not question.strip():
+            return "error: a question is required", True
+        argv = ["start", question]
+        for key in ("preset", "lenses", "docs", "run_id"):
+            if flags.get(key):
+                argv += ["--" + key.replace("_", "-"), str(flags[key])]
+        if flags.get("opencode"):
+            argv.append("--opencode")
         if args.get("chat_model"):
             argv += ["--chat-model", str(args["chat_model"])]
         argv += ["--chat-tools", str(args.get("chat_tools") or "none")]
-        if "--fixture" in argv[2] or "--provider fixture" in argv[2]:
-            return "refused: fixtures replay a recorded test transcript; run the question through the chat or OpenCode.", True
         code, text = _cli(argv, root)
         return text, code != 0
     if name == "council_submit":

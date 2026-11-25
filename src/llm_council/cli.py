@@ -544,7 +544,8 @@ def cmd_ui(args: argparse.Namespace) -> int:
         if chosen != port:
             print(f"note: port {port} is used by another program; using {chosen}", file=sys.stderr)
         port = chosen
-    return serve(root, port, open_browser=not args.no_open, host=getattr(args, "host", None) or "127.0.0.1")
+    return serve(root, port, open_browser=not args.no_open, host=getattr(args, "host", None) or "127.0.0.1",
+                 token=getattr(args, "token", None))
 
 
 def cmd_mcp(args: argparse.Namespace) -> int:
@@ -812,6 +813,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--port", type=int, help="default: storage.ui_port (8771)")
     p.add_argument("--no-open", action="store_true")
     p.add_argument("--host", help="bind address (default 127.0.0.1; 0.0.0.0 inside a container)")
+    p.add_argument("--token", help="access token required on every request when --host is not loopback (default: $COUNCIL_UI_TOKEN or generated)")
     _common(p)
     p.set_defaults(func=cmd_ui)
 

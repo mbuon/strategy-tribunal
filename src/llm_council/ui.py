@@ -16,6 +16,7 @@ from __future__ import annotations
 import html
 import json
 import os
+import secrets
 import shutil
 import subprocess
 import sys
@@ -284,11 +285,60 @@ def settings_page(root: Path, message: str = "", error: str = "") -> str:
     return page("Strategy Tribunal — settings", "\n".join(notices) + tabify(rest, layout))
 
 
+# Settings the web form may never write: they name executables or file locations the server would then use.
+WEB_FORM_DENIED = ("routing.opencode.binary", "routing.opencode.config_dir", "storage.runs_root", "fixture_path")
+
+
+def web_form_allowed(keys) -> Optional[str]:
+    """None when every key may be written from the browser; otherwise the message to show."""
+    bad = [k for k in keys if any(k == d or k.startswith(d + ".") for d in WEB_FORM_DENIED)]
+    if bad:
+        return f"{', '.join(sorted(bad))}: not settable from the web form (use `council settings set` in the terminal)"
+    return None
+
+
 class Handler(BaseHTTPRequestHandler):
     root: Path = Path(".")
+    token: Optional[str] = None      # required on every request when the server is bound to a non-loopback address
 
     def log_message(self, fmt: str, *args: Any) -> None:  # quiet
         return
+
+    def _cookie(self, name: str) -> Optional[str]:
+        for part in (self.headers.get("Cookie") or "").split(";"):
+            k, _, v = part.strip().partition("=")
+            if k == name:
+                return v
+        return None
+
+    def _gate(self, mutating: bool) -> bool:
+        """Token check (non-loopback binds) and Origin check (state-changing requests). False = response already sent."""
+        if self.token:
+            url = urllib.parse.urlparse(self.path)
+            q = urllib.parse.parse_qs(url.query).get("token", [""])[0]
+            auth = (self.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
+            if secrets.compare_digest(q, self.token) and not mutating:
+                # first visit with ?token=…: set the cookie and continue without the token in the address bar
+                self.send_response(HTTPStatus.FOUND)
+                self.send_header("Set-Cookie", f"council_token={self.token}; HttpOnly; SameSite=Strict; Path=/")
+                self.send_header("Location", url.path or "/")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return False
+            if not (secrets.compare_digest(self._cookie("council_token") or "", self.token) or secrets.compare_digest(auth, self.token)):
+                self._send(HTTPStatus.UNAUTHORIZED, b"unauthorized: open the interface with the ?token=... link printed at start")
+                return False
+        if mutating:
+            origin = self.headers.get("Origin") or ""
+            host = self.headers.get("Host") or ""
+            if origin and urllib.parse.urlparse(origin).netloc != host:
+                self._send(HTTPStatus.FORBIDDEN, b"forbidden: cross-origin request")
+                return False
+            fetch_site = self.headers.get("Sec-Fetch-Site")
+            if fetch_site and fetch_site not in ("same-origin", "none"):
+                self._send(HTTPStatus.FORBIDDEN, b"forbidden: cross-site request")
+                return False
+        return True
 
     def _send(self, code: int, body: bytes, ctype: str = "text/html; charset=utf-8") -> None:
         self.send_response(code)
@@ -306,6 +356,8 @@ class Handler(BaseHTTPRequestHandler):
         return None
 
     def do_GET(self) -> None:  # noqa: N802
+        if not self._gate(mutating=False):
+            return None
         url = urllib.parse.urlparse(self.path)
         path = urllib.parse.unquote(url.path)
         if path == "/":
@@ -340,6 +392,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_DELETE(self) -> None:  # noqa: N802
         """Delete one work: `DELETE /runs/<run_id>/` removes the run folder after the same checks as GET."""
+        if not self._gate(mutating=True):
+            return None
         url = urllib.parse.urlparse(self.path)
         path = urllib.parse.unquote(url.path)
         if path.startswith("/runs/"):
@@ -356,11 +410,16 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(HTTPStatus.NOT_FOUND, b"not found")
 
     def do_POST(self) -> None:  # noqa: N802
+        if not self._gate(mutating=True):
+            return None
         path = urllib.parse.urlparse(self.path).path
         if path == "/settings/defaults":
             length = int(self.headers.get("Content-Length", "0"))
             form = {k: v[0] for k, v in urllib.parse.parse_qs(self.rfile.read(length).decode(), keep_blank_values=True).items()}
             try:
+                denied = web_form_allowed(form)
+                if denied:
+                    return self._send(HTTPStatus.OK, settings_page(self.root, error=denied).encode())
                 apply_defaults_form(self.root, form)
                 return self._send(HTTPStatus.OK, settings_page(self.root, message="defaults saved").encode())
             except (settings_mod.SettingsError, ValueError) as e:
@@ -382,6 +441,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(HTTPStatus.OK, settings_page(self.root, message=f"removed {sorted(filled)}").encode())
             if not filled:
                 return self._send(HTTPStatus.OK, settings_page(self.root, error="no value entered").encode())
+            denied = web_form_allowed(filled)
+            if denied:
+                return self._send(HTTPStatus.OK, settings_page(self.root, error=denied).encode())
             items = [f"{k}={v}" for k, v in filled.items()]
             settings_mod.set_values(self.root, items)
             return self._send(HTTPStatus.OK, settings_page(self.root, message=f"saved {sorted(filled)}").encode())
@@ -389,9 +451,13 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(HTTPStatus.OK, settings_page(self.root, error=str(e)).encode())
 
 
-def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/", host: str = "127.0.0.1") -> int:
-    """Serve on host:port (127.0.0.1 by default; 0.0.0.0 inside a container). Returns 2 when the port is taken."""
+def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/", host: str = "127.0.0.1",
+          token: Optional[str] = None) -> int:
+    """Serve on host:port (127.0.0.1 by default; 0.0.0.0 inside a container). Returns 2 when the port is taken.
+    A non-loopback bind requires a token on every request (``token`` or ``COUNCIL_UI_TOKEN``, else one is generated)."""
     Handler.root = root
+    loopback = host in ("127.0.0.1", "localhost", "::1")
+    Handler.token = None if loopback else (token or os.environ.get("COUNCIL_UI_TOKEN") or secrets.token_urlsafe(24))
     try:
         httpd = ThreadingHTTPServer((host, port), Handler)
     except OSError as e:
@@ -400,9 +466,10 @@ def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/"
         return 2
     url = f"http://{'127.0.0.1' if host in ('0.0.0.0', '::') else host}:{port}{open_path}"
     print(f"council ui at {url} (Ctrl-C to stop)", flush=True)
-    if host not in ("127.0.0.1", "localhost", "::1"):
-        print(f"warning: bound to {host}; the interface has no authentication and can delete runs. Publish it to loopback only "
-              "(docker run -p 127.0.0.1:8771:8771 …) or behind an authenticating proxy.", file=sys.stderr, flush=True)
+    if Handler.token:
+        print(f"bound to {host}: every request needs the token. Open {url}?token={Handler.token} once (sets a cookie), "
+              f"or send 'Authorization: Bearer {Handler.token}'. Set COUNCIL_UI_TOKEN to choose it. Publish to loopback where "
+              "possible (docker run -p 127.0.0.1:8771:8771 …).", flush=True)
     if open_browser:
         threading.Timer(0.5, lambda: webbrowser.open(url)).start()
     try:
