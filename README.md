@@ -182,19 +182,15 @@ The server listens on loopback. Bound elsewhere it asks for a token on every req
 
 ## Run it anywhere
 
-| Environment | How |
-|---|---|
-| **Claude Code** (terminal, desktop, VS Code, JetBrains, web, headless) | `/council <question>`; headless `claude -p "/council <question>"` |
-| **Claude Desktop** | register `council mcp` as an MCP server; ask for a council in the chat |
-| **claude.ai**, **ChatGPT**, **Gemini**, any chat without tools | `council start --args "…" --chat-tools none`; paste the request, paste the reply back with `council submit <run> -` |
-| **ChatGPT, Gemini, Muse, Claude models as roles** | route roles through OpenCode: `openai/…`, `google/…`, `muse-code/…`, `claude-agent/…`; mix vendors per role |
-| **OpenCode, Gemini CLI, Codex CLI, Muse, Cursor as the agent** | give the agent [docs/responder.md](docs/responder.md) |
-| **zsh** | `council run "…" --opencode` runs every role on OpenCode, no chat |
-| **Docker** | `docker build -t strategy-tribunal .`; `docker run --rm -p 127.0.0.1:8771:8771 -v "$PWD/work:/work" strategy-tribunal` |
-| **Ollama** | `routing.opencode.default_model=ollama/<model>` |
-| **Your own code** | `from llm_council.engine import Engine`; fixture replays for tests |
+Three ways in, and the core is always the same Python controller — only who answers the roles changes.
 
-Setup, commands and the Claude Desktop config: [docs/guide.md](docs/guide.md).
+**From any chat.** In Claude Code: `/council <question>` (headless: `claude -p "/council <question>"`). In Claude Desktop or any MCP-capable app: register `council mcp` as a server and ask for a council. In a plain chat with no tools (claude.ai, ChatGPT, Gemini): `council start --args "…" --chat-tools none`, paste each printed request into the chat, paste the reply back with `council submit <run_id> -`. Any agent CLI (OpenCode, Gemini CLI, Codex CLI, Cursor, Muse) can play the responder by following [docs/responder.md](docs/responder.md).
+
+**With any models in the roles.** Route one role or all of them to another vendor through OpenCode — `openai/…`, `google/…`, `muse-code/…`, `claude-agent/…`, mixable per role (e.g. `--set routing.roles.judge.provider=opencode`); run everything on OpenCode with `council run "…" --opencode`; or stay fully local with an Ollama model (`routing.opencode.default_model=ollama/<model>`).
+
+**Headless, sealed, or embedded.** `council run` needs no chat at all; `docker build -t strategy-tribunal .` plus `docker run --rm -p 127.0.0.1:8771:8771 -v "$PWD/work:/work" strategy-tribunal` seals it in a container; `from llm_council.engine import Engine` plus fixture replays embed it in your own code and tests.
+
+Setup, commands and the desktop-app config: [docs/guide.md](docs/guide.md).
 
 ---
 
