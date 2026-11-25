@@ -24,7 +24,7 @@ Read the handoff and rerun the Run 1 acceptance checks. Fix blocking regressions
 
 ## Ground the design in all six reference projects
 
-Treat `/Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/original` as a read-only reference directory. Inspect the relevant implementation, prompts, configuration, and tests in each project. Record exact file references. Distinguish implemented mechanisms, prompt-level behaviours, and results reported by the authors. Preserve licence obligations if reusing code.
+Treat `original/` under the project root (`/Users/massimo/Projects_Massimo/strategy-tribunal/original`, kept out of git) as a read-only reference directory. Inspect the relevant implementation, prompts, configuration, and tests in each project. Record exact file references. Distinguish implemented mechanisms, prompt-level behaviours, and results reported by the authors. Preserve licence obligations if reusing code.
 
 | Reference | Capabilities to account for in the design |
 |---|---|
