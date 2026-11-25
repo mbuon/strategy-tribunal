@@ -49,7 +49,7 @@ export default function FollowUp({ text, compact }) {
         <div>
           <h2 id="followup-h" className="text-base font-semibold">Continue in the chat</h2>
           <p className="text-xs text-muted-foreground">
-            Paste this prompt into Claude Code to plan the recommended action. It carries the question, the decision, what is still open and the ask.
+            Paste this prompt into your chat (Claude, ChatGPT, Gemini, any model) to plan the recommended action. It carries the question, the decision, what is still open and the ask.
           </p>
         </div>
         <Button size="sm" onClick={doCopy} aria-live="polite" variant={state === 'copied' ? 'secondary' : 'default'}>
