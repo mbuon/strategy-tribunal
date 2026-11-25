@@ -16,11 +16,14 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any, Optional
 
 PROTOCOL_VERSION = "2025-06-18"
+_RUN_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,120}")
+_REQUEST_ID = re.compile(r"req_[0-9]{1,8}")
 
 INSTRUCTIONS = (
     "Strategy Tribunal runs a structured decision deliberation. You are the responder: call council_start with the user's "
@@ -98,15 +101,21 @@ def call_tool(name: str, args: dict[str, Any], root: Optional[Path]) -> tuple[st
         return text, code != 0
     if name == "council_submit":
         run_id, request_id = str(args.get("run_id", "")), str(args.get("request_id", ""))
+        # ids come from the client: only the shapes the controller itself produces touch the filesystem
+        if not _RUN_ID.fullmatch(run_id) or not _REQUEST_ID.fullmatch(request_id):
+            return "error: invalid run_id or request_id", True
         response = args.get("response")
         raw = response if isinstance(response, str) else json.dumps(response, ensure_ascii=False, indent=1)
         from .cli import find_root, runs_root
-        run_dir = runs_root(find_root(str(root) if root else None)) / run_id
-        if not run_dir.exists():
+        base = runs_root(find_root(str(root) if root else None)).resolve()
+        run_dir = (base / run_id).resolve()
+        if run_dir.parent != base or not run_dir.is_dir():
             return f"error: run {run_id!r} not found", True
         inbox = run_dir / "responses"
         inbox.mkdir(exist_ok=True)
-        path = inbox / f"{request_id}.mcp.json"
+        path = (inbox / f"{request_id}.mcp.json").resolve()
+        if path.parent != inbox.resolve():
+            return "error: invalid request_id", True
         path.write_text(raw)
         argv = ["submit", run_id, str(path), "--request-id", request_id]
         if args.get("chat_model"):

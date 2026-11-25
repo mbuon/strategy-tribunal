@@ -84,3 +84,12 @@ def test_copy_paste_loop_submits_a_reply_from_stdin(tmp_path):
                          input="```json\n" + json.dumps(POLICY) + "\n```\n", capture_output=True, text=True, cwd=str(PROJECT_ROOT), timeout=120)
     assert out.returncode == 0, out.stderr
     assert re.search(r"=== COUNCIL REQUEST req_0003", out.stdout)   # a fenced paste is accepted too
+
+
+def test_mcp_submit_refuses_ids_that_leave_the_run_folder(tmp_path):
+    from llm_council.mcp import call_tool
+    root = make_root(tmp_path)
+    for run_id, request_id in [("../../etc", "req_0001"), ("mcp", "../x"), ("mcp", "req_0001/../../y"), ("", "req_0001")]:
+        text, is_error = call_tool("council_submit", {"run_id": run_id, "request_id": request_id, "response": {}}, root)
+        assert is_error and text.startswith("error:"), (run_id, request_id, text)
+    assert not list(tmp_path.rglob("*.mcp.json"))

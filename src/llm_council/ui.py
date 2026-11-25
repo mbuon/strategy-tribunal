@@ -400,6 +400,9 @@ def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/"
         return 2
     url = f"http://{'127.0.0.1' if host in ('0.0.0.0', '::') else host}:{port}{open_path}"
     print(f"council ui at {url} (Ctrl-C to stop)", flush=True)
+    if host not in ("127.0.0.1", "localhost", "::1"):
+        print(f"warning: bound to {host}; the interface has no authentication and can delete runs. Publish it to loopback only "
+              "(docker run -p 127.0.0.1:8771:8771 …) or behind an authenticating proxy.", file=sys.stderr, flush=True)
     if open_browser:
         threading.Timer(0.5, lambda: webbrowser.open(url)).start()
     try:

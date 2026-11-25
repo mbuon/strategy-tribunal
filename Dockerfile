@@ -1,7 +1,8 @@
 # Strategy Tribunal — controller, CLI, MCP server and web interface in one image.
 #
 #   docker build -t strategy-tribunal .
-#   docker run --rm -p 8771:8771 -v "$PWD/work:/work" strategy-tribunal            # web interface on http://127.0.0.1:8771
+#   docker run --rm -p 127.0.0.1:8771:8771 -v "$PWD/work:/work" strategy-tribunal  # web interface on http://127.0.0.1:8771 (loopback only:
+#                                                                                  # no authentication, and the interface can delete runs)
 #   docker run --rm -i -v "$PWD/work:/work" strategy-tribunal council start --args "Should we …?"
 #   docker run --rm -i -v "$PWD/work:/work" strategy-tribunal council submit <run_id> - --request-id req_0001 < reply.json
 #
