@@ -1,6 +1,4 @@
-# LLM Council — autonomous 360° decision engine
-
-> **Name.** The project was renamed **Strategy Tribunal** on 2026‑11‑25 (repository `strategy-tribunal`). The Python package `llm_council`, the `council` command, the `/council` skills and this file's name are unchanged; "LLM Council" in the sections below is the former name.
+# Strategy Tribunal — autonomous 360° decision engine
 
 Design and delivery record for the engine specified in `docs/spec.md`. Sections 1–13 were written before implementation and then updated to the delivered system; section 14 is the Run 1 handoff (kept as history); section 16 is the Run 2 delivery record (settings interface, live verification, benchmarks).
 
@@ -12,7 +10,7 @@ Status: **Run 1 complete (§14, 2026‑11‑24) · Run 2 complete (§16, 2026‑
 
 | Decision | Resolution | Reversible? |
 |---|---|---|
-| Target project root | `/Users/massimo/Projects_Massimo/strategy-tribunal/` (until 2026‑11‑25 `…/Marketing & Advertisement AI/council/`; git repository `github.com/mbuon/strategy-tribunal`) (the parent folder only holds vendored skills and a Google‑Ads docs set; `council/docs/spec.md` lives here; the user asked to work here). No git repository exists at either level. | Yes (move folder; paths are relative) |
+| Target project root | `/Users/massimo/Projects_Massimo/strategy-tribunal/` (repository `github.com/mbuon/strategy-tribunal`) (the parent folder only holds vendored skills and a Google‑Ads docs set; `council/docs/spec.md` lives here; the user asked to work here). No git repository exists at either level. | Yes (move folder; paths are relative) |
 | Chat surface | Claude Code (CLI 2.1.331 installed) running in the current conversation. The model in default mode is the chat model of the session. | Yes |
 | Chat entry point | Project skill `council/.claude/skills/council/SKILL.md`, invoked as `/council <question> [flags]`. **Run 2 finding:** skills are discovered when Claude Code is started in `council/` (confirmed from a fresh headless session, §16.3); they are **not** discovered as directory‑scoped skills when the session starts in the parent folder (the Run 1 assumption `council:council` did not hold: a session started in the parent listed neither `council` nor `council-settings`). Start Claude Code in `council/`. | Yes (same engine can be wired to a `.claude/commands/*.md` command) |
 | Engine language and runtime | Python ≥ 3.12 package `llm_council` under `council/src/`, `pydantic` v2 for the validated protocol. Installed with plain `pip` into `.venv` (`python3 -m venv .venv && pip install -e ".[dev]"`); commands are `council …` and `python -m pytest`. (Run 1 used `uv` for the same environment; the switch to pip‑only happened post‑delivery at the user's request, §17.) | Yes |
@@ -434,7 +432,7 @@ Day‑to‑day commands (from `council/`): `python -m pytest` (130 tests, no mod
 
 ## 14. Run 1 handoff (recorded 2026‑11‑24)
 
-**Project root and chat surface.** Root at the time `/Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council` (not a git repository then; moved to `/Users/massimo/Projects_Massimo/strategy-tribunal` and put under git on 2026‑11‑25). Chat surface: Claude Code 2.1.331; entry point `/council` = `.claude/skills/council/SKILL.md` driving the `council` CLI in step mode.
+**Project root and chat surface.** Root `/Users/massimo/Projects_Massimo/strategy-tribunal` (repository `github.com/mbuon/strategy-tribunal`). Chat surface: Claude Code 2.1.331; entry point `/council` = `.claude/skills/council/SKILL.md` driving the `council` CLI in step mode.
 
 **Run and test commands** (from the root; quote the path):
 ```

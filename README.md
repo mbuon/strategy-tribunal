@@ -7,7 +7,7 @@
 
 ## What it is
 
-Strategy Tribunal (until 2026‑11‑25 *LLM Council*; the Python package is still `llm_council`, the command `council`, the Claude Code skills `/council` and `/council-settings`) turns one question into one defensible recommendation by running a structured, multi‑round deliberation with language models under a deterministic controller.
+Strategy Tribunal turns one question into one defensible recommendation by running a structured, multi‑round deliberation with language models under a deterministic controller.
 
 You type a decision, topic or scope (for example *"Should we move 25 % of the Meta budget into TikTok Shop ads for Q1?"*). The engine then:
 
