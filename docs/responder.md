@@ -50,3 +50,23 @@ A repeated `submit` for a request that was already answered is harmless (`--requ
 - Strategist requests: new options need an `option_id`, claims with evidence ids, labelled assumptions.
 - Never pass `--fixture` or `--provider fixture`: fixtures replay a recorded test transcript, they do not answer the
   question.
+
+## Chats without tools (claude.ai, ChatGPT, Muse chat, any web chat)
+
+The person at the keyboard runs the commands and the chat writes the JSON:
+
+```bash
+council start --args "<question> [--preset quick] [--docs path]" --chat-tools none --chat-model "<model>"
+council submit <run_id> - --request-id <request_id> <<'EOF'
+<paste the chat's JSON here>
+EOF
+council report <run_id>
+```
+
+Paste each `=== COUNCIL REQUEST … ===` block into the chat as it is printed; ask for exactly one JSON object valid
+against the schema. `--chat-tools none` tells every role it has no file access. A fenced reply is accepted.
+
+## Chats with tools but no shell (Claude Desktop)
+
+Register `council mcp --root <project>` as an MCP server (see the README). The chat then calls `council_start`,
+`council_submit`, `council_next`, `council_status`, `council_report`, `council_cancel` and `council_runs` itself.

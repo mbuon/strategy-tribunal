@@ -389,16 +389,16 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(HTTPStatus.OK, settings_page(self.root, error=str(e)).encode())
 
 
-def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/") -> int:
-    """Serve on 127.0.0.1:port. Returns 2 when the port is taken by another program."""
+def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/", host: str = "127.0.0.1") -> int:
+    """Serve on host:port (127.0.0.1 by default; 0.0.0.0 inside a container). Returns 2 when the port is taken."""
     Handler.root = root
     try:
-        httpd = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+        httpd = ThreadingHTTPServer((host, port), Handler)
     except OSError as e:
         owner = "another council ui" if is_ours(port) else "another program"
         print(f"error: port {port} is in use by {owner} ({e}); pick one with --port or set storage.ui_port", file=sys.stderr)
         return 2
-    url = f"http://127.0.0.1:{port}{open_path}"
+    url = f"http://{'127.0.0.1' if host in ('0.0.0.0', '::') else host}:{port}{open_path}"
     print(f"council ui at {url} (Ctrl-C to stop)", flush=True)
     if open_browser:
         threading.Timer(0.5, lambda: webbrowser.open(url)).start()

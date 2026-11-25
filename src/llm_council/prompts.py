@@ -168,8 +168,8 @@ DOCUMENTS = (
 TOOLS_NONE = ("You have no tools: you cannot read files, open paths or browse. Everything you know about this case is in "
               "the payload. If a fact would need reading something, say so (as an evidence gap, an assumption or a "
               "verification request) instead of describing content you have not seen.")
-TOOLS_CHAT = ("You are answering inside Claude Code with its tools (Read, Grep, Bash, web where allowed): read any local path "
-              "the question or the documents name, and the run folder's discussion.md and inputs/, before answering; cite what "
+TOOLS_CHAT = ("You are answering from a chat host that has file and shell tools (Claude Code or a comparable agent): read any local "
+              "path the question or the documents name, and the run folder's discussion.md and inputs/, before answering; cite what "
               "you read as evidence with source kind 'document' and the path as ref.")
 
 REPAIR = ("Repair: your previous reply (payload field previous_reply) was rejected for the error in previous_attempt_error. "

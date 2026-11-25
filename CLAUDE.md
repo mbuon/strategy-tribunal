@@ -12,6 +12,7 @@ starts in this folder). Full record: `docs/llm_council.md` (§18 = current state
   (writes `src/llm_council/static/dashboard.{js,css}`, committed, inlined into every page). Python changes need a
   server restart: `lsof -ti tcp:8771 | xargs kill` then `/council … --ui` or `.venv/bin/council ui`.
 - Runs live in `council_outcomes/<date_time_slug>/` (ignored by git); settings in `.council/settings.json` (ignored).
+- Other hosts: `council mcp` (MCP over stdio, Claude Desktop), `council submit <run> -` (stdin, copy-paste chats), `--chat-tools none`, `Dockerfile` (`council ui --host 0.0.0.0`). Keep `docs/responder.md` in sync with the skill.
 - `original/` holds six third-party reference projects, read-only, ignored by git. Never copy code from them.
 
 ## Rules the user has set

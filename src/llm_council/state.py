@@ -89,6 +89,7 @@ class RunData(BaseModel):
     provenance: dict[str, str] = {}
     preset: Optional[str] = None
     chat_model: Optional[str] = None     # identity of the conversation model answering chat-routed requests, when declared
+    chat_tools: str = "host"             # "host": the chat host has file/shell tools (Claude Code, agents); "none": copy-paste chats
     discussion: list[dict[str, Any]] = []   # ordered index of every model contribution (files under discussion/)
     documents: list[dict[str, Any]] = []    # user documents registered as evidence (copies under inputs/)
     document_notes: list[str] = []

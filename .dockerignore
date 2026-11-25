@@ -1,0 +1,12 @@
+.git
+.venv
+.council
+council_outcomes
+original
+web/node_modules
+benchmarks/results
+tests
+docs
+.playwright-mcp
+*.png
+__pycache__

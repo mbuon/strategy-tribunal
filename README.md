@@ -296,22 +296,51 @@ council config show --opencode
 
 ### Ten ways to run it
 
-The engine has one protocol and three ways to answer a request: the chat model you are already talking to, models reached through OpenCode, or a recorded fixture for tests. That gives ten working environments. "Verified" means exercised end to end in this repository's delivery record; the others follow the same four commands (`docs/responder.md`) and differ only in which agent plays the responder.
+One protocol, three kinds of responder: the chat you are already in, models reached through OpenCode, or your own code. Any chat can play the responder: with tools it runs the commands itself, without tools you paste the request in and the reply back. "Verified" means exercised end to end in this repository; the rest follow the same four commands in `docs/responder.md`.
 
 | # | Environment | Setup | Run | Status |
 |---|---|---|---|---|
-| 1 | **Claude Code in the terminal** | install as above; start `claude` inside this folder | `/council <question> --preset quick` | verified |
-| 2 | **Claude Code desktop app** (macOS, Windows) | open this folder as the project | `/council <question>` | same skill, same files |
-| 3 | **Claude Code in VS Code or JetBrains** | open this folder; the extension starts Claude Code in it | `/council <question>` | same skill, same files |
-| 4 | **Claude Code on the web** (claude.ai/code) | the cloud environment clones the repository; run the venv setup in the session | `/council <question>` | runs where Python 3.12 is available; the dashboard URL is local to that environment |
-| 5 | **Headless Claude Code** (scripts, cron, CI) | `claude -p "/council <question> --preset quick"` from this folder | one shell command, exit when the run ends | verified |
-| 6 | **OpenCode as the chat host** | start `opencode` in this folder; give it `docs/responder.md` as instructions | the agent runs `council start`, answers each request, runs `submit` | same protocol, not verified here |
-| 7 | **Any other agent with a shell** (Codex CLI, Gemini CLI, Cursor, aider) | same as 6 | same as 6 | same protocol, not verified here |
-| 8 | **Shell only, no chat: every role on OpenCode** | `opencode auth login`; `council settings set routing.opencode.enabled=true routing.opencode.default_model=<provider/model>` | `council run "<question>" --opencode --preset quick` | verified (claude-agent, OpenAI, Ollama models) |
-| 9 | **Local models through Ollama** | `ollama pull <model>`; configure OpenCode's Ollama provider; `council settings set routing.opencode.default_model=ollama/<model>` | as 8, or route single roles: `routing.roles.judge.model=ollama/<model>` | verified for the judge role |
-| 10 | **Your own program** (Python API, CI, tests) | `pip install -e .` | `from llm_council.engine import Engine` with `Store.create(...)`; `council run --fixture tests/fixtures/main_run.json` replays a recorded deliberation with no model calls | verified (the test suite is this environment) |
+| 1 | **Claude Code** (terminal, desktop app, VS Code, JetBrains, web, headless) | install as above; start Claude Code inside this folder | `/council <question> --preset quick`; headless: `claude -p "/council <question>"` | verified |
+| 2 | **Claude Desktop** (the chat app) | add the MCP server to `claude_desktop_config.json` (below); restart the app | ask: *"Run a council on: should we …?"* The app calls `council_start`, answers each request, calls `council_submit`, then shows the report | verified against the MCP stdio protocol; the app drives it as a tool server |
+| 3 | **Claude on claude.ai** (no tools) | copy‑paste loop (below) | `council start --args "…" --chat-tools none` in zsh, paste the request into the chat, paste the reply back with `council submit <run> -` | verified |
+| 4 | **ChatGPT** (no tools) | same copy‑paste loop; or route roles to OpenAI models through OpenCode (`openai/gpt-…`) | as 3; or `council run "…" --opencode` with `routing.opencode.default_model=openai/<model>` | copy‑paste verified; OpenCode route verified with OpenAI models |
+| 5 | **Muse** (agent host, or Muse models) | as an agent host: give Muse `docs/responder.md`; as models: route roles to `muse-code/<model>` through OpenCode (the project's validation fallback is `muse-code/muse-spark-1.3-contributor`) | host: the agent runs the loop; models: `routing.roles.<role>.model=muse-code/<model>` | fallback route verified |
+| 6 | **OpenCode** (agent host, or the multi‑model route) | host: start `opencode` in this folder with `docs/responder.md` as instructions; route: `opencode auth login`, then `council settings set routing.opencode.enabled=true routing.opencode.default_model=<provider/model>` | host: the agent runs the loop; route: `council run "<question>" --opencode --preset quick` with every role on OpenCode, or single roles via `routing.roles.<role>` | route verified (claude‑agent, OpenAI, Ollama, Muse models) |
+| 7 | **zsh / any shell** | the venv | copy‑paste loop with any chat; `council run … --opencode` fully autonomous; `council ui` for the dashboards | verified |
+| 8 | **Docker** | `docker build -t strategy-tribunal .` | `docker run --rm -p 8771:8771 -v "$PWD/work:/work" strategy-tribunal` serves the interface; `docker run --rm -i -v "$PWD/work:/work" strategy-tribunal council start --args "…"` and `… council submit <run> - --request-id req_x < reply.json` drive a run | verified (image built, CLI and interface exercised in the container) |
+| 9 | **Local models through Ollama** | `ollama pull <model>`; configure OpenCode's Ollama provider; `council settings set routing.opencode.default_model=ollama/<model>` | as 6, whole run or single roles | verified for the judge role |
+| 10 | **Your own program** (Python, CI) | `pip install -e .` | `from llm_council.engine import Engine`; `council run --fixture tests/fixtures/main_run.json` replays a recorded deliberation with no model calls | verified (the test suite is this environment) |
 
-Mixed routes are the normal case: the chat model plays most roles while the judge, the reviewer or the challenger runs on a different vendor through OpenCode (`/council-settings routes`), so a second opinion comes from a model that did not write the options.
+Mixed routes are the normal case: the chat you are in plays most roles while the judge, a reviewer or the challenger runs on another vendor through OpenCode (`/council-settings routes`), so the second opinion comes from a model that did not write the options.
+
+**Claude Desktop (MCP).** Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows), with your own paths:
+
+```json
+{
+  "mcpServers": {
+    "strategy-tribunal": {
+      "command": "/path/to/strategy-tribunal/.venv/bin/council",
+      "args": ["mcp", "--root", "/path/to/strategy-tribunal"]
+    }
+  }
+}
+```
+
+Restart the app. The server announces seven tools (`council_start`, `council_submit`, `council_next`, `council_status`, `council_report`, `council_cancel`, `council_runs`) and its own instructions, so the chat knows the loop without a prompt from you. Runs land in the same `council_outcomes/` folder and the same dashboards.
+
+**Copy‑paste loop (claude.ai, ChatGPT, any chat without tools).** In zsh:
+
+```bash
+council start --args "Should we …? --preset quick" --chat-tools none --chat-model "gpt-x"   # prints request 1
+# paste the whole === COUNCIL REQUEST … === block into the chat; ask for exactly one JSON object
+council submit <run_id> - --request-id req_0001 <<'EOF'
+{ …the JSON the chat answered… }
+EOF
+# the next request is printed; repeat until === RUN COMPLETE ===
+council report <run_id>
+```
+
+`--chat-tools none` tells every role it cannot read files, so the model declares what it would need instead of pretending; name your documents with `--docs` and the controller puts their content into the request. A fenced reply (```` ```json ````) is accepted as is.
 
 ---
 

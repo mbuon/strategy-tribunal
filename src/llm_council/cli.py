@@ -160,7 +160,7 @@ def render_request(req: PendingRequest, run_id: str, run_dir: Path, *, terse: bo
     return "\n".join(lines)
 
 
-KNOWN_FLAGS = {"--preset": 1, "--lenses": 1, "--set": 1, "--opencode": 0, "--provider": 1, "--fixture": 1, "--run-id": 1, "--open": 0, "--ui": 0, "--docs": 1, "--chat-model": 1}
+KNOWN_FLAGS = {"--preset": 1, "--lenses": 1, "--set": 1, "--opencode": 0, "--provider": 1, "--fixture": 1, "--run-id": 1, "--open": 0, "--ui": 0, "--docs": 1, "--chat-model": 1, "--chat-tools": 1}
 
 
 def split_args_text(text: str) -> tuple[str, dict[str, Any]]:
@@ -287,6 +287,7 @@ def cmd_start(args: argparse.Namespace, *, autonomous: bool = False) -> int:
     store.data.provenance = eff.provenance
     store.data.preset = eff.preset
     store.data.chat_model = getattr(args, "chat_model", None) or os.environ.get("COUNCIL_CHAT_MODEL") or cfg.defaults.chat_model or _claude_code_model_hint()
+    store.data.chat_tools = getattr(args, "chat_tools", None) or os.environ.get("COUNCIL_CHAT_TOOLS") or "host"
     store.save()
     doc_paths = [p.strip() for p in (getattr(args, "docs", None) or "").split(",") if p.strip()]
     if doc_paths:
@@ -420,11 +421,14 @@ def cmd_submit(args: argparse.Namespace) -> int:
     root = find_root(args.root)
     engine, eff = load_engine(root, args.run_id)
     d = engine.store.data
-    path = Path(args.response)
-    if not path.exists():
-        print(f"error: response file {path} not found", file=sys.stderr)
-        return 2
-    raw = path.read_text()
+    if args.response == "-":
+        raw = sys.stdin.read()   # copy-paste mode: `council submit <run> - --request-id req_x < reply.json` or a pasted heredoc
+    else:
+        path = Path(args.response)
+        if not path.exists():
+            print(f"error: response file {path} not found", file=sys.stderr)
+            return 2
+        raw = path.read_text()
     from .providers.base import parse_reply_json
     submission = parse_reply_json(raw)
     if args.request_id and (d.pending_request is None or d.pending_request.request_id != args.request_id):
@@ -540,7 +544,13 @@ def cmd_ui(args: argparse.Namespace) -> int:
         if chosen != port:
             print(f"note: port {port} is used by another program; using {chosen}", file=sys.stderr)
         port = chosen
-    return serve(root, port, open_browser=not args.no_open)
+    return serve(root, port, open_browser=not args.no_open, host=getattr(args, "host", None) or "127.0.0.1")
+
+
+def cmd_mcp(args: argparse.Namespace) -> int:
+    """MCP server over stdio for chat applications with tool support (Claude Desktop)."""
+    from .mcp import serve_stdio
+    return serve_stdio(find_root(args.root) if args.root or os.environ.get("COUNCIL_ROOT") else None)
 
 
 def cmd_cancel(args: argparse.Namespace) -> int:
@@ -772,6 +782,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--ui", action="store_true", help="start/reuse the local web UI and open the served dashboard")
     p.add_argument("--allow-fixture-mismatch", action="store_true", help="replay a test fixture even if it was recorded for another question")
     p.add_argument("--chat-model", help="identity of the conversation model answering chat requests (recorded as who answered)")
+    p.add_argument("--chat-tools", choices=["host", "none"], help="whether the chat host has file/shell tools (host, default) or not (none: copy-paste chats such as claude.ai or ChatGPT)")
     p.add_argument("--docs", help="comma-separated files/folders the council must read (copied to <run>/inputs, registered as evidence)")
     _config_flags(p)
     _common(p)
@@ -798,11 +809,15 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=cmd_dashboard)
 
     p = sub.add_parser("ui", help="local web UI: runs overview, dashboards, settings editor (127.0.0.1)")
-    p.add_argument("--port", type=int, help="default: storage.ui_port (8765)")
+    p.add_argument("--port", type=int, help="default: storage.ui_port (8771)")
     p.add_argument("--no-open", action="store_true")
+    p.add_argument("--host", help="bind address (default 127.0.0.1; 0.0.0.0 inside a container)")
     _common(p)
     p.set_defaults(func=cmd_ui)
 
+    p = sub.add_parser("mcp", help="MCP server over stdio (Claude Desktop and other tool-using chat apps)")
+    p.add_argument("--root", help="project root (default: auto-detect or $COUNCIL_ROOT)")
+    p.set_defaults(func=cmd_mcp)
     p = sub.add_parser("next", help="print the pending request (or advance controller-only steps)")
     p.add_argument("run_id")
     p.add_argument("--set", action="append", default=[], metavar="KEY=VALUE", help="operational config override on resume (recorded)")
@@ -816,7 +831,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("submit", help="submit a JSON response to the pending request")
     p.add_argument("run_id")
-    p.add_argument("response")
+    p.add_argument("response", help="path of the JSON reply, or - to read it from stdin")
     p.add_argument("--request-id", help="request id the response answers (enables idempotent duplicate detection)")
     p.add_argument("--chat-model", help="identity of the conversation model that wrote this response (recorded on the participant)")
     p.add_argument("--effort", help="effort label for this response (e.g. 'extended thinking'), recorded with the reply")

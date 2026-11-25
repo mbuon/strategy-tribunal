@@ -263,7 +263,7 @@ class Engine:
         docs = documents_payload(self.store, self.cfg)
         if docs is not None:
             shared["documents"] = docs
-        has_tools = provider == "chat"
+        has_tools = provider == "chat" and d.chat_tools != "none"
         today = datetime.now().strftime("%Y-%m-%d")
         shared["capabilities"] = {"tools": "claude_code" if has_tools else "none", "can_read_files": has_tools, "today": today,
                                   "language": "answer free text in the language of the question"}
