@@ -132,7 +132,30 @@ def test_ui_requires_a_token_off_loopback_and_blocks_cross_origin_and_dangerous_
             opener.open(base + "/?token=s3cret", timeout=5)
         except urllib.error.HTTPError as e:
             assert e.code == 302 and "council_token=s3cret" in e.headers.get("Set-Cookie", "")
+        # DNS rebinding: a Host header that is not this server is refused even with the token
+        req = urllib.request.Request(base + "/api/health", headers={"Authorization": "Bearer s3cret", "Host": "evil.example"})
+        try:
+            urllib.request.urlopen(req, timeout=5)
+            raise AssertionError("foreign Host must be refused")
+        except urllib.error.HTTPError as e:
+            assert e.code == 403
     finally:
         httpd.shutdown()
         Handler.token = None
     assert web_form_allowed({"routing.opencode.binary": "/tmp/x"}) and web_form_allowed({"limits.max_rounds": "3"}) is None
+    # writing the parent object, or the whole section, is refused too
+    assert web_form_allowed({"routing.opencode": '{"binary": "/tmp/x"}'}) and web_form_allowed({"routing": '{"opencode": {"binary": "x"}}'})
+    assert web_form_allowed({"storage": '{"legacy_runs_root": "/etc"}'}) and web_form_allowed({"routing.opencode.default_model": "x"}) is None
+
+
+def test_mcp_question_is_never_parsed_as_options(tmp_path):
+    from llm_council.mcp import call_tool
+    from llm_council.cli import split_args_text
+    root = make_root(tmp_path)
+    text, is_error = call_tool("council_start", {"args": "--help me decide --preset quick --run-id dash"}, root)
+    assert not is_error, text
+    assert "=== COUNCIL REQUEST req_0001" in text
+    assert json.loads((root / "council_outcomes" / "dash" / "state.json").read_text())["question"] == "--help me decide"
+    q, flags = split_args_text("What now? --preset=deep --lenses=regret")
+    assert q == "What now?" and flags["preset"] == "deep" and flags["lenses"] == "regret"
+

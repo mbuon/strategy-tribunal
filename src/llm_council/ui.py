@@ -90,9 +90,10 @@ NAV_TW = ("<nav class='mb-2 flex gap-2'>"
 
 def page(title: str, body: str, nav: str = "") -> str:
     """Server-rendered page (settings): the bundle's base styles for the chrome, the legacy rules for the body."""
-    return (f"<!doctype html><html lang='en'><head><meta charset='utf-8'><title>{_e(title)}</title>"
-            f"{_theme_init_js()}<style>{_bundle_text('dashboard.css')}</style><style>{CSS}"
-            "body{background:var(--color-background);color:var(--color-foreground)}header{background:var(--color-card);border-color:var(--color-border)}"
+    # the settings page is server-rendered with the legacy stylesheet: it stays in light mode whatever the theme toggle says
+    return (f"<!doctype html><html lang='en' style='color-scheme:light'><head><meta charset='utf-8'><title>{_e(title)}</title>"
+            f"<style>{_bundle_text('dashboard.css')}</style><style>{CSS}"
+            "body{background:var(--bg);color:var(--ink)}header{background:#fff;border-color:var(--line)}"
             "main{max-width:80rem;margin:0 auto;padding:0 1.75rem 3rem}"
             ".work header{border:none;padding:0 0 10px;background:transparent}.work h1{font-size:19px}</style></head><body>"
             f"<header class='border-b bg-background px-7 py-4'>{NAV_TW}<h1 class='text-xl font-semibold'>{_e(title)}</h1>{nav}</header><main>{body}</main></body></html>")
@@ -286,12 +287,33 @@ def settings_page(root: Path, message: str = "", error: str = "") -> str:
 
 
 # Settings the web form may never write: they name executables or file locations the server would then use.
-WEB_FORM_DENIED = ("routing.opencode.binary", "routing.opencode.config_dir", "storage.runs_root", "fixture_path")
+WEB_FORM_DENIED = ("routing.opencode.binary", "routing.opencode.config_dir", "storage.runs_root", "storage.legacy_runs_root", "fixture_path")
 
 
-def web_form_allowed(keys) -> Optional[str]:
-    """None when every key may be written from the browser; otherwise the message to show."""
-    bad = [k for k in keys if any(k == d or k.startswith(d + ".") for d in WEB_FORM_DENIED)]
+def _leaf_paths(key: str, value: Any) -> list[str]:
+    """Every dotted leaf a form field would write: `routing.opencode={"binary": "x"}` → routing.opencode.binary."""
+    parsed: Any = value
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except (ValueError, TypeError):
+            parsed = value
+    if isinstance(parsed, dict):
+        out: list[str] = []
+        for k, v in parsed.items():
+            out.extend(_leaf_paths(f"{key}.{k}", v))
+        return out or [key]
+    return [key]
+
+
+def web_form_allowed(form: dict[str, Any]) -> Optional[str]:
+    """None when every field may be written from the browser; otherwise the message to show.
+    Checks the leaves a field would write, and refuses writing any ancestor of a denied path as a whole object."""
+    bad: set[str] = set()
+    for key, value in form.items():
+        for leaf in _leaf_paths(key, value):
+            if any(leaf == d or leaf.startswith(d + ".") or d.startswith(leaf + ".") for d in WEB_FORM_DENIED):
+                bad.add(key)
     if bad:
         return f"{', '.join(sorted(bad))}: not settable from the web form (use `council settings set` in the terminal)"
     return None
@@ -300,6 +322,21 @@ def web_form_allowed(keys) -> Optional[str]:
 class Handler(BaseHTTPRequestHandler):
     root: Path = Path(".")
     token: Optional[str] = None      # required on every request when the server is bound to a non-loopback address
+    extra_hosts: set[str] = set()    # extra Host values this server answers to (COUNCIL_UI_HOSTS); loopback is always accepted
+
+    def _host_allowed(self, value: str) -> bool:
+        """DNS-rebinding and CSRF guard: the Host (or Origin) must name this machine, the bind address, or a listed host."""
+        netloc = value.lower().strip()
+        if not netloc:
+            return False
+        hostname = netloc.rsplit(":", 1)[0] if netloc.count(":") == 1 or netloc.startswith("[") else netloc
+        hostname = hostname.strip("[]")
+        if hostname in ("127.0.0.1", "localhost", "::1"):
+            return True
+        bind = str(self.server.server_address[0]).lower()
+        if hostname == bind and bind not in ("0.0.0.0", "::"):
+            return True
+        return netloc in self.extra_hosts or hostname in self.extra_hosts
 
     def log_message(self, fmt: str, *args: Any) -> None:  # quiet
         return
@@ -313,6 +350,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def _gate(self, mutating: bool) -> bool:
         """Token check (non-loopback binds) and Origin check (state-changing requests). False = response already sent."""
+        if not self._host_allowed(self.headers.get("Host") or ""):
+            self._send(HTTPStatus.FORBIDDEN, b"forbidden: unexpected Host header")
+            return False
         if self.token:
             url = urllib.parse.urlparse(self.path)
             q = urllib.parse.parse_qs(url.query).get("token", [""])[0]
@@ -330,8 +370,7 @@ class Handler(BaseHTTPRequestHandler):
                 return False
         if mutating:
             origin = self.headers.get("Origin") or ""
-            host = self.headers.get("Host") or ""
-            if origin and urllib.parse.urlparse(origin).netloc != host:
+            if origin and not self._host_allowed(urllib.parse.urlparse(origin).netloc):
                 self._send(HTTPStatus.FORBIDDEN, b"forbidden: cross-origin request")
                 return False
             fetch_site = self.headers.get("Sec-Fetch-Site")
@@ -458,6 +497,8 @@ def serve(root: Path, port: int, open_browser: bool = True, open_path: str = "/"
     Handler.root = root
     loopback = host in ("127.0.0.1", "localhost", "::1")
     Handler.token = None if loopback else (token or os.environ.get("COUNCIL_UI_TOKEN") or secrets.token_urlsafe(24))
+    # Host/Origin allowlist: loopback names and the bind address always; other names via COUNCIL_UI_HOSTS (comma-separated)
+    Handler.extra_hosts = {h.strip().lower() for h in os.environ.get("COUNCIL_UI_HOSTS", "").split(",") if h.strip()}
     try:
         httpd = ThreadingHTTPServer((host, port), Handler)
     except OSError as e:

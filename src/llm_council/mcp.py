@@ -17,6 +17,7 @@ import contextlib
 import io
 import json
 import re
+import shlex
 import sys
 from pathlib import Path
 from typing import Any, Optional
@@ -103,15 +104,17 @@ def call_tool(name: str, args: dict[str, Any], root: Optional[Path]) -> tuple[st
                     "`council settings set` in the terminal.", True)
         if not question.strip():
             return "error: a question is required", True
-        argv = ["start", question]
+        # Rebuild the argument string from the parsed pieces and hand it to --args, the same door the skill uses:
+        # the question travels as text and is never an argv option, whatever it starts with.
+        parts = [question]
         for key in ("preset", "lenses", "docs", "run_id"):
             if flags.get(key):
-                argv += ["--" + key.replace("_", "-"), str(flags[key])]
+                parts += ["--" + key.replace("_", "-"), str(flags[key])]
         if flags.get("opencode"):
-            argv.append("--opencode")
+            parts.append("--opencode")
+        argv = ["start", "--args", shlex.join(parts), "--chat-tools", str(args.get("chat_tools") or "none")]
         if args.get("chat_model"):
             argv += ["--chat-model", str(args["chat_model"])]
-        argv += ["--chat-tools", str(args.get("chat_tools") or "none")]
         code, text = _cli(argv, root)
         return text, code != 0
     if name == "council_submit":

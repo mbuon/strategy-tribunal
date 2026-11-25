@@ -155,6 +155,71 @@ The report ends with a prompt that carries the whole context. One click copies i
 
 ---
 
+## The interface
+
+Every run writes its own dashboard, and a small local server turns the run folders into a site. Start it in any of three ways:
+
+```bash
+/council <question> --ui        # from Claude Code: starts the server if needed and opens the run's page
+council ui                      # from a shell: serves every run on http://127.0.0.1:8771
+docker run --rm -p 127.0.0.1:8771:8771 -v "$PWD/work:/work" strategy-tribunal   # from Docker
+```
+
+| URL | What it is |
+|---|---|
+| `http://127.0.0.1:8771/` | the works: one button per run, coloured by verdict, newest first |
+| `http://127.0.0.1:8771/runs/<run_id>/` | one run's dashboard; `#overview`, `#reasoning`, `#orchestration`, `#settings`, `#discussion`, `#files`, `#report` open a tab directly |
+| `http://127.0.0.1:8771/runs/<run_id>/report.md` | any file of the run, served as is (`decision.json`, `discussion.md`, `requests/req_0007.json`, …) |
+| `http://127.0.0.1:8771/settings` | defaults, every setting with its explanation and allowed values, presets, the saved layer |
+| `http://127.0.0.1:8771/api/runs.json` | the works as JSON; `/api/health` says which server answers |
+| `council_outcomes/<run_id>/index.html` | the same dashboard as a self‑contained file: open it from the Finder, mail it, read it offline |
+
+The server listens on loopback only. Bound elsewhere (a container, a VM), it asks for a token on every request and refuses cross‑origin writes; the port is chosen so it never collides with another program. A trash button on each work deletes its folder after a confirmation.
+
+### The works
+
+<p align="center"><img src="docs/img/ui-home.png" alt="The works page: one button per run, coloured by verdict" width="100%"></p>
+
+The stripe and the first chip are the verdict: teal **firm**, amber **conditional**, violet **shortlist**, blue **needs information**, coral **failed**, lime **running**. Each button carries the framed decision, the recommended action, the confidence, the stopping reason, when it ran, the preset, rounds, calls and who answered (`opencode (claude-agent/claude-opus-5) ×3 · chat (muse-spark) ×5`). The pills at the top count works per verdict. Older runs sit behind a toggle. Arrow keys move along the list; Open, Enter or a click opens the run.
+
+### A run: the verdict first
+
+<p align="center"><img src="docs/img/ui-run-overview.png" alt="A run page: verdict-coloured header, chips, the verdict card with next action, reversal conditions, alternatives and unfinished checks" width="100%"></p>
+
+The header card is in the verdict's colour and says who answered, when it started and where the folder is. The verdict card comes before any number: the recommended option and its summary, the basis of the confidence, the next action, then side by side what would reverse the decision, the strongest alternatives and the checks the council could not finish. Below it, a strip of counters (calls, tokens, elapsed, cost, rounds, options, promotions, open objections, rejected replies) with the three quality signals (evidence quality, judge agreement, ranking robustness), then the rounds table with the decision taken in each round and the controller's events.
+
+### Reasoning workflow: what the models did
+
+<p align="center"><img src="docs/img/ui-run-reasoning.png" alt="Reasoning workflow tab: every step with phase, role, provider and model, what was produced and the record ids" width="100%"></p>
+
+One row per step of the deliberation: the brief, the rubric with its gates and weights, the options per lens, the objections, the verifications, the responses, the scores, the controller's adjudications, the leader challenge, the decision. Every row names the role, the provider and the model that produced it and the record ids it created. The **Orchestration** tab is the other workflow: every controller request in order with tokens, latency and result, plus who answered per participant and the request/response log.
+
+### Discussion: what every role read
+
+<p align="center"><img src="docs/img/ui-run-discussion.png" alt="Discussion tab: every contribution in order with who said it, the outcome and a summary, each linked to its full text" width="100%"></p>
+
+The transcript as the later roles received it: D‑numbers in order, round, phase, role and lens, who answered, committed or rejected, the summary, and the full Markdown one click away in a dialog. The input documents the council read are listed with their evidence ids.
+
+### Files: who wrote what, and why
+
+<p align="center"><img src="docs/img/ui-run-files.png" alt="Files tab: every file in the run folder with its author, round and phase, purpose, size and time" width="100%"></p>
+
+Every file in the run folder with its author (the controller or a model with its provider), the round and phase it belongs to, what it is for, size and time. Markdown opens formatted in place.
+
+### The follow‑up prompt
+
+<p align="center"><img src="docs/img/ui-run-followup.png" alt="The follow-up prompt at the end of the report with its Copy button" width="100%"></p>
+
+At the end of the Overview and of the Report, once a decision exists: the question, the decision and why, what is still open, the reversal conditions, the next action and the ask. **Copy prompt** puts it on the clipboard (clicking the text does too); paste it into the chat and the same model plans the recommended action with the objections still in view.
+
+### Settings
+
+<p align="center"><img src="docs/img/ui-settings.png" alt="Settings page: defaults panel with route, OpenCode model, preset and per-role models, each explained" width="100%"></p>
+
+Defaults first: the route every role takes (chat or OpenCode), the default OpenCode model picked from what `opencode models` returns, the preset, the chat model identity, and a provider and model per role. Below, every key with its value, the layer it came from (default, project, saved, preset), its explanation and its allowed values; a form sets, unsets or resets any of them. Every write is validated against the whole configuration before it lands in `.council/settings.json`, and keys that name executables or paths are terminal‑only.
+
+---
+
 ## 10 ways to use it
 
 One question in, one defensible decision out. Each example below is a different seat at the table — copy the command, change the nouns, run it.
@@ -660,35 +725,7 @@ Each run lives in `council_outcomes/<YYYY-MM-DD_HH-MM-SS_first-words-of-the-ques
 
 ### Web interface
 
-The interface is a React single‑page app in the shadcn/ui visual language (Radix Tabs/Dialog/Accordion, Tailwind tokens, light/dark toggle), served by the Python standard library on `127.0.0.1` only. The Vite bundle (`web/`, committed to `src/llm_council/static/`) is inlined into every page, so run folders stay self‑contained and readable offline with nothing downloaded at view time; rebuilding is `npm run build` in `web/`. Tabs are real ARIA tablists (arrow‑key navigation, tab state kept in the URL hash across the auto‑refresh); the Markdown viewer is a Radix dialog (focus trap, focus return, Esc); tables use the shadcn table with scoped headers; a skip link targets the main content. The home page is a single column of **work buttons** coloured by verdict (teal firm, amber conditional, violet shortlist, blue needs‑information, coral failed, lime running) that open the run page; a run page opens with a verdict‑coloured header and the verdict card, then the stat strip and the tabs *Overview · Reasoning workflow · Orchestration · Settings · Discussion · Files · Report*; the settings page stays server‑rendered (it is a form, not a dashboard) with the same chrome.
-
-**Per‑run dashboard** (`index.html` in the run folder; opened automatically by `/council`, or with `council dashboard <run_id> --open`). It refreshes itself every 5 seconds while the run is active and shows:
-
-- a header card in the verdict's colour: the framed title, the question, chips for verdict, confidence, state, round, stopping reason and preset, who answered, when it started, the run folder;
-- the **verdict card** first: recommended action and its summary, the basis of the confidence, the next action, then reversal conditions, strongest alternatives and unfinished checks side by side;
-- a compact stat strip: model calls / limit, tokens (measured and estimated), elapsed, cost, rounds, options, promotions, open objections, rejected replies; and the quality signals: evidence quality, judge agreement, ranking robustness;
-- the **rounds table** with the decision taken in each round (baseline set, challenger promoted, incumbent kept on tie or loss, regression rejected, inconclusive), scores, deltas, comparability, open critical objections, stable streak and calls, plus the incumbent history;
-- controller decisions and events (stops, reopens, rescoring, route fallbacks and substitutions, weight overrides, failed requests);
-- objections, dissent and the leader challenge with status, severity, what they could change and how to resolve them;
-- the **discussion** — every contribution in order with who said it, outcome and summary, each expandable to its full text; the input documents with their evidence ids;
-- the **reasoning workflow** — what the models did, round by round: brief, rubric, options per lens, objections and dissent, verifications, responses and revisions, scores, controller adjudications (promotion, tie, loss), leader challenge, decision, each with the role, provider and model that produced it;
-- **who answered** — one row per participant: role, lens, provider and model (`chat · claude-sonnet-5-5`, `opencode · claude-agent/haiku`, `opencode · ollama/gemma4:26b`, `fixture`), isolation, calls, tokens, average latency and effort (model variant such as `#high`, or `reasoning` when reasoning tokens were reported); the header summarises it as `Answered by: chat (claude-sonnet-5-5) ×16 · opencode (claude-agent/haiku) ×7`;
-- the **orchestration workflow** — every controller request in order with round, phase, role/lens, participant, who answered, tokens in/out/reasoning (measured on OpenCode, estimated on chat), latency and result (committed or rejected with the reason);
-- **settings in effect** — every key with its value, the layer it came from and a one‑line explanation;
-- the **request / response log** — every request with round, role, participant, attempt, provider, outcome (committed, rejected, failed, fallback) and links to the request and reply files;
-- **files generated** with size, time and purpose; every Markdown file opens fully formatted in a modal window (Close ✕, Esc, click outside, or *open raw* for the plain file);
-- the full report (always ≥ 600 words, opening with the decision in plain words);
-- the **follow‑up prompt** (Overview and Report tabs) with its Copy button, once the run has a decision.
-The tab in view is kept in the URL (`#discussion`), so it survives the auto‑refresh and can be linked.
-
-**Runs overview and settings editor** (`council ui`, or `/council … --ui`; default `http://127.0.0.1:8771`):
-
-- `/` — a single‑column **list of work buttons** (newest first), coloured by the verdict each work reached (teal firm, amber conditional, violet shortlist, blue needs‑information, coral failed, lime running), each showing the framed title, the recommended action, confidence, stopping reason, date, preset, rounds, calls and who answered; clicking a work opens its full dashboard page (`/runs/<run-id>/`); every row has a trash button (confirm dialog, `DELETE /runs/<run_id>/`) that permanently removes the work folder. A summary strip counts works per verdict; older runs under `.council/runs/` sit behind a toggle. Every page carries the **Works** and **Settings** buttons;
-- `/runs/<run_id>/` — the dashboard above, regenerated on each view, plus the run's files;
-- `/settings` — every setting comes with its explanation and its **allowed values** (type, range or enumeration, default), and the presets are explained in words next to their exact overrides. It opens with **Defaults — which model to use in general**: default route (chat or OpenCode), default OpenCode model chosen from the list `opencode models` returns (or typed), a provider and model per role (framer, policy setter, strategist, reviewer, verifier, judge, challenger), the default preset and the chat model identity; one **Save defaults** button writes the saved layer. Below it, every key with effective value, layer and explanation, and a form to **set**, **unset** or **reset** any setting; each change goes through the same validation as `council settings set`, and an invalid value is refused with the reason and nothing written;
-- `/api/runs.json` — the overview as JSON.
-
-`/council` starts the server if nothing listens on the port and prints the dashboard URL; stop it with Ctrl‑C where it runs, or leave it (it only reads the run folders and writes `.council/settings.json` on request).
+See **The interface** above: pages, URLs, screenshots and how to start it.
 
 ---
 

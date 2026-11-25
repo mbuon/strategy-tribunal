@@ -189,7 +189,7 @@ def split_args_text(text: str) -> tuple[str, dict[str, Any]]:
                 i += 1
             i += 1
             continue
-        if "=" in t and t.split("=", 1)[0] in {k.lstrip("-") for k in KNOWN_FLAGS} and t.startswith("--"):
+        if "=" in t and t.startswith("--") and t.split("=", 1)[0].lstrip("-") in {k.lstrip("-") for k in KNOWN_FLAGS}:
             k, v = t[2:].split("=", 1)
             key = k.replace("-", "_")
             if key == "set":

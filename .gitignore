@@ -12,3 +12,4 @@ prompt.md.old
 *.png
 .claude/settings.local.json
 benchmarks/results/
+!docs/img/*.png
