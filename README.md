@@ -12,7 +12,7 @@ What comes out is a decision record you can defend in the room: the recommended 
 
 **Built for people who sign off on strategy.** Founders choosing a market, marketing leads reallocating budget, consultants who need a paper trail behind a recommendation, product teams deciding what to kill. Runs inside Claude Code as `/council <question>`; routes single roles to other models through OpenCode when you want a second opinion from a different vendor; reads your own documents and codebase as evidence.
 
-**Why you can trust the output.** Models propose, the controller commits: every id, score and promotion is checked before it enters the record. The judge never computes its own aggregate. Review payloads hide authorship. An evidence change forces a rescore. 130 deterministic tests cover the protocol, the state machine, the judge arithmetic and the prompt contract, without a single model call. Every run leaves an append‑only event log, the full discussion transcript, every request and raw reply, and a dashboard that shows who said what in which round.
+**Why you can trust the output.** Models propose, the controller commits: every id, score and promotion is checked before it enters the record. The judge never computes its own aggregate. Review payloads hide authorship when roles run in isolated sessions. An evidence change forces a rescore. 130 deterministic tests cover the protocol, the state machine, the judge arithmetic and the prompt contract, without a single model call. Every run leaves an append‑only event log, the full discussion transcript, every request and raw reply, and a dashboard that shows who said what in which round.
 
 ```bash
 pip install -e ".[dev]"        # Python 3.12+, pydantic only
@@ -20,7 +20,7 @@ claude                          # start Claude Code in this folder
 /council Should we move 25 % of the Meta budget into TikTok Shop ads for Q1?
 ```
 
-Twenty minutes later you have a report, a decision record, a dashboard, and a prompt to continue with. Read on for how a session runs, the modes, the settings and ten worked examples.
+A quick run takes about fifteen minutes on the chat route and leaves you a report, a decision record, a dashboard, and a prompt to continue with. Read on for how a session runs, the modes, the settings and ten worked examples.
 
 ---
 
