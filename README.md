@@ -34,9 +34,9 @@ A quick run takes about fifteen minutes on the chat route and leaves you a repor
 
 ---
 
-## How it works, in six slides
+## How it works
 
-### Slide 1 — The pipeline. Every question walks the same road.
+### The pipeline. Every question walks the same road.
 
 ```mermaid
 flowchart LR
@@ -56,7 +56,7 @@ flowchart LR
 
 The order is fixed and the controller enforces it. Nobody ranks before the rules are written; nobody wins before somebody has tried to make it lose.
 
-### Slide 2 — Models propose. The controller commits.
+### Models propose. The controller commits.
 
 ```mermaid
 flowchart TB
@@ -74,7 +74,7 @@ flowchart TB
 
 A model can only propose. Every id it cites must exist, every score must cite evidence or a stated assumption, every challenge must name a legal target. What fails is sent back with the error and the previous reply, and only the error is repaired.
 
-### Slide 3 — The judge never sees the ranking.
+### The judge never sees the ranking.
 
 ```mermaid
 flowchart LR
@@ -91,7 +91,7 @@ flowchart LR
 
 Scores are attribute by attribute, never an overall impression. The aggregate is arithmetic the controller does; a promotion needs the challenger's lower bound to clear the incumbent's upper bound. New evidence invalidates old scores.
 
-### Slide 4 — It is a discussion, not a loop of independent calls.
+### It is a discussion, not a loop of independent calls.
 
 ```mermaid
 sequenceDiagram
@@ -110,7 +110,7 @@ sequenceDiagram
 
 Every contribution is written in order and travels into the next request. Later roles answer earlier ones by number. Your own files and folders enter as cited evidence.
 
-### Slide 5 — What lands in the run folder.
+### What lands in the run folder.
 
 ```mermaid
 flowchart LR
@@ -124,7 +124,7 @@ flowchart LR
 
 Nothing is summarised away. You can read what the reviewer said in round 2, which model said it, and what the controller did with it.
 
-### Slide 6 — The decision is the start of the plan, not the end of the chat.
+### The decision is the start of the plan, not the end of the chat.
 
 ```mermaid
 flowchart LR
