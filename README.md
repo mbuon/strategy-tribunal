@@ -294,6 +294,25 @@ opencode models                # providers/models OpenCode can reach
 council config show --opencode
 ```
 
+### Ten ways to run it
+
+The engine has one protocol and three ways to answer a request: the chat model you are already talking to, models reached through OpenCode, or a recorded fixture for tests. That gives ten working environments. "Verified" means exercised end to end in this repository's delivery record; the others follow the same four commands (`docs/responder.md`) and differ only in which agent plays the responder.
+
+| # | Environment | Setup | Run | Status |
+|---|---|---|---|---|
+| 1 | **Claude Code in the terminal** | install as above; start `claude` inside this folder | `/council <question> --preset quick` | verified |
+| 2 | **Claude Code desktop app** (macOS, Windows) | open this folder as the project | `/council <question>` | same skill, same files |
+| 3 | **Claude Code in VS Code or JetBrains** | open this folder; the extension starts Claude Code in it | `/council <question>` | same skill, same files |
+| 4 | **Claude Code on the web** (claude.ai/code) | the cloud environment clones the repository; run the venv setup in the session | `/council <question>` | runs where Python 3.12 is available; the dashboard URL is local to that environment |
+| 5 | **Headless Claude Code** (scripts, cron, CI) | `claude -p "/council <question> --preset quick"` from this folder | one shell command, exit when the run ends | verified |
+| 6 | **OpenCode as the chat host** | start `opencode` in this folder; give it `docs/responder.md` as instructions | the agent runs `council start`, answers each request, runs `submit` | same protocol, not verified here |
+| 7 | **Any other agent with a shell** (Codex CLI, Gemini CLI, Cursor, aider) | same as 6 | same as 6 | same protocol, not verified here |
+| 8 | **Shell only, no chat: every role on OpenCode** | `opencode auth login`; `council settings set routing.opencode.enabled=true routing.opencode.default_model=<provider/model>` | `council run "<question>" --opencode --preset quick` | verified (claude-agent, OpenAI, Ollama models) |
+| 9 | **Local models through Ollama** | `ollama pull <model>`; configure OpenCode's Ollama provider; `council settings set routing.opencode.default_model=ollama/<model>` | as 8, or route single roles: `routing.roles.judge.model=ollama/<model>` | verified for the judge role |
+| 10 | **Your own program** (Python API, CI, tests) | `pip install -e .` | `from llm_council.engine import Engine` with `Store.create(...)`; `council run --fixture tests/fixtures/main_run.json` replays a recorded deliberation with no model calls | verified (the test suite is this environment) |
+
+Mixed routes are the normal case: the chat model plays most roles while the judge, the reviewer or the challenger runs on a different vendor through OpenCode (`/council-settings routes`), so a second opinion comes from a model that did not write the options.
+
 ---
 
 ## How to use it
