@@ -164,6 +164,8 @@ council ui                   # from a shell: http://127.0.0.1:8771
 
 <p align="center"><img src="docs/img/ui-home.png" alt="The works page" width="100%"></p>
 
+*Screenshots show sample data: one question run three times with different presets.*
+
 Teal **firm**, amber **conditional**, violet **shortlist**, blue **needs information**, coral **failed**, lime **running**. Each button: the framed decision, the recommended action, confidence, stop reason, preset, rounds, calls, who answered.
 
 <p align="center"><img src="docs/img/ui-run-overview.png" alt="A run: the verdict first" width="100%"></p>

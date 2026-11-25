@@ -243,7 +243,20 @@ def md_to_html(md: str) -> str:
         s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
         return s
 
+    fence: Optional[list[str]] = None   # lines of an open ``` block
     for line in md.splitlines():
+        if line.startswith("```"):
+            flush_list()
+            flush_table()
+            if fence is None:
+                fence = []
+            else:
+                out.append("<pre><code>" + _e("\n".join(fence)) + "</code></pre>")
+                fence = None
+            continue
+        if fence is not None:
+            fence.append(line)
+            continue
         if line.startswith("|"):
             flush_list()
             table.append(line)
@@ -263,6 +276,8 @@ def md_to_html(md: str) -> str:
         else:
             flush_list()
             out.append(f"<p>{inline(line)}</p>")
+    if fence is not None:
+        out.append("<pre><code>" + _e("\n".join(fence)) + "</code></pre>")
     flush_list()
     flush_table()
     return "\n".join(out)

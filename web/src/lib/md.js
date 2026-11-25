@@ -30,7 +30,10 @@ export function mdRender(md) {
     }
     table = []
   }
+  let fence = null
   for (const line of String(md).split('\n')) {
+    if (line.startsWith('```')) { flushList(); flushTable(); if (fence === null) { fence = [] } else { out.push('<pre><code>' + esc(fence.join('\n')) + '</code></pre>'); fence = null } continue }
+    if (fence !== null) { fence.push(line); continue }
     if (line.charAt(0) === '|') { flushList(); table.push(line); continue }
     flushTable()
     const m = /^(#{1,3})\s+(.*)$/.exec(line)
@@ -42,6 +45,7 @@ export function mdRender(md) {
     else if (line.trim() === '') { flushList() }
     else { flushList(); out.push(`<p>${inlineMd(line)}</p>`) }
   }
+  if (fence !== null) out.push('<pre><code>' + esc(fence.join('\n')) + '</code></pre>')
   flushList(); flushTable()
   return out.join('\n')
 }
