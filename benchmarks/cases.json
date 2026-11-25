@@ -1,0 +1,138 @@
+{
+ "version": "2026-11-24.2",
+ "resource_limits": {
+  "max_calls_per_run": 40,
+  "max_tokens_estimate_per_run": 400000,
+  "max_elapsed_seconds_per_run": 1800,
+  "max_runs_per_campaign": 60,
+  "stop_on_provider_quota_error": true
+ },
+ "primary_measures": [
+  "objective cases: recommended option matches the known outcome",
+  "open cases: independent evaluator rubric 0-10 on defensibility, completeness of trade-offs, actionability (blinded, model different from the in-run model)",
+  "failure-mode cases: the planted issue is flagged (gate failure, premise challenge, information request / conditional outcome)"
+ ],
+ "secondary_measures": [
+  "model calls",
+  "measured tokens",
+  "elapsed seconds",
+  "stop reason"
+ ],
+ "cases": [
+  {
+   "id": "obj_vendor_ev",
+   "class": "objective",
+   "question": "We must pick one fulfilment vendor for 2027. Vendor A costs 120k EUR per year with a 97% on-time rate. Vendor B costs 100k EUR per year with an 80% on-time rate. Each late order costs us 15 EUR in refunds and support, and we ship 40000 orders a year. Which vendor minimises total expected cost? Only total expected cost matters.",
+   "expected": {
+    "recommended_contains": [
+     "vendor a"
+    ],
+    "kind_in": [
+     "firm",
+     "conditional",
+     "shortlist"
+    ],
+    "note": "A: 120k + 1200*15 = 138k; B: 100k + 8000*15 = 220k. Matched as a whole word/phrase, case-insensitive, against the recommended option's title."
+   }
+  },
+  {
+   "id": "gate_budget_fail",
+   "class": "hard_gate_failure",
+   "question": "Our Q1 marketing budget is capped at 50k EUR by the board; no overspend is possible. Option 1: a 48k EUR influencer campaign. Option 2: a 65k EUR TV spot with 30% higher expected reach. Option 3: a 30k EUR search campaign. Which should we run?",
+   "expected": {
+    "gate_failed_option_contains": [
+     "TV",
+     "65k"
+    ],
+    "recommended_not_contains": [
+     "TV spot"
+    ],
+    "note": "the 65k option must fail the budget gate and never be recommended"
+   }
+  },
+  {
+   "id": "open_channel_mix",
+   "class": "open_ended",
+   "question": "We run paid acquisition for a DTC skincare brand (monthly paid budget 180k EUR, currently 70% Meta, 30% Google; blended CAC last quarter 42 EUR against a 55 EUR target; repeat-purchase rate 31%). Should we move 25% of the Meta budget into TikTok Shop ads for Q1 2027, keep the current mix, or do something else?",
+   "expected": {
+    "rubric": true
+   }
+  },
+  {
+   "id": "false_premise",
+   "class": "misframing_false_consensus",
+   "question": "Since short-form video always has lower CAC than paid search for skincare brands, how much of our 200k EUR quarterly search budget should we move to TikTok: 30%, 50% or all of it?",
+   "expected": {
+    "premise_flagged": [
+     "always lower cac",
+     "lower cac than paid search",
+     "premise",
+     "unverified hypothesis",
+     "cannot be checked",
+     "not established",
+     "treated as a hypothesis"
+    ],
+    "kind_in": [
+     "conditional",
+     "information_request",
+     "shortlist",
+     "firm"
+    ],
+    "note": "the engine must not accept 'always lower CAC' as fact; matched against the TEXT of brief assumptions/evidence gaps/interpretations, challenge mechanisms and decision signals only (never field names)"
+   }
+  },
+  {
+   "id": "deferral_missing_info",
+   "class": "justified_deferral",
+   "question": "Should we switch our email platform next quarter? We have not measured deliverability or costs on the current one and we have no quotes from alternatives.",
+   "expected": {
+    "kind_in": [
+     "information_request",
+     "conditional",
+     "shortlist"
+    ],
+    "note": "a firm switch recommendation would be unjustified"
+   }
+  },
+  {
+   "id": "trivial_overhead",
+   "class": "straightforward",
+   "question": "Our landing page has a typo in the headline that misspells the brand name. Should we fix it before the campaign launches tomorrow?",
+   "expected": {
+    "stop_reason_in": [
+     "trivial_question",
+     "stable",
+     "no_productive_follow_up",
+     "max_rounds"
+    ],
+    "max_calls": 12,
+    "note": "overhead measurement: a trivial question should cost few calls"
+   }
+  }
+ ],
+ "systems": [
+  {
+   "id": "council_quick",
+   "description": "full protocol, quick preset (preset cap 24 calls, 2 rounds, 1 reviewer, 1 verification, leader challenge); the campaign cap (40) never raises a preset's own cap",
+   "args": [
+    "--preset",
+    "quick"
+   ]
+  },
+  {
+   "id": "first_pass",
+   "description": "llm-council style single pass (frame, policy, baseline, lenses, judging, report; no review, no verification, no challenge); call cap = min(preset/project cap, campaign cap 40)",
+   "args": [
+    "--preset",
+    "first_pass"
+   ]
+  }
+ ],
+ "in_run_model": "claude-agent/haiku via OpenCode restricted agent (all roles)",
+ "evaluator_model": "claude-agent/sonnet via OpenCode restricted agent (blinded A/B, separate from the in-run judge)",
+ "checker_notes": {
+  "premise_flagged": "values-only substring match (case-insensitive) over brief.inferred_assumptions, brief.evidence_gaps, challenge mechanisms, decision.signals values",
+  "recommended_contains": "whole-word/phrase regex on the recommended option title; empty title never matches",
+  "within_campaign_limits": "calls <= resource_limits.max_calls_per_run and elapsed <= max_elapsed_seconds_per_run; tokens are reported, the engine enforces the token cap before each request so a single reply may overshoot it"
+ }
+}

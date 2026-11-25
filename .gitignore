@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+web/node_modules/
+.playwright-mcp/
+.council/
+council_outcomes/
+original/
+prompt.md.old
+*.png
+.claude/settings.local.json

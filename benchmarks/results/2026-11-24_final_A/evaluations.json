@@ -1,0 +1,76 @@
+[
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 164,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 4766
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 7, \"actionability\": 9}, \"B\": {\"defensibility\": 4, \"completeness\": 5, \"actionability\": 3}, \"better\": \"A\", \"reason\": \"Record A gives a concrete staged plan with budgets, a review date, gate and fallback and clear reversal conditions, while Record B's next action is only an internal housekeeping step (merge OPT-6 into OPT-5), it leaves several material objections open, and it is cut off.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 4,
+    "completeness": 5,
+    "actionability": 3
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 7,
+    "actionability": 9
+   }
+  },
+  "winner": "first_pass",
+  "reason": "Record A gives a concrete staged plan with budgets, a review date, gate and fallback and clear reversal conditions, while Record B's next action is only an internal housekeeping step (merge OPT-6 into OPT-5), it leaves several material objections open, and it is cut off.",
+  "case": "open_channel_mix",
+  "repeat": 1,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  }
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 154,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 4766
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 3}, \"B\": {\"defensibility\": 7, \"completeness\": 8, \"actionability\": 9}, \"better\": \"B\", \"reason\": \"B gives a concrete staged plan with a dated review, explicit scale and fallback rules, and reversal conditions, while A's next action is an administrative 'merge OPT-6 into OPT-5' and its record is dominated by unresolved objections.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 3
+   },
+   "first_pass": {
+    "defensibility": 7,
+    "completeness": 8,
+    "actionability": 9
+   }
+  },
+  "winner": "first_pass",
+  "reason": "B gives a concrete staged plan with a dated review, explicit scale and fallback rules, and reversal conditions, while A's next action is an administrative 'merge OPT-6 into OPT-5' and its record is dominated by unresolved objections.",
+  "case": "open_channel_mix",
+  "repeat": 2,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  }
+ }
+]

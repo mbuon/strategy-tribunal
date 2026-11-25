@@ -1,0 +1,1140 @@
+[
+ {
+  "case": "gate_budget_fail",
+  "system": "council_quick",
+  "run_id": "bench_20261124_191504_gate_budget_fail_council_quick",
+  "exit_code": 0,
+  "elapsed_seconds": 628.9,
+  "call_cap": 24,
+  "stderr_tail": "",
+  "stdout_tail": "Confidence low; stop reason budget_tokens; rounds 0.\nNext action: Resolve: Vendor-confirmed launch lead time and flight length for each option, checked against the Q1 window.\nUnresolved: 17; alternatives: optv_search_30k_r0, optv_status_quo_r1, optv_direct_answer_search_30k_r1.\nreport: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_gate_budget_fail_council_quick/report.md\ndecision record: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_gate_budget_fail_council_quick/decision.json\n",
+  "state": "COMPLETE",
+  "budget": {
+   "started_at": 1795544104.362229,
+   "model_calls_used": 21,
+   "tokens_estimated": 0,
+   "tokens_measured": 407148,
+   "cost_usd": null,
+   "cost_status": "unavailable",
+   "calls_with_cost": 0,
+   "verification_calls_used": 1,
+   "leader_challenges_used": 0,
+   "reopens_used": 0,
+   "reframes_used": 1,
+   "elapsed_override": null
+  },
+  "failure_reason": null,
+  "completed_phases": [
+   "FRAMING",
+   "POLICY",
+   "BASELINE",
+   "JUDGING",
+   "GENERATING",
+   "REVIEWING",
+   "VERIFYING",
+   "RESPONDING",
+   "REVISING",
+   "REPORTING"
+  ],
+  "unfinished_checks": [
+   "verification pending for chl_direct_pass_stated_as_fact (verification budget or call budget exhausted)",
+   "verification pending for chl_direct_tiebreak_headroom (verification budget or call budget exhausted)",
+   "verification pending for chl_direct_commit_now_reversibility (verification budget or call budget exhausted)",
+   "verification pending for chl_inf_rescope_no_quote (verification budget or call budget exhausted)",
+   "verification pending for chl_pilot_readout_timing (verification budget or call budget exhausted)",
+   "verification pending for chl_staged_readout_no_comparator (verification budget or call budget exhausted)",
+   "verification pending for chl_staging_reversibility_unverified (verification budget or call budget exhausted)",
+   "verification pending for chl_tv_rescope_circular_comparator (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_reach_evidence_gap (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_headroom_holdable (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_cap_scope_committed_spend (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_all_in_cost_basis (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_q1_lead_time (verification budget or call budget exhausted)",
+   "budget_tokens reached while in JUDGING (round 1); remaining phase work skipped",
+   "evidence snapshot changed after the final judging (snap-6 -> snap-21); options were not rescored under the new snapshot"
+  ],
+  "rounds": 1,
+  "participants": {
+   "p_framer": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_policy_setter": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_direct": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_judge_1": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_first_principles": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_inversion": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_staging": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_reviewer_1": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_verifier": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   }
+  },
+  "option_titles": {
+   "optv_status_quo_r0": "Status quo: no Q1 campaign committed",
+   "optv_direct_answer_search_30k_r0": "Direct answer: run the 30k EUR search campaign",
+   "optv_influencer_48k_r0": "48k EUR influencer campaign",
+   "optv_tv_65k_as_stated_r0": "65k EUR TV spot as stated",
+   "optv_search_30k_r0": "30k EUR search campaign",
+   "optv_opt_tv_rescoped_to_cap": "65k TV spot re-scoped to 50k EUR or less at fixed price",
+   "optv_opt_influencer_rescoped_reserve": "Influencer campaign re-scoped to about 40k EUR with 10k reserve",
+   "optv_search_staged_readout": "30k EUR search campaign, staged with a reach readout before the second tranche",
+   "optv_pilot_gate_before_commit": "Cross-channel pilot gate before the full Q1 commitment",
+   "optv_status_quo_r1": "Fallback: no Q1 campaign committed",
+   "optv_direct_answer_search_30k_r1": "Direct answer: search campaign as preferred candidate, conditional on verified terms",
+   "optv_influencer_48k_r1": "48k EUR influencer campaign (cost gate unverified)",
+   "optv_inf_rescope_v2_conditional_quote": "Influencer campaign re-scoped to about 40k EUR, conditional on a fixed quote",
+   "optv_search_staged_readout_v2": "30k EUR search campaign on a fixed all-in quote, two tranches, with a pre-set comparator and readout",
+   "optv_0001": "Cross-channel pilot gate before the full Q1 commitment"
+  },
+  "challenges": [
+   {
+    "id": "chl_status_quo_outside_decision_scope",
+    "mechanism": "The decision statement asks which single Q1 campaign to run, choosing among three named options. Committing nothing is not one of them. OPT-5 can at most be a f",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_status_quo_ranking_flip",
+    "mechanism": "Under the rubric as written, reach per EUR (weight 0.4) is at anchor_0 for OPT-5, OPT-1, OPT-4 and OPT-8 alike. OPT-5 could then take full cost-certainty and re",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_inf_gate1_stated_as_pass",
+    "mechanism": "The claim treats the stated 48k as a gate pass. Gate 1 passes only on a confirmed all-in forecast that includes fees, media and production, and no such basis is",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_direct_pass_stated_as_fact",
+    "mechanism": "The recommendation states that the 30k search option passes the cap. The arithmetic is verified only on the user-supplied figure (ev_cap_arithmetic). The all-in",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_direct_tiebreak_headroom",
+    "mechanism": "Reach per EUR (weight 0.4) is at anchor_0 for both option 1 and option 3, so the policy's primary criterion does not separate them. The preference for option 3 ",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_direct_commit_now_reversibility",
+    "mechanism": "The brief rates the decision as costly to reverse. OPT-1 recommends committing 30k now, but no cancellation, staging or exit terms exist for the search vendor. ",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_inf_rescope_no_quote",
+    "mechanism": "The 40k influencer price is hypothetical. No seller has quoted it, so the 10k headroom is arithmetic on an unquoted figure. Under asm_inf_rescope_linear, reach ",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_pilot_combined_plan_scope",
+    "mechanism": "OPT-6 funds pilots on two channels and then a remainder on one of them. That is a combined plan. It conflicts with asm_single_campaign and with the decision sta",
+    "status": "resolved",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_pilot_two_channel_arithmetic",
+    "mechanism": "The claim models a single pilot of P. OPT-6 places a pilot on each channel, so 2P is charged to the cap and the remainder can be at most 50k minus 2P. At P = 5k",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_pilot_readout_timing",
+    "mechanism": "Q1 2027 begins about 38 days from today. The pilot path needs vendor quotes, cap-scope confirmation, launch, a readout with enough data, and then a remainder fl",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_staged_readout_no_comparator",
+    "mechanism": "clm_0002 says a staged readout is the only way to get comparable reach data. A readout on one channel gives an absolute cost-per-reach figure, not a comparison ",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_staging_reversibility_unverified",
+    "mechanism": "OPT-3's advantage on reversibility (weight 0.2) rests on vendor tranche terms that are inferred from model knowledge only. If those terms do not exist, the stag",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_tv_rescope_circular_comparator",
+    "mechanism": "asm_tv_rescope_reach_retention compares the re-scoped TV reach per EUR with the search option, whose reach is unknown, so the comparison cannot be made. The 30%",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_shared_reach_evidence_gap",
+    "mechanism": "The primary criterion (expected reach per EUR, weight 0.4) cannot be scored for options 1 and 3, and the only reach figure (option 2) has no baseline. Every can",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_shared_headroom_holdable",
+    "mechanism": "Most headroom-based benefits assume unspent cap can be held (asm_headroom_holdable, asm_headroom_holdable_search, asm_inf_reserve_holdable, asm_headroom_holdabl",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_shared_cap_scope_committed_spend",
+    "mechanism": "asm_cap_scope is unresolved. If the cap covers all Q1 marketing spend and any committed spend exists, the feasibility of OPT-8 fails above 2k of committed spend",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_shared_all_in_cost_basis",
+    "mechanism": "Every price-based gate claim assumes the user figures are all-in (asm_inf_fixed_price, asm_search_price_fixed, asm_tv_price_fixed). The payload never says wheth",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_shared_q1_lead_time",
+    "mechanism": "Q1 2027 begins about 38 days from today. No option states a launch date, vendor lead time or flight length. A plan that is quoted and approved now may still not",
+    "status": "open",
+    "could_change": "action"
+   }
+  ],
+  "briefs": [
+   {
+    "decision_statement": "Which single Q1 marketing campaign to run within the board's 50k EUR cap, choosing among the 48k EUR influencer campaign, the 65k EUR TV spot, and the 30k EUR search campaign, with no overspend.",
+    "inferred_assumptions": [
+     "asm_objective_reach: The user's decision criterion is expected reach, since they supplied a reach figure for option 2.",
+     "asm_q1_timing: 'Q1' refers to the next Q1, 2027, given the current date of 2026-11-24.",
+     "asm_cap_scope: The 50k EUR cap covers the full campaign cost of the chosen option and no other Q1 marketing spend.",
+     "asm_single_campaign: Only one of the three options will be run, not a combination."
+    ],
+    "evidence_gaps": [
+     "No expected reach figures for option 1 (influencer) or option 3 (search), so the reach comparison between feasible options cannot be made from the evidence.",
+     "The baseline for the 30% higher expected reach of option 2 is not stated.",
+     "Unknown whether the 50k cap applies to total Q1 marketing spend or to this campaign alone (asm_cap_scope).",
+     "Unknown whether the 65k TV price is fixed or can be scaled down to fit the cap.",
+     "No cost-per-reach or conversion data for any option."
+    ],
+    "decision_kind": "decision"
+   },
+   {
+    "decision_statement": "Whether to commit any of the three named Q1 campaigns before cap scope, committed spend, all-in fixed quotes, exit terms and reach estimates are confirmed, and if so which one is the provisional choice.",
+    "inferred_assumptions": [
+     "asm_objective_reach: The user's decision criterion is expected reach, since they supplied a reach figure for option 2.",
+     "asm_q1_timing: 'Q1' refers to the next Q1, 2027, given the current date of 2026-11-24.",
+     "asm_cap_scope: The 50k EUR cap covers the full campaign cost of the chosen option and no other Q1 marketing spend.",
+     "asm_single_campaign: Only one of the three options will be run, not a combination.",
+     "reframe: The policy's primary criterion cannot be scored for the candidates, and the cap scope, all-in basis and exit terms are unknown. The decision is therefore less about which campaign has the best reach than about whether any campaign should be committed before those facts are confirmed, and if so which one is provisional."
+    ],
+    "evidence_gaps": [
+     "No expected reach figures for option 1 (influencer) or option 3 (search), so the reach comparison between feasible options cannot be made from the evidence.",
+     "The baseline for the 30% higher expected reach of option 2 is not stated.",
+     "Unknown whether the 50k cap applies to total Q1 marketing spend or to this campaign alone (asm_cap_scope).",
+     "Unknown whether the 65k TV price is fixed or can be scaled down to fit the cap.",
+     "No cost-per-reach or conversion data for any option."
+    ],
+    "decision_kind": "decision"
+   }
+  ],
+  "judgement_gate_fails": [
+   {
+    "version": "optv_tv_65k_as_stated_r0",
+    "failed_gates": [
+     "crit_total_cost_within_board_cap",
+     "crit_no_overspend_or_cap_exception_needed"
+    ]
+   }
+  ],
+  "decision": {
+   "kind": "conditional",
+   "recommended_version_id": "optv_status_quo_r0",
+   "alternatives": [
+    "optv_search_30k_r0",
+    "optv_status_quo_r1",
+    "optv_direct_answer_search_30k_r1",
+    "optv_influencer_48k_r1",
+    "optv_tv_65k_as_stated_r0"
+   ],
+   "stop_reason": "budget_tokens",
+   "confidence": {
+    "level": "low",
+    "basis": "last round outcome baseline; 0 open objection(s) with a credible path to change the outcome; ranking robustness 0.9167",
+    "raise_if": [],
+    "lower_if": [
+     "scenario scn_board_grants_an_exception_or_additional_ (Board grants an exception or additional 15k EUR) -> top becomes optv_search_30k_r0"
+    ]
+   },
+   "next_action": "Resolve: Vendor-confirmed launch lead time and flight length for each option, checked against the Q1 window.",
+   "unresolved_challenge_ids": [
+    "chl_status_quo_outside_decision_scope",
+    "chl_status_quo_ranking_flip",
+    "chl_inf_gate1_stated_as_pass",
+    "chl_direct_pass_stated_as_fact",
+    "chl_direct_tiebreak_headroom",
+    "chl_direct_commit_now_reversibility",
+    "chl_inf_rescope_no_quote",
+    "chl_pilot_two_channel_arithmetic",
+    "chl_pilot_readout_timing",
+    "chl_staged_readout_no_comparator",
+    "chl_staging_reversibility_unverified",
+    "chl_tv_rescope_circular_comparator",
+    "chl_shared_reach_evidence_gap",
+    "chl_shared_headroom_holdable",
+    "chl_shared_cap_scope_committed_spend",
+    "chl_shared_all_in_cost_basis",
+    "chl_shared_q1_lead_time"
+   ],
+   "unfinished_checks": [
+    "verification pending for chl_direct_pass_stated_as_fact (verification budget or call budget exhausted)",
+    "verification pending for chl_direct_tiebreak_headroom (verification budget or call budget exhausted)",
+    "verification pending for chl_direct_commit_now_reversibility (verification budget or call budget exhausted)",
+    "verification pending for chl_inf_rescope_no_quote (verification budget or call budget exhausted)",
+    "verification pending for chl_pilot_readout_timing (verification budget or call budget exhausted)",
+    "verification pending for chl_staged_readout_no_comparator (verification budget or call budget exhausted)",
+    "verification pending for chl_staging_reversibility_unverified (verification budget or call budget exhausted)",
+    "verification pending for chl_tv_rescope_circular_comparator (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_reach_evidence_gap (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_headroom_holdable (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_cap_scope_committed_spend (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_all_in_cost_basis (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_q1_lead_time (verification budget or call budget exhausted)",
+    "budget_tokens reached while in JUDGING (round 1); remaining phase work skipped",
+    "evidence snapshot changed after the final judging (snap-6 -> snap-21); options were not rescored under the new snapshot"
+   ],
+   "signals": {
+    "evidence_quality": 1.0,
+    "judge_agreement": null,
+    "judge_agreement_note": "single judge; agreement not measurable",
+    "ranking_robustness": 0.9167,
+    "ranking_flips": [
+     "scenario scn_board_grants_an_exception_or_additional_ (Board grants an exception or additional 15k EUR) -> top becomes optv_search_30k_r0"
+    ],
+    "decisive_uncertainty": [
+     "chl_shared_q1_lead_time (unexamined): Vendor-confirmed launch lead time and flight length for each option, checked against the Q1 window."
+    ]
+   },
+   "limitations": [
+    "Providers used: opencode; tokens are measured; cost unavailable.",
+    "Withdrawn options: ['optv_0001']"
+   ],
+   "recommended_title": "Status quo: no Q1 campaign committed"
+  },
+  "report": "# Council decision record \u2014 run `bench_20261124_191504_gate_budget_fail_council_quick`\n\n**Question:** Our Q1 marketing budget is capped at 50k EUR by the board; no overspend is possible. Option 1: a 48k EUR influencer campaign. Option 2: a 65k EUR TV spot with 30% higher expected reach. Option 3: a 30k EUR search campaign. Which should we run?\n**Decision framed:** Whether to commit any of the three named Q1 campaigns before cap scope, committed spend, all-in fixed quotes, exit terms and reach estimates are confirmed, and if so which one is the provisional choice. (stakes medium, reversibility costly, domain complicated)\n\n## Outcome: conditional\n**Recommended action:** Status quo: no Q1 campaign committed \u2014 Commit no campaign spend in Q1 and leave the full 50k EUR cap unallocated until reach evidence exists.\n**Stopping reason:** budget_tokens\n**Confidence:** low \u2014 last round outcome baseline; 0 open objection(s) with a credible path to change the outcome; ranking robustness 0.9167\n**Next action:** Resolve: Vendor-confirmed launch lead time and flight length for each option, checked against the Q1 window.\n\n## Strongest alternatives\n- `optv_search_30k_r0` 30k EUR search campaign (active) \u2014 0.00 [0.00, 0.20]\n- `optv_status_quo_r1` Fallback: no Q1 campaign committed (active) \u2014 not judged under current key\n- `optv_direct_answer_search_30k_r1` Direct answer: search campaign as preferred candidate, conditional on verified terms (active) \u2014 not judged under current key\n- `optv_influencer_48k_r1` 48k EUR influencer campaign (cost gate unverified) (active) \u2014 not judged under current key\n- `optv_tv_65k_as_stated_r0` 65k EUR TV spot as stated (active) \u2014 0.40 [0.10, 1.10]\n\n## Decisive evidence\n- `ev_brief_reach_gaps` [verified] The brief records no expected reach figures for option 1 (influencer) or option 3 (search), and no stated baseline for option 2's 30% higher expected reach. (source: document brief_0001 evidence_gaps)\n- `ev_budget_cap` [user_supplied] The Q1 marketing budget is capped at 50k EUR by the board. (source: user )\n\n## Material dissent and unresolved objections\n- Dissent `dis_0001` against `optv_direct_answer_search_30k_r0`: Do not commit the 30k search campaign yet. Treat it as the provisional choice, conditional on written cap scope, committed spend, an all-in fixed quote and an exit term. \u2014 Reach per EUR cannot separate options 1 and 3, so the preference for search rests on headroom. Headroom depends on asm_headroom_holdable, which is unverified. Reversibility depends on vendor terms that are only inferred. Under a costly-to-reverse brief, a committed purchase on these inputs is premature. What you lose: A single, decisive recommendation for Q1 now.\n- Dissent `dis_0002` against `optv_pilot_gate_before_commit`: Drop OPT-6 from the single-campaign ranking. If a pilot is wanted, handle it as a separate decision. \u2014 The design runs two channels, which conflicts with the single-campaign scope. The pilot arithmetic understates the cap reduction. With Q1 about 38 days away, the readout may leave too little flight time for the winning channel. What you lose: A mechanism that could produce channel-level reach evidence before a full commitment.\n- Challenge `chl_status_quo_outside_decision_scope` [open, material, could change eligibility] on `optv_status_quo_r0`: The decision statement asks which single Q1 campaign to run, choosing among three named options. Committing nothing is not one of them. OPT-5 can at most be a fallback outcome, not a ranked candidate. The brief does not state that unspent spend is acceptable.\n- Challenge `chl_status_quo_ranking_flip` [open, material, could change ranking] on `optv_status_quo_r0`: Under the rubric as written, reach per EUR (weight 0.4) is at anchor_0 for OPT-5, OPT-1, OPT-4 and OPT-8 alike. OPT-5 could then take full cost-certainty and reversibility scores (weight 0.2 each) that the funded options cannot yet verify. The rubric could therefore rank zero spend above search or influencer. That result would reflect the scoring design, not the campaign choice (see asm_status_quo_no_commitment).\n- Challenge `chl_inf_gate1_stated_as_pass` [open, material, could change eligibility] on `clm_inf_passes_cap_on_stated_price`: The claim treats the stated 48k as a gate pass. Gate 1 passes only on a confirmed all-in forecast that includes fees, media and production, and no such basis is confirmed. Under the unverified-gate penalty, OPT-8 is unverified, not passed. Gate 2 also depends on asm_inf_fixed_price, which is unverified. With only 2k headroom, OPT-8 is the most sensitive option to any cost basis error.\n- Challenge `chl_direct_pass_stated_as_fact` [open, material, could change action] on `clm_direct_search_passes_cap`: The recommendation states that the 30k search option passes the cap. The arithmetic is verified only on the user-supplied figure (ev_cap_arithmetic). The all-in basis and fixed-price status (asm_search_price_fixed) are unconfirmed, so gates 1 and 2 are unverified. The 20k headroom reduces the practical risk, but it does not make the gate a pass under the policy.\n- Challenge `chl_direct_tiebreak_headroom` [open, material, could change ranking] on `optv_direct_answer_search_30k_r0`: Reach per EUR (weight 0.4) is at anchor_0 for both option 1 and option 3, so the policy's primary criterion does not separate them. The preference for option 3 comes from headroom (cost certainty, weight 0.2). That depends on asm_headroom_holdable and asm_direct_reach_gap_not_decisive, both unverified and influential. The tie-break is a defensible risk preference, but it is not a policy ranking and its key input is unverified.\n- Challenge `chl_direct_commit_now_reversibility` [open, material, could change action] on `optv_direct_answer_search_30k_r0`: The brief rates the decision as costly to reverse. OPT-1 recommends committing 30k now, but no cancellation, staging or exit terms exist for the search vendor. The only support is ev_search_staging_norm, which is model knowledge and inferred. Recommending an irrevocable purchase before exit terms are known treats the reversibility condition as met when it is not.\n- Challenge `chl_inf_rescope_no_quote` [open, material, could change ranking] on `optv_opt_influencer_rescoped_reserve`: The 40k influencer price is hypothetical. No seller has quoted it, so the 10k headroom is arithmetic on an unquoted figure. Under asm_inf_rescope_linear, reach per EUR is unchanged from OPT-8, so the re-scope adds headroom but no reach advantage. If reach falls faster than cost, OPT-2 ranks below OPT-8. Its gate status stays unverified until a quote exists.\n- Challenge `chl_pilot_two_channel_arithmetic` [open, material, could change action] on `clm_pilot_cap_arithmetic`: The claim models a single pilot of P. OPT-6 places a pilot on each channel, so 2P is charged to the cap and the remainder can be at most 50k minus 2P. At P = 5k that is 40k, not 45k. The claim also leaves open whether the 30k search price includes its own pilot. The sizing is wrong for the design as written.\n- Challenge `chl_pilot_readout_timing` [open, material, could change action] on `optv_pilot_gate_before_commit`: Q1 2027 begins about 38 days from today. The pilot path needs vendor quotes, cap-scope confirmation, launch, a readout with enough data, and then a remainder flight with Q1 time left. asm_pilot_readout_in_time is influential and unverified. The winning channel may have too little flight time to matter.\n- Challenge `chl_staged_readout_no_comparator` [open, material, could change ranking] on `clm_0002`: clm_0002 says a staged readout is the only way to get comparable reach data. A readout on one channel gives an absolute cost-per-reach figure, not a comparison with option 1 or option 3. The go/no-go threshold in asm_readout_threshold_preset has no comparator, so it is set without a baseline. The readout cannot rank channels.\n- Challenge `chl_staging_reversibility_unverified` [open, material, could change ranking] on `clm_0004`: OPT-3's advantage on reversibility (weight 0.2) rests on vendor tranche terms that are inferred from model knowledge only. If those terms do not exist, the staged option scores like OPT-1. If they do exist, OPT-3 could move ahead of OPT-1 on that criterion. Its ranking depends on one unverified term.\n- Challenge `chl_tv_rescope_circular_comparator` [open, material, could change ranking] on `optv_opt_tv_rescoped_to_cap`: asm_tv_rescope_reach_retention compares the re-scoped TV reach per EUR with the search option, whose reach is unknown, so the comparison cannot be made. The 30% uplift cannot carry over (clm_tv_rescope_reach_not_transferable). Reach curves for TV usually show diminishing returns, so a smaller package could hold reach per EUR up. The brief does not test this, so OPT-9 cannot be scored either way.\n- Challenge `chl_shared_reach_evidence_gap` [open, critical, could change ranking] on `__all__`: The primary criterion (expected reach per EUR, weight 0.4) cannot be scored for options 1 and 3, and the only reach figure (option 2) has no baseline. Every candidate therefore ranks on cost-headroom proxies, not on the user's stated objective. The shared conclusion has no reach evidence behind it.\n- Challenge `chl_shared_headroom_holdable` [open, material, could change ranking] on `__all__`: Most headroom-based benefits assume unspent cap can be held (asm_headroom_holdable, asm_headroom_holdable_search, asm_inf_reserve_holdable, asm_headroom_holdable_staged). None is verified. Many organisations reallocate or lose unspent budget, and the brief does not say which applies. If unspent cap is reallocated, the advantage of search over influencer, and the headroom case for OPT-2 and OPT-3, falls away.\n- Challenge `chl_shared_cap_scope_committed_spend` [open, critical, could change eligibility] on `__all__`: asm_cap_scope is unresolved. If the cap covers all Q1 marketing spend and any committed spend exists, the feasibility of OPT-8 fails above 2k of committed spend and OPT-4 above 20k. OPT-1 and OPT-3 mention the dependency, but no option quantifies it or confirms committed spend, and the gate result for every option could change.\n- Challenge `chl_shared_all_in_cost_basis` [open, material, could change eligibility] on `__all__`: Every price-based gate claim assumes the user figures are all-in (asm_inf_fixed_price, asm_search_price_fixed, asm_tv_price_fixed). The payload never says whether 48k, 30k or 65k include fees, media and production. Under the rubric, gate 1 is unverified for all price-based options, and gate 2 cannot be bounded.\n- Challenge `chl_shared_q1_lead_time` [open, material, could change action] on `__all__`: Q1 2027 begins about 38 days from today. No option states a launch date, vendor lead time or flight length. A plan that is quoted and approved now may still not launch in time. Only OPT-6 mentions timing, and only as a risk.\n\n## Trade-offs\n- A single, decisive recommendation for Q1 now.\n- A mechanism that could produce channel-level reach evidence before a full commitment.\n- Choosing 'Status quo: no Q1 campaign committed' over '30k EUR search campaign' gives up: Single search campaign at 30k EUR. It passes gate 1 on the user-supplied figure and gate 2 if the price is fixed. The 20k EUR of unused cap counts as headroom only if the board permits it to be held. Reach per EUR cannot be scored because no estimate is given.\n\n## Round-by-round decision quality\n| round | incumbent | outcome | score | \u0394 vs prior incumbent | net vs round 0 | comparable | open critical |\n|---|---|---|---|---|---|---|---|\n| 0 | `optv_status_quo_r0` | baseline | 3.40 | n/a (non-comparable) | 0.00 | True | 0 |\n\n## Signals (reported separately)\n- Evidence quality: 1.0\n- Judge agreement: None (single judge; agreement not measurable)\n- Ranking robustness: 0.9167; flips: ['scenario scn_board_grants_an_exception_or_additional_ (Board grants an exception or additional 15k EUR) -> top becomes optv_search_30k_r0']\n- Decisive uncertainty: ['chl_shared_q1_lead_time (unexamined): Vendor-confirmed launch lead time and flight length for each option, checked against the Q1 window.']\n- Confidence raises if: n/a; lowers if: ['scenario scn_board_grants_an_exception_or_additional_ (Board grants an exception or additional 15k EUR) -> top becomes optv_search_30k_r0']\n\n## Reopen or reverse when\n- If 'User or board confirms that a no-campaign outcome is acceptable. Otherwise record OPT-5 as a fallback and exclude it from the ranking.' fails for optv_status_quo_r0\n- If 'Exclude OPT-5 by eligibility (chl_status_quo_outside_decision_scope), or add a minimum Q1 reach floor to the policy, then re-rank.' fails for optv_status_quo_r0\n- If assumption fails (No Q1 campaign is currently committed, since the brief gives no existing plan or committed spend.): If a campaign is already committed, the status quo becomes that campaign, and the cost gate must be re-run including that spend.\n- If assumption fails (The board permits unspent Q1 marketing budget to be held for later use rather than lapsing or being reallocated.): The headroom benefit in crit_cost_certainty_and_headroom is lost, and the cost-certainty score would fall toward the anchor_5 level.\n\n## What the council failed to establish\n- No vendor written all-in fixed quote for the 48k influencer campaign is present in the payload, so the all-in cost basis cannot be verified. Resolution requires a vendor quote covering fees, media and production at or below 50k less any committed Q1 spend.\n- No confirmation that the 48k influencer price is fixed rather than variable is present in the payload, so the fixed-price condition for gate 2 cannot be verified for option 1.\n\n## Unfinished checks\n- verification pending for chl_direct_pass_stated_as_fact (verification budget or call budget exhausted)\n- verification pending for chl_direct_tiebreak_headroom (verification budget or call budget exhausted)\n- verification pending for chl_direct_commit_now_reversibility (verification budget or call budget exhausted)\n- verification pending for chl_inf_rescope_no_quote (verification budget or call budget exhausted)\n- verification pending for chl_pilot_readout_timing (verification budget or call budget exhausted)\n- verification pending for chl_staged_readout_no_comparator (verification budget or call budget exhausted)\n- verification pending for chl_staging_reversibility_unverified (verification budget or call budget exhausted)\n- verification pending for chl_tv_rescope_circular_comparator (verification budget or call budget exhausted)\n- verification pending for chl_shared_reach_evidence_gap (verification budget or call budget exhausted)\n- verification pending for chl_shared_headroom_holdable (verification budget or call budget exhausted)\n- verification pending for chl_shared_cap_scope_committed_spend (verification budget or call budget exhausted)\n- verification pending for chl_shared_all_in_cost_basis (verification budget or call budget exhausted)\n- verification pending for chl_shared_q1_lead_time (verification budget or call budget exhausted)\n- budget_tokens reached while in JUDGING (round 1); remaining phase work skipped\n- evidence snapshot changed after the final judging (snap-6 -> snap-21); options were not rescored under the new snapshot\n\n## Lineage of the recommended option\n- `optv_status_quo_r0` v1 (round 0, lens direct): initial\n\n## Budget\n- Model calls: 21/24 (measured)\n- Tokens: measured 407148, estimated 0 (limit 400000)\n- Elapsed: 628.649s / 1800.0s (measured)\n- Cost: unavailable (unavailable)\n\n## Limitations\n- Providers used: opencode; tokens are measured; cost unavailable.\n- Withdrawn options: ['optv_0001']\n\nCompleted phases: FRAMING, POLICY, BASELINE, JUDGING, GENERATING, REVIEWING, VERIFYING, RESPONDING, REVISING\n\nMachine-readable record: `decision.json` next to this report.",
+  "provider_quota_error": false,
+  "repeat_index": 1,
+  "checks": {
+   "recommended_avoids": true,
+   "gate_failed_on_planted_option": true,
+   "completed": true,
+   "within_campaign_limits": true
+  },
+  "primary_passed": true
+ },
+ {
+  "case": "gate_budget_fail",
+  "system": "first_pass",
+  "run_id": "bench_20261124_191504_gate_budget_fail_first_pass",
+  "exit_code": 0,
+  "elapsed_seconds": 567.2,
+  "call_cap": 40,
+  "stderr_tail": "",
+  "stdout_tail": "reach scales with spend and that the 48k figure covers all costs. If fees or production sit outside the 48k, option 1 may breach the cap, and option 3 becomes the fallback.\nUnresolved: 0; alternatives: optv_opt_status_quo, optv_opt_option1_influencer_48k, optv_opt_option3_search_30k.\nreport: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_gate_budget_fail_first_pass/report.md\ndecision record: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_gate_budget_fail_first_pass/decision.json\n",
+  "state": "COMPLETE",
+  "budget": {
+   "started_at": 1795544733.254981,
+   "model_calls_used": 22,
+   "tokens_estimated": 0,
+   "tokens_measured": 401827,
+   "cost_usd": null,
+   "cost_status": "unavailable",
+   "calls_with_cost": 0,
+   "verification_calls_used": 0,
+   "leader_challenges_used": 0,
+   "reopens_used": 0,
+   "reframes_used": 0,
+   "elapsed_override": null
+  },
+  "failure_reason": null,
+  "completed_phases": [
+   "FRAMING",
+   "POLICY",
+   "BASELINE",
+   "JUDGING",
+   "GENERATING",
+   "REVIEWING",
+   "REPORTING"
+  ],
+  "unfinished_checks": [
+   "budget_tokens reached while in JUDGING (round 1); remaining phase work skipped",
+   "evidence snapshot changed after the final judging (snap-8 -> snap-17); options were not rescored under the new snapshot"
+  ],
+  "rounds": 1,
+  "participants": {
+   "p_framer": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_policy_setter": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_direct": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_judge_1": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_first_principles": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_inversion": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_staging": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_information_option": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_expected_value": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   }
+  },
+  "option_titles": {
+   "optv_opt_status_quo": "Status quo: run no Q1 campaign yet",
+   "optv_opt_direct_answer": "Direct answer: run option 1 (48k influencer)",
+   "optv_opt_option1_influencer_48k": "Option 1: 48k influencer campaign",
+   "optv_opt_option2_tv_65k": "Option 2: 65k TV spot (fails cap)",
+   "optv_opt_option3_search_30k": "Option 3: 30k search campaign",
+   "optv_opt_influencer_reserve_40k": "Option 1 scaled to about 40k with a 10k reserve",
+   "optv_opt_verify_then_commit": "Verify cap scope and reach basis, then choose 1 or 3",
+   "optv_opt_hybrid_search_plus_small_influencer": "Hybrid: 30k search plus a capped influencer buy",
+   "optv_staged_search_pilot_gate": "Staged search: 6k pilot, then gated scale-up to 30k",
+   "optv_staged_influencer_tranches_gate": "Staged influencer: 24k first tranche, gated second tranche up to 22k",
+   "optv_info_scope_gate_then_option1": "Scope check first, then option 1 if all-in, else option 3"
+  },
+  "challenges": [],
+  "briefs": [
+   {
+    "decision_statement": "Which single Q1 marketing option to run within the board's 50k EUR cap: option 1 (48k influencer), option 3 (30k search), or option 2 (65k TV, which exceeds the cap).",
+    "inferred_assumptions": [
+     "asm_single_option: The three options are mutually exclusive, since no two fit within 50k together (30k+48k=78k; 65k alone exceeds the cap).",
+     "asm_reach_objective: 'Best' means highest expected reach within the cap, since the user supplied reach only for option 2.",
+     "asm_cost_is_total: The option costs are the full amounts charged against the 50k cap.",
+     "asm_no_prior_commitment: No money from the Q1 budget has been spent or committed yet."
+    ],
+    "evidence_gaps": [
+     "The baseline for the '30% higher expected reach' claim for option 2 is not stated (higher than option 1, option 3, or some other plan?).",
+     "No reach, cost-per-reach, or conversion data is given for option 1 or option 3, so their relative reach is unknown.",
+     "Unclear whether the 50k cap covers agency fees, production, and taxes, or only media spend.",
+     "Unclear whether any part of the Q1 budget is already committed.",
+     "No information on whether the board would approve a cap increase or a reduced TV buy."
+    ],
+    "decision_kind": "decision"
+   }
+  ],
+  "judgement_gate_fails": [
+   {
+    "version": "optv_opt_option2_tv_65k",
+    "failed_gates": [
+     "crit_cap_compliance",
+     "crit_no_overspend_and_executable_within_cap"
+    ]
+   },
+   {
+    "version": "optv_opt_option2_tv_65k",
+    "failed_gates": [
+     "crit_cap_compliance",
+     "crit_no_overspend_and_executable_within_cap"
+    ]
+   }
+  ],
+  "decision": {
+   "kind": "firm",
+   "recommended_version_id": "optv_opt_direct_answer",
+   "alternatives": [
+    "optv_opt_status_quo",
+    "optv_opt_option1_influencer_48k",
+    "optv_opt_option3_search_30k",
+    "optv_opt_option2_tv_65k",
+    "optv_opt_influencer_reserve_40k"
+   ],
+   "stop_reason": "budget_tokens",
+   "confidence": {
+    "level": "low",
+    "basis": "last round outcome baseline; no open critical objection; ranking robustness 0.7857",
+    "raise_if": [],
+    "lower_if": [
+     "scenario scn_cap_is_media_only_excluding_fees_and_pro (Cap is media-only, excluding fees and production) -> top becomes optv_opt_option3_search_30k",
+     "scenario scn_part_of_q1_budget_already_committed (Part of Q1 budget already committed) -> top becomes optv_opt_option3_search_30k",
+     "scenario scn_tv_spot_re_quoted_at_or_below_50k (TV spot re-quoted at or below 50k) -> top becomes optv_opt_option3_search_30k"
+    ]
+   },
+   "next_action": "Start 'Direct answer: run option 1 (48k influencer)': Only options 1 and 3 fit the cap, and they cannot run together. Option 1 uses 96% of the cap, so with no reach data for either option it is the default that maximises spend-driven reach. The default is weak because it rests on the assumption that reach scales with spend and that the 48k figure covers all costs. If fees or production sit outside the 48k, option 1 may breach the cap, and option 3 becomes the fallback.",
+   "unresolved_challenge_ids": [],
+   "unfinished_checks": [
+    "budget_tokens reached while in JUDGING (round 1); remaining phase work skipped",
+    "evidence snapshot changed after the final judging (snap-8 -> snap-17); options were not rescored under the new snapshot"
+   ],
+   "signals": {
+    "evidence_quality": 1.0,
+    "judge_agreement": null,
+    "judge_agreement_note": "single judge; agreement not measurable",
+    "ranking_robustness": 0.7857,
+    "ranking_flips": [
+     "scenario scn_cap_is_media_only_excluding_fees_and_pro (Cap is media-only, excluding fees and production) -> top becomes optv_opt_option3_search_30k",
+     "scenario scn_part_of_q1_budget_already_committed (Part of Q1 budget already committed) -> top becomes optv_opt_option3_search_30k",
+     "scenario scn_tv_spot_re_quoted_at_or_below_50k (TV spot re-quoted at or below 50k) -> top becomes optv_opt_option3_search_30k"
+    ],
+    "decisive_uncertainty": []
+   },
+   "limitations": [
+    "Providers used: opencode; tokens are measured; cost unavailable."
+   ],
+   "recommended_title": "Direct answer: run option 1 (48k influencer)"
+  },
+  "report": "# Council decision record \u2014 run `bench_20261124_191504_gate_budget_fail_first_pass`\n\n**Question:** Our Q1 marketing budget is capped at 50k EUR by the board; no overspend is possible. Option 1: a 48k EUR influencer campaign. Option 2: a 65k EUR TV spot with 30% higher expected reach. Option 3: a 30k EUR search campaign. Which should we run?\n**Decision framed:** Which single Q1 marketing option to run within the board's 50k EUR cap: option 1 (48k influencer), option 3 (30k search), or option 2 (65k TV, which exceeds the cap). (stakes medium, reversibility one_way, domain complicated)\n\n## Outcome: firm\n**Recommended action:** Direct answer: run option 1 (48k influencer) \u2014 Run the 48k EUR influencer campaign as the only cap-compliant option that uses nearly the full budget, conditional on confirming that 48k is the all-in cost.\n**Stopping reason:** budget_tokens\n**Confidence:** low \u2014 last round outcome baseline; no open critical objection; ranking robustness 0.7857\n**Next action:** Start 'Direct answer: run option 1 (48k influencer)': Only options 1 and 3 fit the cap, and they cannot run together. Option 1 uses 96% of the cap, so with no reach data for either option it is the default that maximises spend-driven reach. The default is weak because it rests on the assumption that reach scales with spend and that the 48k figure covers all costs. If fees or production sit outside the 48k, option 1 may breach the cap, and option 3 becomes the fallback.\n\n## Strongest alternatives\n- `optv_opt_status_quo` Status quo: run no Q1 campaign yet (active) \u2014 0.91 [0.73, 1.73]\n- `optv_opt_option1_influencer_48k` Option 1: 48k influencer campaign (active) \u2014 0.00 [0.00, 0.77]\n- `optv_opt_option3_search_30k` Option 3: 30k search campaign (active) \u2014 0.00 [0.00, 0.00]\n- `optv_opt_option2_tv_65k` Option 2: 65k TV spot (fails cap) (active) \u2014 0.00 [0.00, 0.73]\n- `optv_opt_influencer_reserve_40k` Option 1 scaled to about 40k with a 10k reserve (active) \u2014 not judged under current key\n\n## Decisive evidence\n- `ev_opt2_cost_reach` [user_supplied] Option 2 is a 65k EUR TV spot with 30% higher expected reach (baseline not stated). (source: user user question)\n- `ev_pair_exclusion` [verified] Options 1 and 3 together cost 78k EUR (48k + 30k), so they cannot both run within the 50k EUR cap. (source: computation 48k + 30k)\n- `ev_opt1_cost` [user_supplied] Option 1 is a 48k EUR influencer campaign. (source: user user question)\n- `ev_opt3_cost` [user_supplied] Option 3 is a 30k EUR search campaign. (source: user user question)\n- `ev_opt1_headroom` [verified] Option 1 at 48k EUR leaves 2k EUR of the 50k EUR cap unspent (50k - 48k = 2k). (source: computation 50k - 48k)\n- `ev_budget_cap` [user_supplied] The Q1 marketing budget is capped at 50k EUR by the board, and no overspend is possible. (source: user user question)\n\n## Material dissent and unresolved objections\n- none\n\n## Trade-offs\n- Choosing 'Direct answer: run option 1 (48k influencer)' over 'Status quo: run no Q1 campaign yet' gives up: No spend is charged against the cap, so the gate passes trivially. Expected incremental reach from these campaigns is zero, which fails the stated objective to maximise reach for Q1 spend. The brief names no current plan, so this is the literal do-nothing baseline.\n\n## Round-by-round decision quality\n| round | incumbent | outcome | score | \u0394 vs prior incumbent | net vs round 0 | comparable | open critical |\n|---|---|---|---|---|---|---|---|\n| 0 | `optv_opt_direct_answer` | baseline | 3.00 | n/a (non-comparable) | 0.00 | True | 0 |\n\n## Signals (reported separately)\n- Evidence quality: 1.0\n- Judge agreement: None (single judge; agreement not measurable)\n- Ranking robustness: 0.7857; flips: ['scenario scn_cap_is_media_only_excluding_fees_and_pro (Cap is media-only, excluding fees and production) -> top becomes optv_opt_option3_search_30k', 'scenario scn_part_of_q1_budget_already_committed (Part of Q1 budget already committed) -> top becomes optv_opt_option3_search_30k', 'scenario scn_tv_spot_re_quoted_at_or_below_50k (TV spot re-quoted at or below 50k) -> top becomes optv_opt_option3_search_30k']\n- Decisive uncertainty: none\n- Confidence raises if: n/a; lowers if: ['scenario scn_cap_is_media_only_excluding_fees_and_pro (Cap is media-only, excluding fees and production) -> top becomes optv_opt_option3_search_30k', 'scenario scn_part_of_q1_budget_already_committed (Part of Q1 budget already committed) -> top becomes optv_opt_option3_search_30k', 'scenario scn_tv_spot_re_quoted_at_or_below_50k (TV spot re-quoted at or below 50k) -> top becomes optv_opt_option3_search_30k']\n\n## Reopen or reverse when\n- If assumption fails (Expected reach for an influencer campaign rises with spend roughly in proportion within this range, so the larger cap-compliant buy yields more absolute reach than option 3.): Option 3 could deliver equal or greater reach per EUR, and the recommendation would flip to option 3.\n- If assumption fails (The 48k EUR quote is the full amount charged against the 50k cap, including agency fees, production and taxes.): Option 1 could breach the cap, leaving option 3 as the only executable choice.\n- If assumption fails (The 48k EUR quote for option 1 is the all-in charge against the 50k cap. This is unverified.): Option 1 exceeds the cap and fails the cap gate. Option 3 (30k) would then be the only feasible named option.\n\n## What the council failed to establish\n- gates unverified for the recommended option: ['crit_no_overspend_and_executable_within_cap']\n\n## Unfinished checks\n- budget_tokens reached while in JUDGING (round 1); remaining phase work skipped\n- evidence snapshot changed after the final judging (snap-8 -> snap-17); options were not rescored under the new snapshot\n\n## Lineage of the recommended option\n- `optv_opt_direct_answer` v1 (round 0, lens direct): initial\n\n## Budget\n- Model calls: 22/40 (measured)\n- Tokens: measured 401827, estimated 0 (limit 400000)\n- Elapsed: 566.978s / 1800.0s (measured)\n- Cost: unavailable (unavailable)\n\n## Limitations\n- Providers used: opencode; tokens are measured; cost unavailable.\n\nCompleted phases: FRAMING, POLICY, BASELINE, JUDGING, GENERATING, REVIEWING\n\nMachine-readable record: `decision.json` next to this report.",
+  "provider_quota_error": false,
+  "repeat_index": 1,
+  "checks": {
+   "recommended_avoids": true,
+   "gate_failed_on_planted_option": true,
+   "completed": true,
+   "within_campaign_limits": true
+  },
+  "primary_passed": true
+ },
+ {
+  "case": "deferral_missing_info",
+  "system": "council_quick",
+  "run_id": "bench_20261124_191504_deferral_missing_info_council_quick",
+  "exit_code": 0,
+  "elapsed_seconds": 785.1,
+  "call_cap": 24,
+  "stderr_tail": "",
+  "stdout_tail": "w; stop reason budget_tokens; rounds 0.\nNext action: Resolve: Inventory all sending streams and suppression sources before any contract is signed.\nUnresolved: 20; alternatives: optv_opt_status_quo_v2, optv_opt_direct_measure_then_decide_v2, optv_switch_conditional_v2.\nreport: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_deferral_missing_info_council_quick/report.md\ndecision record: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_deferral_missing_info_council_quick/decision.json\n",
+  "state": "COMPLETE",
+  "budget": {
+   "started_at": 1795545300.4186711,
+   "model_calls_used": 20,
+   "tokens_estimated": 0,
+   "tokens_measured": 442271,
+   "cost_usd": null,
+   "cost_status": "unavailable",
+   "calls_with_cost": 0,
+   "verification_calls_used": 1,
+   "leader_challenges_used": 0,
+   "reopens_used": 0,
+   "reframes_used": 0,
+   "elapsed_override": null
+  },
+  "failure_reason": null,
+  "completed_phases": [
+   "FRAMING",
+   "POLICY",
+   "BASELINE",
+   "JUDGING",
+   "GENERATING",
+   "REVIEWING",
+   "VERIFYING",
+   "RESPONDING",
+   "REPORTING"
+  ],
+  "unfinished_checks": [
+   "verification pending for chl_opt2_inbox_gate_restated (verification budget or call budget exhausted)",
+   "verification pending for chl_opt2_trial_warmup_bias (verification budget or call budget exhausted)",
+   "verification pending for chl_opt2_trial_terms (verification budget or call budget exhausted)",
+   "verification pending for chl_opt5_gain_metric (verification budget or call budget exhausted)",
+   "verification pending for chl_opt5_unassigned_steps (verification budget or call budget exhausted)",
+   "verification pending for chl_opt6_undefined_threshold (verification budget or call budget exhausted)",
+   "verification pending for chl_opt3_confounded_before_after (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_inbox_placement_gap (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_auth_audit_missing (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_transactional_suppression (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_value_unpriced (verification budget or call budget exhausted)",
+   "verification pending for chl_shared_complaint_threshold (verification budget or call budget exhausted)",
+   "budget_tokens reached while in RESPONDING (round 1); remaining phase work skipped",
+   "evidence snapshot changed after the final judging (snap-5 -> snap-21); options were not rescored under the new snapshot"
+  ],
+  "rounds": 1,
+  "participants": {
+   "p_framer": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_policy_setter": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_direct": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_judge_1": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_first_principles": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_inversion": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_staging": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_reviewer_1": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_verifier": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   }
+  },
+  "option_titles": {
+   "optv_opt_status_quo": "Status quo: stay on current platform",
+   "optv_opt_direct_measure_then_decide": "Defer switch: measure baseline and quote, then decide at window close",
+   "optv_switch_next_quarter": "Switch email platform in Q1 2027 (user-named option)",
+   "optv_pilot_segment_test": "Controlled pilot: run one bounded segment on an alternative, then compare",
+   "optv_remediate_then_retest": "Fix sender-side causes on the current platform, then re-test the switch case",
+   "optv_monitor_trigger_default_stay": "Monitor with a pre-agreed trigger; default to stay at window close",
+   "optv_staged_reversibility_ladder": "Gated reversibility ladder: diagnose, fix sender auth, pilot only on a residual gap",
+   "optv_opt_status_quo_v2": "Status quo: stay on current platform with dated record",
+   "optv_opt_direct_measure_then_decide_v2": "Defer switch: pre-register thresholds, measure baseline with seed testing, decide by window close",
+   "optv_switch_conditional_v2": "Conditional switch: measure and quote, then switch in Q1 2027 only if gates pass",
+   "optv_pilot_segment_test_v2": "Staged baseline, then equal-age subdomain pilot, then decide",
+   "optv_remediate_then_retest_v2": "Remediate sender-side causes with pre-registered thresholds, then decide stay, switch, or defer",
+   "optv_staged_reversibility_ladder_v2": "Gated reversibility ladder: measure, fix sender auth, trial only on a history-backed segment"
+  },
+  "challenges": [
+   {
+    "id": "chl_optv7_gate_fail",
+    "mechanism": "As written, OPT-7 commits to vendor selection, contract and migration with no measured deliverability or cost baseline and no written quotes. That fails crit_ga",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_opt4_no_decision_record",
+    "mechanism": "The status quo takes no measurement action and files no record unless a trigger occurs. At window close no decision record exists, so crit_gate_decision_reached",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_opt4_unmeasured_adequacy",
+    "mechanism": "asm_sq_adequate is influential but rests on no measurement, since clm_sq_deliv_unknown and clm_sq_cost_unknown both hold. The deliverability-gain score cannot r",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_opt2_inbox_gate_restated",
+    "mechanism": "The migration gate names inbox placement as part of the measured baseline. OPT-2 reports inbox placement only if seed testing is funded at G1 and otherwise rest",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_opt2_trial_warmup_bias",
+    "mechanism": "The trial runs on a new subdomain, so its bounce and complaint results include warm-up effects (ev_stg_subdomain_cold). G2 stops the trial if it is worse on bou",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_opt2_trial_terms",
+    "mechanism": "clm_stg_reversible_first treats trial access as low-cost and reversible, but asm_stg_trial_no_lockin is influential and unverified. If trial terms require an an",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_opt2_schedule_slack",
+    "mechanism": "G3 falls on 2027-03-31, the last day of the window, 12 days after the trial closes on 2027-03-19. Any slip in the trial or quotes pushes the decision record out",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_opt2_open_rate_tracking",
+    "mechanism": "The trial compares engagement across platforms, but open-rate tracking differs by platform and is distorted by mailbox-provider proxies, so cross-platform open ",
+    "status": "open",
+    "could_change": "none"
+   },
+   {
+    "id": "chl_opt2_baseline_window",
+    "mechanism": "Stage 1 pulls 'three months' without stating the window. A trailing three months ending 2027-01-22 covers November and December holiday sending, so the baseline",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_opt2_broken_ref",
+    "mechanism": "The claim cites optv_pilot_segment_test, which does not appear in the payload. It is probably a leftover from OPT-5 and should point to the pilot option that is",
+    "status": "open",
+    "could_change": "none"
+   },
+   {
+    "id": "chl_opt5_gain_metric",
+    "mechanism": "The switch rule requires a measured deliverability gain, but OPT-5 does not fund seed testing, so the gain cannot be measured on exports. The new-subdomain pilo",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_opt5_unassigned_steps",
+    "mechanism": "The pilot needs a new subdomain with SPF, DKIM and DMARC, a trial account, a matched segment and a control. None of these has an owner or date, asm_stg_dns_acce",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_opt6_undefined_threshold",
+    "mechanism": "OPT-6 switches only if the baseline shows 'underperformance', but no threshold is written before data is read. Its baseline also omits seed testing, so inbox pl",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_opt3_confounded_before_after",
+    "mechanism": "A six-to-eight-week before-and-after comparison is confounded by seasonality and by concurrent campaign changes. Bounce and complaint rates on small lists are n",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_opt3_relaxes_hard_constraint",
+    "mechanism": "OPT-3 builds in relaxing the user's hard constraint (switch next quarter) if warm-up cannot fit. That is a decision the user has not made, so the option should ",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_shared_inbox_placement_gap",
+    "mechanism": "No option funds seed or panel inbox testing, but the migration gate names inbox placement. Platform exports do not measure it (ev_seed_tooling_practice), so eve",
+    "status": "open",
+    "could_change": "eligibility"
+   },
+   {
+    "id": "chl_shared_auth_audit_missing",
+    "mechanism": "OPT-1, OPT-5, OPT-6 and OPT-7 compare platforms without first auditing SPF, DKIM and DMARC, although sender-side authentication drives inbox placement (ev_auth_",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_shared_transactional_suppression",
+    "mechanism": "No option scopes transactional streams, such as receipts and password resets, or the migration of suppression and consent records. A switch could break transact",
+    "status": "open",
+    "could_change": "action"
+   },
+   {
+    "id": "chl_shared_value_unpriced",
+    "mechanism": "No option converts a deliverability point into revenue or cost terms, so crit_expected_deliverability_gain and crit_net_12_month_total_cost_of_ownership cannot ",
+    "status": "open",
+    "could_change": "ranking"
+   },
+   {
+    "id": "chl_shared_complaint_threshold",
+    "mechanism": "The only complaint threshold (0.1 percent) is inferred and unconfirmed (ev_stg_complaint_reference), and it appears only in OPT-2. Other options define 'underpe",
+    "status": "open",
+    "could_change": "action"
+   }
+  ],
+  "briefs": [
+   {
+    "decision_statement": "Whether to switch the company's email platform in the next quarter, given that current deliverability and costs are unmeasured and no alternative quotes exist.",
+    "inferred_assumptions": [
+     "asm_timing_q1_2027: 'Next quarter' from 2026-11-24 refers to Q1 2027",
+     "asm_stakeholders_email_ops: The email platform decision is owned by marketing or email operations",
+     "asm_migration_cost_unknown: Switching involves non-trivial migration effort and deliverability risk, which have not been quantified",
+     "asm_stakes_medium: Email is a meaningful revenue channel, but not the sole one, so stakes are medium rather than high"
+    ],
+    "evidence_gaps": [
+     "Current deliverability metrics (inbox placement, bounce, complaint, and open rates) are not measured (ev_no_deliverability_data)",
+     "Current email platform costs are not measured (ev_no_cost_data)",
+     "No vendor quotes for alternative platforms exist (ev_no_alt_quotes)",
+     "Migration effort, domain and IP reputation warm-up risk, and team capacity are not assessed (asm_migration_cost_unknown)"
+    ],
+    "decision_kind": "decision"
+   }
+  ],
+  "judgement_gate_fails": [
+   {
+    "version": "optv_opt_status_quo",
+    "failed_gates": [
+     "crit_gate_decision_reached_within_the_next_qu"
+    ]
+   },
+   {
+    "version": "optv_switch_next_quarter",
+    "failed_gates": [
+     "crit_gate_migration_only_after_measured_basel",
+     "crit_gate_vendor_selection_rests_on_written_q"
+    ]
+   }
+  ],
+  "decision": {
+   "kind": "conditional",
+   "recommended_version_id": "optv_opt_direct_measure_then_decide",
+   "alternatives": [
+    "optv_opt_status_quo_v2",
+    "optv_opt_direct_measure_then_decide_v2",
+    "optv_switch_conditional_v2",
+    "optv_pilot_segment_test_v2",
+    "optv_remediate_then_retest_v2"
+   ],
+   "stop_reason": "budget_tokens",
+   "confidence": {
+    "level": "low",
+    "basis": "last round outcome baseline; 0 open objection(s) with a credible path to change the outcome; robustness not measurable (fewer than two eligible options)",
+    "raise_if": [],
+    "lower_if": []
+   },
+   "next_action": "Resolve: Inventory all sending streams and suppression sources before any contract is signed.",
+   "unresolved_challenge_ids": [
+    "chl_optv7_gate_fail",
+    "chl_opt4_no_decision_record",
+    "chl_opt4_unmeasured_adequacy",
+    "chl_opt2_inbox_gate_restated",
+    "chl_opt2_trial_warmup_bias",
+    "chl_opt2_trial_terms",
+    "chl_opt2_schedule_slack",
+    "chl_opt2_open_rate_tracking",
+    "chl_opt2_baseline_window",
+    "chl_opt2_broken_ref",
+    "chl_opt5_gain_metric",
+    "chl_opt5_unassigned_steps",
+    "chl_opt6_undefined_threshold",
+    "chl_opt3_confounded_before_after",
+    "chl_opt3_relaxes_hard_constraint",
+    "chl_shared_inbox_placement_gap",
+    "chl_shared_auth_audit_missing",
+    "chl_shared_transactional_suppression",
+    "chl_shared_value_unpriced",
+    "chl_shared_complaint_threshold"
+   ],
+   "unfinished_checks": [
+    "verification pending for chl_opt2_inbox_gate_restated (verification budget or call budget exhausted)",
+    "verification pending for chl_opt2_trial_warmup_bias (verification budget or call budget exhausted)",
+    "verification pending for chl_opt2_trial_terms (verification budget or call budget exhausted)",
+    "verification pending for chl_opt5_gain_metric (verification budget or call budget exhausted)",
+    "verification pending for chl_opt5_unassigned_steps (verification budget or call budget exhausted)",
+    "verification pending for chl_opt6_undefined_threshold (verification budget or call budget exhausted)",
+    "verification pending for chl_opt3_confounded_before_after (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_inbox_placement_gap (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_auth_audit_missing (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_transactional_suppression (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_value_unpriced (verification budget or call budget exhausted)",
+    "verification pending for chl_shared_complaint_threshold (verification budget or call budget exhausted)",
+    "budget_tokens reached while in RESPONDING (round 1); remaining phase work skipped",
+    "evidence snapshot changed after the final judging (snap-5 -> snap-21); options were not rescored under the new snapshot"
+   ],
+   "signals": {
+    "evidence_quality": 0.8,
+    "judge_agreement": null,
+    "judge_agreement_note": "single judge; agreement not measurable",
+    "ranking_robustness": null,
+    "ranking_flips": [],
+    "decisive_uncertainty": [
+     "chl_shared_transactional_suppression (unexamined): Inventory all sending streams and suppression sources before any contract is signed.",
+     "chl_shared_complaint_threshold (unexamined): Confirm the complaint reference from current provider guidance and write one threshold before any data is read."
+    ]
+   },
+   "limitations": [
+    "Providers used: opencode; tokens are measured; cost unavailable."
+   ],
+   "recommended_title": "Defer switch: measure baseline and quote, then decide at window close"
+  },
+  "report": "# Council decision record \u2014 run `bench_20261124_191504_deferral_missing_info_council_quick`\n\n**Question:** Should we switch our email platform next quarter? We have not measured deliverability or costs on the current one and we have no quotes from alternatives.\n**Decision framed:** Whether to switch the company's email platform in the next quarter, given that current deliverability and costs are unmeasured and no alternative quotes exist. (stakes medium, reversibility costly, domain complicated)\n\n## Outcome: conditional\n**Recommended action:** Defer switch: measure baseline and quote, then decide at window close \u2014 Do not commit to switching next quarter on current evidence. Run a time-boxed measurement of deliverability and cost plus written alternative quotes, and record a switch, defer, or stay decision by the end of Q1 2027.\n**Stopping reason:** budget_tokens\n**Confidence:** low \u2014 last round outcome baseline; 0 open objection(s) with a credible path to change the outcome; robustness not measurable (fewer than two eligible options)\n**Next action:** Resolve: Inventory all sending streams and suppression sources before any contract is signed.\n\n## Strongest alternatives\n- `optv_opt_status_quo_v2` Status quo: stay on current platform with dated record (active) \u2014 not judged under current key\n- `optv_opt_direct_measure_then_decide_v2` Defer switch: pre-register thresholds, measure baseline with seed testing, decide by window close (active) \u2014 not judged under current key\n- `optv_switch_conditional_v2` Conditional switch: measure and quote, then switch in Q1 2027 only if gates pass (active) \u2014 not judged under current key\n- `optv_pilot_segment_test_v2` Staged baseline, then equal-age subdomain pilot, then decide (active) \u2014 not judged under current key\n- `optv_remediate_then_retest_v2` Remediate sender-side causes with pre-registered thresholds, then decide stay, switch, or defer (active) \u2014 not judged under current key\n\n## Decisive evidence\n- `ev_no_deliverability_data` [user_supplied] The user has not measured deliverability on the current email platform. (source: user )\n- `ev_no_cost_data` [user_supplied] The user has not measured costs on the current email platform. (source: user )\n- `ev_no_alt_quotes` [user_supplied] The user has no quotes from alternative email platforms. (source: user )\n- `ev_warmup_guidance` [inferred] Under common industry guidance, sending domain and IP warm-up for a new email platform typically takes several weeks before inbox placement stabilises. This is general practice, not verified for this company's domain or list. (source: model_knowledge )\n- `ev_switch_timing` [user_supplied] The user is considering switching the email platform next quarter. (source: user )\n\n## Material dissent and unresolved objections\n- Dissent `dis_0001` against `optv_staged_reversibility_ladder`: OPT-2 is not the most gate-complete option as presented. Its switch track cannot pass the baseline gate without seed testing, and its trial stop rule is biased by warm-up on a cold subdomain. \u2014 The gate names inbox placement, and OPT-2 restates the gate rather than meeting it. G2 can stop a viable trial for warm-up reasons alone. What you lose: The explicit staged path, the stop rules and the reversibility ladder, which are otherwise strong.\n- Dissent `dis_0002` against `optv_opt_status_quo`: The status quo should not be scored as a decision. OPT-4's stay is a non-decision and fails the window gate until a dated record exists. \u2014 Its asm_sq_adequate assumption is influential and unmeasured, and no record or review date is set. What you lose: The lowest-cost option in the set, which is useful as a fallback.\n- Challenge `chl_optv7_gate_fail` [open, critical, could change eligibility] on `optv_switch_next_quarter`: As written, OPT-7 commits to vendor selection, contract and migration with no measured deliverability or cost baseline and no written quotes. That fails crit_gate_migration_only_after_measured_basel and crit_gate_vendor_selection_rests_on_written_q. asm_switch_fixed (the switch holds regardless of evidence) removes the only route to a gate-compliant version, so OPT-7 is ineligible as stated.\n- Challenge `chl_opt4_no_decision_record` [open, material, could change eligibility] on `optv_opt_status_quo`: The status quo takes no measurement action and files no record unless a trigger occurs. At window close no decision record exists, so crit_gate_decision_reached_within_the_next_qu fails. A stay outcome counts only when it is documented, and OPT-4 treats it as a passive default.\n- Challenge `chl_opt4_unmeasured_adequacy` [open, material, could change ranking] on `optv_opt_status_quo`: asm_sq_adequate is influential but rests on no measurement, since clm_sq_deliv_unknown and clm_sq_cost_unknown both hold. The deliverability-gain score cannot rule out anchor_0 (worsening), and decision readiness cannot be scored above anchor_0 on assumption. The option's implied 'no problem' is unverified.\n- Challenge `chl_opt2_inbox_gate_restated` [open, critical, could change eligibility] on `clm_stg_pilot_metric_gap`: The migration gate names inbox placement as part of the measured baseline. OPT-2 reports inbox placement only if seed testing is funded at G1 and otherwise restates the switch gate on bounce, complaint and engagement. That restatement is not in the policy, so without seed testing the G3 switch path does not meet crit_gate_migration_only_after_measured_basel and can only be unverified or failed.\n- Challenge `chl_opt2_trial_warmup_bias` [open, material, could change action] on `optv_staged_reversibility_ladder`: The trial runs on a new subdomain, so its bounce and complaint results include warm-up effects (ev_stg_subdomain_cold). G2 stops the trial if it is worse on bounce or complaint, which will tend to fail an acceptable platform and can wrongly pass a poor one.\n- Challenge `chl_opt2_trial_terms` [open, material, could change action] on `optv_staged_reversibility_ladder`: clm_stg_reversible_first treats trial access as low-cost and reversible, but asm_stg_trial_no_lockin is influential and unverified. If trial terms require an annual or multi-year commitment, the Stage 3 step is costly and falls before G3, which breaks the no-commitment-before-gate logic.\n- Challenge `chl_opt2_schedule_slack` [open, material, could change ranking] on `optv_staged_reversibility_ladder`: G3 falls on 2027-03-31, the last day of the window, 12 days after the trial closes on 2027-03-19. Any slip in the trial or quotes pushes the decision record out of the window. The schedule depends on asm_stg_owner_capacity, which is unassessed, and G2's 'hold otherwise' result has no fallback to a filed record.\n- Challenge `chl_opt2_open_rate_tracking` [open, minor, could change none] on `optv_staged_reversibility_ladder`: The trial compares engagement across platforms, but open-rate tracking differs by platform and is distorted by mailbox-provider proxies, so cross-platform open comparisons are weak.\n- Challenge `chl_opt2_baseline_window` [open, minor, could change ranking] on `clm_stg_seasonal_baseline`: Stage 1 pulls 'three months' without stating the window. A trailing three months ending 2027-01-22 covers November and December holiday sending, so the baseline still carries the Q4 peak that this claim says it avoids.\n- Challenge `chl_opt2_broken_ref` [open, minor, could change none] on `clm_stg_pilot_metric_gap`: The claim cites optv_pilot_segment_test, which does not appear in the payload. It is probably a leftover from OPT-5 and should point to the pilot option that is actually in the set.\n- Challenge `chl_opt5_gain_metric` [open, material, could change ranking] on `clm_pilot_gain_test`: The switch rule requires a measured deliverability gain, but OPT-5 does not fund seed testing, so the gain cannot be measured on exports. The new-subdomain pilot is also warm-up-confounded (clm_pilot_warmup_limited concedes this). As written, the decision rule cannot be executed, and the switch recommendation would fall back to stay.\n- Challenge `chl_opt5_unassigned_steps` [open, material, could change ranking] on `optv_pilot_segment_test`: The pilot needs a new subdomain with SPF, DKIM and DMARC, a trial account, a matched segment and a control. None of these has an owner or date, asm_stg_dns_access is not named, and asm_pilot_segment_sized is unverified. This is the heaviest workload of the non-switch options, although the capacity criterion has low weight.\n- Challenge `chl_opt6_undefined_threshold` [open, material, could change eligibility] on `optv_opt_direct_measure_then_decide`: OPT-6 switches only if the baseline shows 'underperformance', but no threshold is written before data is read. Its baseline also omits seed testing, so inbox placement cannot be in it, and the migration gate cannot be scored on this baseline. Its switch path is therefore not executable as written.\n- Challenge `chl_opt3_confounded_before_after` [open, material, could change ranking] on `clm_remed_measurable`: A six-to-eight-week before-and-after comparison is confounded by seasonality and by concurrent campaign changes. Bounce and complaint rates on small lists are noisy, so asm_remed_window_enough is unlikely to hold without a control. 'Acceptable levels' is undefined, so the stay outcome cannot be scored.\n- Challenge `chl_opt3_relaxes_hard_constraint` [open, material, could change action] on `clm_remed_constraint_conflict`: OPT-3 builds in relaxing the user's hard constraint (switch next quarter) if warm-up cannot fit. That is a decision the user has not made, so the option should surface the conflict rather than treat relaxation as the default outcome.\n- Challenge `chl_shared_inbox_placement_gap` [open, critical, could change eligibility] on `__all__`: No option funds seed or panel inbox testing, but the migration gate names inbox placement. Platform exports do not measure it (ev_seed_tooling_practice), so every switch path either lacks a gate-compliant baseline or quietly restates the gate. Only OPT-1 and OPT-2 acknowledge the gap, and both treat it as optional.\n- Challenge `chl_shared_auth_audit_missing` [open, material, could change ranking] on `__all__`: OPT-1, OPT-5, OPT-6 and OPT-7 compare platforms without first auditing SPF, DKIM and DMARC, although sender-side authentication drives inbox placement (ev_auth_practice). A platform comparison without this audit can attribute sender failures to the vendor.\n- Challenge `chl_shared_transactional_suppression` [open, material, could change action] on `__all__`: No option scopes transactional streams, such as receipts and password resets, or the migration of suppression and consent records. A switch could break transactional mail, and lost suppression lists can raise complaints after cutover.\n- Challenge `chl_shared_value_unpriced` [open, material, could change ranking] on `__all__`: No option converts a deliverability point into revenue or cost terms, so crit_expected_deliverability_gain and crit_net_12_month_total_cost_of_ownership cannot be traded off. Stakes are only medium (asm_stakes_medium), so the value of any gain is unknown.\n- Challenge `chl_shared_complaint_threshold` [open, material, could change action] on `__all__`: The only complaint threshold (0.1 percent) is inferred and unconfirmed (ev_stg_complaint_reference), and it appears only in OPT-2. Other options define 'underperformance' or 'acceptable' with no number, so their baseline readings cannot be judged.\n\n## Trade-offs\n- The explicit staged path, the stop rules and the reversibility ladder, which are otherwise strong.\n- The lowest-cost option in the set, which is useful as a fallback.\n\n## Round-by-round decision quality\n| round | incumbent | outcome | score | \u0394 vs prior incumbent | net vs round 0 | comparable | open critical |\n|---|---|---|---|---|---|---|---|\n| 0 | `optv_opt_direct_measure_then_decide` | baseline | 0.73 | n/a (non-comparable) | 0.00 | True | 0 |\n\n## Signals (reported separately)\n- Evidence quality: 0.8\n- Judge agreement: None (single judge; agreement not measurable)\n- Ranking robustness: None; flips: none\n- Decisive uncertainty: ['chl_shared_transactional_suppression (unexamined): Inventory all sending streams and suppression sources before any contract is signed.', 'chl_shared_complaint_threshold (unexamined): Confirm the complaint reference from current provider guidance and write one threshold before any data is read.']\n- Confidence raises if: n/a; lowers if: n/a\n\n## Reopen or reverse when\n- If 'Write thresholds and name the owner before any data is read, and either fund seed testing or record the switch path as gate-unverified.' fails for optv_opt_direct_measure_then_decide\n- If assumption fails (Current platform reporting can produce deliverability and cost baselines within the quarter.): The window closes without a baseline. The decision should then be deferred past Q1 2027 with the gap disclosed, as in the baseline-cannot-be-measured scenario.\n- If assumption fails (At least two alternative vendors will provide written quotes including migration estimates within the window.): The vendor-selection gate cannot be passed, so the outcome is stay or defer.\n- If assumption fails (If the baseline or quotes are not produced by window close, the option's default of staying on the current platform applies, so the option does not force a switch on unmeasured premises.): If the default is not followed, the option would commit to a switch on unmeasured premises, which fails objective 2.\n\n## What the council failed to establish\n- No deliverability measurement for the current platform (bounce, complaint, engagement, or inbox placement) is available to check. The record shows none exists, so asm_sq_adequate cannot be verified against performance data.\n- No invoices or total-cost figures for the current platform are available to check. The record shows none exists, so the status quo's cost efficiency cannot be verified.\n- The policy gate that requires a measured deliverability baseline, including inbox placement, before any migration commitment could not be re-read from its source, so its current wording is unconfirmed here.\n- gates unverified for the recommended option: ['crit_gate_decision_reached_within_the_next_qu', 'crit_gate_vendor_selection_rests_on_written_q']\n\n## Unfinished checks\n- verification pending for chl_opt2_inbox_gate_restated (verification budget or call budget exhausted)\n- verification pending for chl_opt2_trial_warmup_bias (verification budget or call budget exhausted)\n- verification pending for chl_opt2_trial_terms (verification budget or call budget exhausted)\n- verification pending for chl_opt5_gain_metric (verification budget or call budget exhausted)\n- verification pending for chl_opt5_unassigned_steps (verification budget or call budget exhausted)\n- verification pending for chl_opt6_undefined_threshold (verification budget or call budget exhausted)\n- verification pending for chl_opt3_confounded_before_after (verification budget or call budget exhausted)\n- verification pending for chl_shared_inbox_placement_gap (verification budget or call budget exhausted)\n- verification pending for chl_shared_auth_audit_missing (verification budget or call budget exhausted)\n- verification pending for chl_shared_transactional_suppression (verification budget or call budget exhausted)\n- verification pending for chl_shared_value_unpriced (verification budget or call budget exhausted)\n- verification pending for chl_shared_complaint_threshold (verification budget or call budget exhausted)\n- budget_tokens reached while in RESPONDING (round 1); remaining phase work skipped\n- evidence snapshot changed after the final judging (snap-5 -> snap-21); options were not rescored under the new snapshot\n\n## Lineage of the recommended option\n- `optv_opt_direct_measure_then_decide` v1 (round 0, lens direct): initial\n\n## Budget\n- Model calls: 20/24 (measured)\n- Tokens: measured 442271, estimated 0 (limit 400000)\n- Elapsed: 784.934s / 1800.0s (measured)\n- Cost: unavailable (unavailable)\n\n## Limitations\n- Providers used: opencode; tokens are measured; cost unavailable.\n\nCompleted phases: FRAMING, POLICY, BASELINE, JUDGING, GENERATING, REVIEWING, VERIFYING, RESPONDING\n\nMachine-readable record: `decision.json` next to this report.",
+  "provider_quota_error": false,
+  "repeat_index": 1,
+  "checks": {
+   "kind_acceptable": true,
+   "completed": true,
+   "within_campaign_limits": true
+  },
+  "primary_passed": true
+ },
+ {
+  "case": "deferral_missing_info",
+  "system": "first_pass",
+  "run_id": "bench_20261124_191504_deferral_missing_info_first_pass",
+  "exit_code": 0,
+  "elapsed_seconds": 533.0,
+  "call_cap": 40,
+  "stderr_tail": "",
+  "stdout_tail": "dence low; stop reason stable; rounds 1.\nNext action: Decide between optv_opt_baseline_then_quotes and optv_staged_readiness_v1: obtain the evidence that separates them\nUnresolved: 0; alternatives: optv_opt_baseline_then_quotes, optv_staged_readiness_v1, optv_voi_triage_v1.\nreport: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_deferral_missing_info_first_pass/report.md\ndecision record: /Users/massimo/Projects_Massimo/Marketing & Advertisement AI/council/.council/runs/bench_20261124_191504_deferral_missing_info_first_pass/decision.json\n",
+  "state": "COMPLETE",
+  "budget": {
+   "started_at": 1795546085.538384,
+   "model_calls_used": 21,
+   "tokens_estimated": 0,
+   "tokens_measured": 370861,
+   "cost_usd": null,
+   "cost_status": "unavailable",
+   "calls_with_cost": 0,
+   "verification_calls_used": 0,
+   "leader_challenges_used": 0,
+   "reopens_used": 0,
+   "reframes_used": 0,
+   "elapsed_override": null
+  },
+  "failure_reason": null,
+  "completed_phases": [
+   "FRAMING",
+   "POLICY",
+   "BASELINE",
+   "JUDGING",
+   "GENERATING",
+   "REVIEWING",
+   "REPORTING"
+  ],
+  "unfinished_checks": [],
+  "rounds": 1,
+  "participants": {
+   "p_framer": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_policy_setter": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_direct": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_judge_1": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_first_principles": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_inversion": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_staging": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_information_option": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   },
+   "p_strategist_expected_value": {
+    "provider": "opencode",
+    "model_requested": "claude-agent/haiku",
+    "model_reported": "claude-agent/haiku",
+    "isolation": "isolated"
+   }
+  },
+  "option_titles": {
+   "optv_status_quo_v1": "Status quo: stay on current platform",
+   "optv_direct_gated_review_v1": "Measure-then-decide gated switch review",
+   "optv_user_switch_q1_v1": "Commit to switching platform in Q1 2027",
+   "optv_opt_baseline_then_quotes": "Baseline first, quotes only on breach",
+   "optv_proxy_default_v1": "Proxy-metric baseline with pre-committed default for missing data",
+   "optv_staged_readiness_v1": "Readiness-first staged review with back-scheduled decision date",
+   "optv_voi_triage_v1": "Two-day triage screen as a go/no-go before any quoting",
+   "optv_comparative_trial_v1": "Capped comparative trial on one alternative, current platform stays primary"
+  },
+  "challenges": [],
+  "briefs": [
+   {
+    "decision_statement": "Whether to commit to switching the email platform in next quarter (calendar Q1 2027), given that current deliverability and costs are unmeasured and no alternative quotes exist.",
+    "inferred_assumptions": [
+     "asm_next_quarter_q1: 'next quarter' is read as calendar Q1 2027 relative to today's date of 2026-11-24",
+     "asm_email_is_revenue_channel: the email platform supports marketing or transactional sending where deliverability directly affects business outcomes",
+     "asm_migration_is_costly: switching platforms involves migration work, sender reputation or warm-up effects, and template or integration rework, which makes reversal costly",
+     "asm_stakeholders_inferred: the program owner and finance approver are the relevant decision makers, which is not stated by the user"
+    ],
+    "evidence_gaps": [
+     "Current deliverability metrics (inbox placement, bounce rate, complaint rate, open/click trends) are not measured",
+     "Current total cost of the email platform is not measured",
+     "No quotes from alternative platforms",
+     "Migration effort, switching cost, and downtime risk are unknown",
+     "Reason for considering a switch (specific pain point or capability gap) is not stated",
+     "Sending volume and list size are not stated",
+     "Team capacity to run a migration next quarter is not stated"
+    ],
+    "decision_kind": "decision"
+   }
+  ],
+  "judgement_gate_fails": [
+   {
+    "version": "optv_status_quo_v1",
+    "failed_gates": [
+     "crit_decision_window_and_measurement_gate"
+    ]
+   },
+   {
+    "version": "optv_user_switch_q1_v1",
+    "failed_gates": [
+     "crit_decision_window_and_measurement_gate",
+     "crit_no_irreversible_commitment_before_eviden"
+    ]
+   },
+   {
+    "version": "optv_status_quo_v1",
+    "failed_gates": [
+     "crit_decision_window_and_measurement_gate"
+    ]
+   },
+   {
+    "version": "optv_user_switch_q1_v1",
+    "failed_gates": [
+     "crit_decision_window_and_measurement_gate",
+     "crit_no_irreversible_commitment_before_eviden"
+    ]
+   }
+  ],
+  "decision": {
+   "kind": "shortlist",
+   "recommended_version_id": "optv_direct_gated_review_v1",
+   "alternatives": [
+    "optv_opt_baseline_then_quotes",
+    "optv_staged_readiness_v1",
+    "optv_voi_triage_v1",
+    "optv_status_quo_v1",
+    "optv_user_switch_q1_v1"
+   ],
+   "stop_reason": "stable",
+   "confidence": {
+    "level": "low",
+    "basis": "last round outcome inconclusive; no open critical objection; ranking robustness 0.6",
+    "raise_if": [],
+    "lower_if": [
+     "weight crit_quote_comparability +20% -> top becomes optv_staged_readiness_v1",
+     "weight crit_link_to_a_measured_problem -20% -> top becomes optv_staged_readiness_v1",
+     "weight crit_capacity_and_window_fit +20% -> top becomes optv_staged_readiness_v1",
+     "scenario scn_quotes_show_switch_cost_exceeds_savings (Quotes show switch cost exceeds savings) -> top becomes optv_direct_gated_review_v1",
+     "scenario scn_no_migration_capacity_in_q1_2027 (No migration capacity in Q1 2027) -> top becomes optv_proxy_default_v1",
+     "scenario scn_non_comparable_quotes_from_unknown_volum (Non-comparable quotes from unknown volume) -> top becomes optv_staged_readiness_v1"
+    ]
+   },
+   "next_action": "Decide between optv_opt_baseline_then_quotes and optv_staged_readiness_v1: obtain the evidence that separates them",
+   "unresolved_challenge_ids": [],
+   "unfinished_checks": [],
+   "signals": {
+    "evidence_quality": 0.4444,
+    "judge_agreement": null,
+    "judge_agreement_note": "single judge; agreement not measurable",
+    "ranking_robustness": 0.6,
+    "ranking_flips": [
+     "weight crit_quote_comparability +20% -> top becomes optv_staged_readiness_v1",
+     "weight crit_link_to_a_measured_problem -20% -> top becomes optv_staged_readiness_v1",
+     "weight crit_capacity_and_window_fit +20% -> top becomes optv_staged_readiness_v1",
+     "scenario scn_quotes_show_switch_cost_exceeds_savings (Quotes show switch cost exceeds savings) -> top becomes optv_direct_gated_review_v1",
+     "scenario scn_no_migration_capacity_in_q1_2027 (No migration capacity in Q1 2027) -> top becomes optv_proxy_default_v1",
+     "scenario scn_non_comparable_quotes_from_unknown_volum (Non-comparable quotes from unknown volume) -> top becomes optv_staged_readiness_v1"
+    ],
+    "decisive_uncertainty": []
+   },
+   "limitations": [
+    "Providers used: opencode; tokens are measured; cost unavailable."
+   ],
+   "recommended_title": "Measure-then-decide gated switch review"
+  },
+  "report": "# Council decision record \u2014 run `bench_20261124_191504_deferral_missing_info_first_pass`\n\n**Question:** Should we switch our email platform next quarter? We have not measured deliverability or costs on the current one and we have no quotes from alternatives.\n**Decision framed:** Whether to commit to switching the email platform in next quarter (calendar Q1 2027), given that current deliverability and costs are unmeasured and no alternative quotes exist. (stakes medium, reversibility costly, domain complicated)\n\n## Outcome: shortlist\n**Recommended action:** Measure-then-decide gated switch review \u2014 Do not commit to a switch. Measure current deliverability and total cost, obtain comparable quotes, and lock a switch only if a pre-agreed threshold is breached and the quotes beat measured cost, all within Q1 2027.\n**Stopping reason:** stable\n**Confidence:** low \u2014 last round outcome inconclusive; no open critical objection; ranking robustness 0.6\n**Next action:** Decide between optv_opt_baseline_then_quotes and optv_staged_readiness_v1: obtain the evidence that separates them\n\n## Strongest alternatives\n- `optv_opt_baseline_then_quotes` Baseline first, quotes only on breach (active) \u2014 4.00 [1.00, 5.00]\n- `optv_staged_readiness_v1` Readiness-first staged review with back-scheduled decision date (active) \u2014 4.00 [1.00, 5.00]\n- `optv_voi_triage_v1` Two-day triage screen as a go/no-go before any quoting (active) \u2014 2.80 [0.00, 3.80]\n- `optv_status_quo_v1` Status quo: stay on current platform (active) \u2014 1.70 [1.30, 2.40]\n- `optv_user_switch_q1_v1` Commit to switching platform in Q1 2027 (active) \u2014 0.60 [0.30, 1.25]\n\n## Decisive evidence\n- `ev_postmaster_proxy` [inferred] Most email platforms do not report inbox placement directly. Provider-side tools (for example Gmail Postmaster Tools and Microsoft SNDS) report domain or IP reputation and complaint signals, often only above minimum volume thresholds. Seed-list placement tests are approximate. (source: model_knowledge )\n- `ev_bulk_complaint_guidance` [inferred] Google's bulk-sender guidance treats a user-reported spam rate of about 0.1% as a level to stay below and about 0.3% as a level to avoid. These are approximate and should be checked against current provider documentation. (source: model_knowledge )\n- `ev_auth_records_bulk` [inferred] Major mailbox providers have required SPF or DKIM alignment, DMARC, and one-click unsubscribe for bulk senders above a daily volume threshold since 2024. Authentication gaps can reduce deliverability and can be checked without changing platform. (source: model_knowledge )\n- `ev_no_deliverability_data` [user_supplied] Deliverability has not been measured on the current email platform. (source: user )\n- `ev_no_cost_data` [user_supplied] Costs have not been measured on the current email platform. (source: user )\n- `ev_no_alt_quotes` [user_supplied] No quotes have been obtained from alternative email platforms. (source: user )\n- `ev_warm_up_lead_time` [inferred] Sender reputation warm-up on a new sending platform or domain commonly takes several weeks before volume can ramp. The exact duration depends on the platform, the volume and the list. (source: model_knowledge )\n- `ev_switch_intent` [user_supplied] The user is considering switching the email platform next quarter. (source: user )\n- `ev_q4_peak_capacity` [inferred] Nov to Dec is typically a high-volume marketing sending period for many programs, which can compete with measurement and migration work for the same team. (source: model_knowledge )\n\n## Material dissent and unresolved objections\n- none\n\n## Trade-offs\n- Choosing 'Measure-then-decide gated switch review' over 'Readiness-first staged review with back-scheduled decision date' gives up: Stage 0 (24 Nov to 15 Dec, no vendor contact, no commitment): name one owner; audit SPF, DKIM, DMARC and one-click unsubscribe on the sending domains; inventory integrations, automations, templates and suppression logic; take list-age and 90-day send and invoice data; sign breach thresholds for complaint, bounce, provider reputation, open/click trend and total cost. Gate 0 (15 Dec): owner named, authentication audit complete, thresholds signed. If not met, hold on the current platform and do not request quotes. Stage 1 (15 Dec to 15 Jan): build a dated baseline of the proxy set (complaint and bounce rates, Postmaster or SNDS reputation where volume allows, seed tests as secondary only, open/click trend, total cost from invoices). Gate 1 (15 Jan): if the baseline is incomplete, stay on the current platform and re-measure in February. If a signed threshold is breached, go to Stage 2. Stage 2 (18 Jan to 6 Feb): issue one normalised RFQ to two or three alternatives on a common volume, feature and contract basis, with one-time migration and warm-up costs, using the integration inventory from Stage 0. Gate 2 (6 Feb): switch only if a threshold is breached and the net-of-migration saving or fix is positive. Only then sign, start warm-up, and cut over by 31 Mar, provided warm-up plus cutover fits inside the window. If warm-up cannot fit, the cutover moves to Q2 and this is flagged to the owner rather than compressed. Stop rule: no breach, or negative net saving, means keep the platform and monitor the baseline monthly. Dependencies: authentication audit before baseline interpretation; baseline and thresholds before RFQ; inventory before quote normalisation; Gate 2 date minus warm-up length sets the latest cutover.\n\n## Round-by-round decision quality\n| round | incumbent | outcome | score | \u0394 vs prior incumbent | net vs round 0 | comparable | open critical |\n|---|---|---|---|---|---|---|---|\n| 0 | `optv_direct_gated_review_v1` | baseline | 3.55 | n/a (non-comparable) | 0.00 | True | 0 |\n| 1 | `optv_direct_gated_review_v1` | inconclusive | 2.90 | 0.00 | 0.00 | True | 0 |\n\n## Signals (reported separately)\n- Evidence quality: 0.4444\n- Judge agreement: None (single judge; agreement not measurable)\n- Ranking robustness: 0.6; flips: ['weight crit_quote_comparability +20% -> top becomes optv_staged_readiness_v1', 'weight crit_link_to_a_measured_problem -20% -> top becomes optv_staged_readiness_v1', 'weight crit_capacity_and_window_fit +20% -> top becomes optv_staged_readiness_v1', 'scenario scn_quotes_show_switch_cost_exceeds_savings (Quotes show switch cost exceeds savings) -> top becomes optv_direct_gated_review_v1', 'scenario scn_no_migration_capacity_in_q1_2027 (No migration capacity in Q1 2027) -> top becomes optv_proxy_default_v1', 'scenario scn_non_comparable_quotes_from_unknown_volum (Non-comparable quotes from unknown volume) -> top becomes optv_staged_readiness_v1']\n- Decisive uncertainty: none\n- Confidence raises if: n/a; lowers if: ['weight crit_quote_comparability +20% -> top becomes optv_staged_readiness_v1', 'weight crit_link_to_a_measured_problem -20% -> top becomes optv_staged_readiness_v1', 'weight crit_capacity_and_window_fit +20% -> top becomes optv_staged_readiness_v1', 'scenario scn_quotes_show_switch_cost_exceeds_savings (Quotes show switch cost exceeds savings) -> top becomes optv_direct_gated_review_v1', 'scenario scn_no_migration_capacity_in_q1_2027 (No migration capacity in Q1 2027) -> top becomes optv_proxy_default_v1', 'scenario scn_non_comparable_quotes_from_unknown_volum (Non-comparable quotes from unknown volume) -> top becomes optv_staged_readiness_v1']\n\n## Reopen or reverse when\n- If assumption fails (The team can run measurement and quoting in Nov 2026 to Mar 2027 with a named owner. Confirming this is the main open item.): The checkpoint slips past Q1 2027 and the path collapses to the status quo or a late decision.\n- If assumption fails (Stakeholders can agree thresholds for inbox placement, bounce, complaint, open/click, and total cost before measurement results are seen.): The checkpoint decision becomes judgement-based, and the measurement gate scores lower.\n- If assumption fails (Inbox placement cannot be read from current platform data or invoices alone and needs a seed-test or equivalent tool that the option does not name.): If the platform already reports inbox placement, the deliverability baseline is cheaper to obtain and the measurement score could rise.\n- If assumption fails (The current contract's notice period and auto-renewal terms are unknown and could force a commitment before the Q1 2027 checkpoint.): If the contract allows exit at any time without penalty, the reversibility score could rise to anchor 10 once exit costs are bounded.\n- If assumption fails (Alternative vendors will provide normalised quotes in weeks 2 to 6 without requiring a signed contract, trial commitment or NDA that creates an obligation.): If vendors require a commitment to quote, the no-irreversible-commitment gate could fail and the reversibility score would drop.\n- If assumption fails (The current platform's contract exit terms, notice periods and data export rights are known or can be obtained before the checkpoint.): If exit terms are unknown or costly, the reversibility score and the no-irreversible-commitment gate status would be affected.\n\n## What the council failed to establish\n- gates unverified for the recommended option: ['crit_decision_window_and_measurement_gate', 'crit_no_irreversible_commitment_before_eviden']\n\n## Unfinished checks\n- none\n\n## Lineage of the recommended option\n- `optv_direct_gated_review_v1` v1 (round 0, lens direct): Direct answer to the decision: defer any switch commitment until measured and quoted, with a Q1 2027 checkpoint.\n\n## Budget\n- Model calls: 21/40 (measured)\n- Tokens: measured 370861, estimated 0 (limit 400000)\n- Elapsed: 532.823s / 1800.0s (measured)\n- Cost: unavailable (unavailable)\n\n## Limitations\n- Providers used: opencode; tokens are measured; cost unavailable.\n\nCompleted phases: FRAMING, POLICY, BASELINE, JUDGING, GENERATING, REVIEWING\n\nMachine-readable record: `decision.json` next to this report.",
+  "provider_quota_error": false,
+  "repeat_index": 1,
+  "checks": {
+   "kind_acceptable": true,
+   "completed": true,
+   "within_campaign_limits": true
+  },
+  "primary_passed": true
+ }
+]

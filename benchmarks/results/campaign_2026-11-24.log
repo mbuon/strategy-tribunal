@@ -1,0 +1,62 @@
+[1] obj_vendor_ev / council_quick -> bench_20261124_170347_obj_vendor_ev_council_quick
+    state=COMPLETE calls=7 elapsed=164.1s checks={'recommended_matches': False, 'kind_acceptable': False, 'completed': True}
+[2] obj_vendor_ev / first_pass -> bench_20261124_170347_obj_vendor_ev_first_pass
+    state=COMPLETE calls=8 elapsed=183.8s checks={'recommended_matches': False, 'kind_acceptable': True, 'completed': True}
+[3] gate_budget_fail / council_quick -> bench_20261124_170347_gate_budget_fail_council_quick
+    state=COMPLETE calls=28 elapsed=821.9s checks={'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True}
+[4] gate_budget_fail / first_pass -> bench_20261124_170347_gate_budget_fail_first_pass
+    state=COMPLETE calls=25 elapsed=555.3s checks={'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True}
+[5] open_channel_mix / council_quick -> bench_20261124_170347_open_channel_mix_council_quick
+    state=COMPLETE calls=41 elapsed=1549.1s checks={'completed': True}
+[6] open_channel_mix / first_pass -> bench_20261124_170347_open_channel_mix_first_pass
+    state=COMPLETE calls=36 elapsed=1177.1s checks={'completed': True}
+[7] false_premise / council_quick -> bench_20261124_170347_false_premise_council_quick
+    state=COMPLETE calls=22 elapsed=625.0s checks={'kind_acceptable': True, 'premise_flagged': True, 'completed': True}
+[8] false_premise / first_pass -> bench_20261124_170347_false_premise_first_pass
+    state=COMPLETE calls=23 elapsed=592.9s checks={'kind_acceptable': True, 'premise_flagged': True, 'completed': True}
+[9] deferral_missing_info / council_quick -> bench_20261124_170347_deferral_missing_info_council_quick
+    state=COMPLETE calls=21 elapsed=706.2s checks={'kind_acceptable': True, 'completed': True}
+[10] deferral_missing_info / first_pass -> bench_20261124_170347_deferral_missing_info_first_pass
+    state=COMPLETE calls=24 elapsed=617.6s checks={'kind_acceptable': False, 'completed': True}
+[11] trivial_overhead / council_quick -> bench_20261124_170347_trivial_overhead_council_quick
+    state=COMPLETE calls=6 elapsed=116.3s checks={'stop_reason_acceptable': True, 'within_call_cap': True, 'completed': True}
+[12] trivial_overhead / first_pass -> bench_20261124_170347_trivial_overhead_first_pass
+    state=COMPLETE calls=6 elapsed=107.3s checks={'stop_reason_acceptable': True, 'within_call_cap': True, 'completed': True}
+    eval open_channel_mix council_quick vs first_pass rep 1: winner=first_pass err=None
+    eval open_channel_mix council_quick vs first_pass rep 2: winner=council_quick err=None
+# Benchmark campaign 2026-11-24T19:04
+
+In-run model: claude-agent/haiku (OpenCode restricted agent, all roles). Evaluator: claude-agent/sonnet (blinded A/B, 2 repeats, order randomised).
+Runs: 12. Stopped early: no.
+
+| case | system | state | kind | stop | calls | tokens (measured) | elapsed s | cost | checks |
+|---|---|---|---|---|---|---|---|---|---|
+| obj_vendor_ev | council_quick | COMPLETE | no_eligible_option | trivial_question | 7 | 101224 | 164.1 | unavailable | {'recommended_matches': False, 'kind_acceptable': False, 'completed': True} |
+| obj_vendor_ev | first_pass | COMPLETE | firm | trivial_question | 8 | 114181 | 183.8 | unavailable | {'recommended_matches': False, 'kind_acceptable': True, 'completed': True} |
+| gate_budget_fail | council_quick | COMPLETE | firm | budget_tokens | 28 | 532091 | 821.9 | unavailable | {'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True} |
+| gate_budget_fail | first_pass | COMPLETE | shortlist | max_rounds | 25 | 395167 | 555.3 | unavailable | {'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True} |
+| open_channel_mix | council_quick | COMPLETE | conditional | budget_calls | 41 | 1061715 | 1549.1 | unavailable | {'completed': True} |
+| open_channel_mix | first_pass | COMPLETE | firm | budget_tokens | 36 | 767146 | 1177.1 | unavailable | {'completed': True} |
+| false_premise | council_quick | COMPLETE | conditional | budget_tokens | 22 | 400836 | 625.0 | unavailable | {'kind_acceptable': True, 'premise_flagged': True, 'completed': True} |
+| false_premise | first_pass | COMPLETE | firm | budget_tokens | 23 | 412271 | 592.9 | unavailable | {'kind_acceptable': True, 'premise_flagged': True, 'completed': True} |
+| deferral_missing_info | council_quick | COMPLETE | conditional | budget_tokens | 21 | 421018 | 706.2 | unavailable | {'kind_acceptable': True, 'completed': True} |
+| deferral_missing_info | first_pass | COMPLETE | firm | budget_tokens | 24 | 413957 | 617.6 | unavailable | {'kind_acceptable': False, 'completed': True} |
+| trivial_overhead | council_quick | COMPLETE | firm | trivial_question | 6 | 71048 | 116.3 | unavailable | {'stop_reason_acceptable': True, 'within_call_cap': True, 'completed': True} |
+| trivial_overhead | first_pass | COMPLETE | firm | trivial_question | 6 | 70554 | 107.3 | unavailable | {'stop_reason_acceptable': True, 'within_call_cap': True, 'completed': True} |
+
+## Blinded rubric evaluations (open cases)
+| case | pair | repeat | winner | scores | reason |
+|---|---|---|---|---|---|
+| open_channel_mix | first_pass vs council_quick | 1 | first_pass | {"council_quick": {"defensibility": 7, "completeness": 8, "actionability": 6}, "first_pass": {"defensibility": 7, "completeness": 6, "actionability": 8}} | A gives a concrete, capped 10k pilot with explicit gates, a revert rule and a holdout, while B is more thorough on risks and dissent but its next action is a list of open uncertainties rather than one clear step. |
+| open_channel_mix | council_quick vs first_pass | 2 | council_quick | {"council_quick": {"defensibility": 8, "completeness": 8, "actionability": 6}, "first_pass": {"defensibility": 6, "completeness": 6, "actionability": 8}} | A is better calibrated, with low confidence, open objections and power and incrementality gaps named. B gives a more concrete gated plan but calls its outcome firm and medium confidence while its own gate thresholds are unvalidated, and it lists no dissent or objections despite acknowledging missing data. |
+
+Wins/ties: {'first_pass': 1, 'council_quick': 1}
+
+## Reference systems status
+- llm-council-main (first-pass workflow): compared via the engine's `first_pass` preset (same lenses, no review/challenge); the original Claude Code agents need nested subagent spawning and were not executed
+- council-review-main: deferred under budget: prompt-only Claude Code skill requiring ~12 haiku subagent calls per case driven by hand; not executed
+- council-master: blocked by credentials: needs OpenAI-compatible API keys (Gemini/xAI) as environment variables; none present
+- LLM-Council-Decide-master: blocked by credentials and dependencies: OPENROUTER_API_KEY and Typst not available
+- neuralhats-main: blocked by dependencies: Ollama with gemma4 not installed
+- llm-as-a-verifier-main: blocked by dependencies: needs a logprob backend (DeepSeek, Vertex or OpenAI-compatible with logprobs); none configured
+exit=0

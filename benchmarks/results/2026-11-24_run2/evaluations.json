@@ -1,0 +1,66 @@
+[
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 145,
+   "reasoning": 0,
+   "cache": {
+    "read": 1042,
+    "write": 5781
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 7, \"completeness\": 6, \"actionability\": 8}, \"B\": {\"defensibility\": 7, \"completeness\": 8, \"actionability\": 6}, \"better\": \"A\", \"reason\": \"A gives a concrete, capped 10k pilot with explicit gates, a revert rule and a holdout, while B is more thorough on risks and dissent but its next action is a list of open uncertainties rather than one clear step.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 7,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 7,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "first_pass",
+  "reason": "A gives a concrete, capped 10k pilot with explicit gates, a revert rule and a holdout, while B is more thorough on risks and dissent but its next action is a list of open uncertainties rather than one clear step.",
+  "case": "open_channel_mix",
+  "repeat": 1
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 169,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 4462
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 8, \"completeness\": 8, \"actionability\": 6}, \"B\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"better\": \"A\", \"reason\": \"A is better calibrated, with low confidence, open objections and power and incrementality gaps named. B gives a more concrete gated plan but calls its outcome firm and medium confidence while its own gate thresholds are unvalidated, and it lists no dissent or objections despite acknowledging missing data.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 8,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "council_quick",
+  "reason": "A is better calibrated, with low confidence, open objections and power and incrementality gaps named. B gives a more concrete gated plan but calls its outcome firm and medium confidence while its own gate thresholds are unvalidated, and it lists no dissent or objections despite acknowledging missing data.",
+  "case": "open_channel_mix",
+  "repeat": 2
+ }
+]

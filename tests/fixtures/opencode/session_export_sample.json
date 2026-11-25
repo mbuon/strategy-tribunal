@@ -1,0 +1,1 @@
+{"info": {"id": "ses_df205776affeGoh6ztVrFkooAV", "agent": "council-member", "model": {"id": "haiku", "providerID": "claude-agent", "variant": "default"}, "cost": 0, "tokens": {"input": 2, "output": 4, "reasoning": 0, "cache": {"read": 1042, "write": 2680}}}, "messages": []}

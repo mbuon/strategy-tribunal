@@ -1,0 +1,14 @@
+{
+ "meta": {
+  "question": "Should we shift 30% of our Q1 paid-search budget into short-form video?"
+ },
+ "responses": [
+  {
+   "match": {
+    "kind": "frame"
+   },
+   "raw": "I cannot answer in JSON.",
+   "once": false
+  }
+ ]
+}

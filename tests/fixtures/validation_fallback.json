@@ -1,0 +1,626 @@
+{
+ "meta": {
+  "question": "Should we shift 30% of our Q1 paid-search budget into short-form video?",
+  "lenses": "staging,information_option,asymmetric_upside"
+ },
+ "responses": [
+  {
+   "match": {
+    "kind": "frame",
+    "attempt": 1
+   },
+   "raw": "not json at all"
+  },
+  {
+   "match": {
+    "kind": "frame",
+    "attempt": 2
+   },
+   "raw": "{\"still\": \"wrong\"}"
+  },
+  {
+   "match": {
+    "kind": "frame",
+    "attempt": 3
+   },
+   "content": {
+    "decision_statement": "Decide how much of the fixed Q1 paid budget to move from paid search into short-form video, and under which conditions.",
+    "objectives": [
+     "Grow incremental reach without losing measured efficiency",
+     "Keep Q1 within the fixed budget"
+    ],
+    "stakeholders": [
+     "growth team",
+     "finance",
+     "creative team"
+    ],
+    "hard_constraints": [
+     {
+      "text": "Q1 total paid media budget must not exceed 400k EUR",
+      "source": "user_stated"
+     }
+    ],
+    "preferences": [
+     "prefer measurable moves over bets"
+    ],
+    "time_horizon": "Q1 (13 weeks), budget locked by week 2",
+    "stakes": "high",
+    "reversibility": "costly",
+    "domain": "complicated",
+    "evidence_gaps": [
+     "incrementality of short-form video is unknown",
+     "creative production capacity in January is unknown"
+    ],
+    "interpretations": [
+     {
+      "text": "'shift 30%' means a one-off reallocation for the whole quarter",
+      "implied_action": "decide a quarter-long split"
+     }
+    ],
+    "inferred_assumptions": [
+     "The team can run paid video campaigns in-house"
+    ],
+    "decision_kind": "decision",
+    "user_facts": [
+     {
+      "id": "ev_u1",
+      "statement": "Q1 paid media budget is fixed at 400k EUR",
+      "source": {
+       "kind": "user",
+       "ref": "question"
+      },
+      "verification_status": "user_supplied"
+     },
+     {
+      "id": "ev_u2",
+      "statement": "Paid search delivered ROAS 2.1 last quarter",
+      "source": {
+       "kind": "user",
+       "ref": "question"
+      },
+      "verification_status": "user_supplied"
+     }
+    ]
+   }
+  },
+  {
+   "match": {
+    "kind": "policy"
+   },
+   "content": {
+    "criteria": [
+     {
+      "id": "crit_gate_budget",
+      "name": "Stays within the Q1 budget ceiling",
+      "kind": "gate",
+      "weight": 0,
+      "description": "Fails if the option can breach 400k EUR under plausible cost spikes"
+     },
+     {
+      "id": "crit_reach",
+      "name": "Incremental reach and efficiency",
+      "kind": "score",
+      "weight": 4,
+      "anchor_0": "no incremental reach",
+      "anchor_5": "some reach at worse efficiency",
+      "anchor_10": "large incremental reach at parity ROAS"
+     },
+     {
+      "id": "crit_measurability",
+      "name": "Measurability of the result",
+      "kind": "score",
+      "weight": 3,
+      "anchor_0": "unmeasurable",
+      "anchor_5": "directional read",
+      "anchor_10": "clean incrementality readout before budget lock"
+     },
+     {
+      "id": "crit_execution",
+      "name": "Execution risk (10 = lowest risk)",
+      "kind": "score",
+      "weight": 2,
+      "anchor_0": "cannot be executed in Q1",
+      "anchor_5": "executable with new vendors",
+      "anchor_10": "executable with current team"
+     },
+     {
+      "id": "crit_brand",
+      "name": "Brand fit",
+      "kind": "score",
+      "weight": 1,
+      "anchor_0": "conflicts with brand",
+      "anchor_5": "neutral",
+      "anchor_10": "strengthens brand"
+     }
+    ],
+    "scenarios": [
+     {
+      "id": "scn_cpm_spike",
+      "name": "Video CPM spike in January",
+      "likelihood": "medium",
+      "priority": true
+     },
+     {
+      "id": "scn_search_saturation",
+      "name": "Paid search saturates in Q2",
+      "likelihood": "medium"
+     }
+    ]
+   }
+  },
+  {
+   "match": {
+    "kind": "baseline"
+   },
+   "content": {
+    "options": [
+     {
+      "id": "optv_A_v1",
+      "option_id": "opt_A",
+      "title": "Keep the Q1 budget in paid search",
+      "summary": "Status quo: hold the 400k EUR in paid search for Q1 and revisit in Q2.",
+      "mechanism": "Preserves the measured ROAS 2.1 channel.",
+      "claims": [
+       {
+        "id": "clm_a1",
+        "text": "Search ROAS 2.1 is a measured baseline",
+        "kind": "fact",
+        "evidence_ids": [
+         "ev_u2"
+        ]
+       }
+      ],
+      "assumptions": [],
+      "generation_note": {
+       "how": "status quo",
+       "resources": "model only",
+       "missing_inputs": []
+      },
+      "is_status_quo": true
+     },
+     {
+      "id": "optv_B_v1",
+      "option_id": "opt_B",
+      "title": "Shift 30% to short-form video in January",
+      "summary": "Reallocate 120k EUR to short-form video from week 1 and run it for the whole quarter.",
+      "mechanism": "Buys reach search cannot deliver.",
+      "claims": [
+       {
+        "id": "clm_b1",
+        "text": "Short-form video reaches audiences search cannot",
+        "kind": "inference"
+       }
+      ],
+      "assumptions": [
+       {
+        "id": "asm_b1",
+        "text": "Creative can be produced in January",
+        "influential": true,
+        "if_false_effect": "spend starts late and Q1 readout is lost"
+       }
+      ],
+      "generation_note": {
+       "how": "direct answer to the question",
+       "resources": "model only",
+       "missing_inputs": [
+        "video CPM forecast"
+       ]
+      }
+     }
+    ],
+    "evidence": []
+   }
+  },
+  {
+   "match": {
+    "kind": "judge",
+    "version_id": "optv_A_v1",
+    "snapshot": "snap-2"
+   },
+   "content": {
+    "gate_results": [
+     {
+      "criterion_id": "crit_gate_budget",
+      "outcome": "pass",
+      "rationale": "No reallocation; ceiling untouched",
+      "evidence_ids": [
+       "ev_u1"
+      ]
+     }
+    ],
+    "criterion_scores": [
+     {
+      "criterion_id": "crit_reach",
+      "score": 3,
+      "confidence": "medium",
+      "rationale": "No incremental reach beyond search",
+      "evidence_ids": [
+       "ev_u2"
+      ]
+     },
+     {
+      "criterion_id": "crit_measurability",
+      "score": 8,
+      "confidence": "high",
+      "rationale": "Search ROAS is measured",
+      "evidence_ids": [
+       "ev_u2"
+      ]
+     },
+     {
+      "criterion_id": "crit_execution",
+      "score": 9,
+      "confidence": "high",
+      "rationale": "Nothing changes",
+      "evidence_ids": [
+       "ev_u1"
+      ]
+     },
+     {
+      "criterion_id": "crit_brand",
+      "score": 6,
+      "confidence": "medium",
+      "rationale": "Neutral",
+      "evidence_ids": [
+       "ev_u2"
+      ]
+     }
+    ],
+    "scenario_scores": {
+     "scn_cpm_spike": 7,
+     "scn_search_saturation": 3
+    }
+   }
+  },
+  {
+   "match": {
+    "kind": "judge",
+    "version_id": "optv_B_v1",
+    "snapshot": "snap-2"
+   },
+   "content": {
+    "gate_results": [
+     {
+      "criterion_id": "crit_gate_budget",
+      "outcome": "unverified",
+      "rationale": "A 30% shift could breach the ceiling under a CPM spike; no forecast supplied"
+     }
+    ],
+    "criterion_scores": [
+     {
+      "criterion_id": "crit_reach",
+      "score": 7,
+      "confidence": "medium",
+      "rationale": "Large reach if creative lands in January",
+      "assumption_ids": [
+       "asm_b1"
+      ]
+     },
+     {
+      "criterion_id": "crit_measurability",
+      "score": 4,
+      "confidence": "medium",
+      "rationale": "No holdout; attribution only",
+      "assumption_ids": [
+       "asm_b1"
+      ]
+     },
+     {
+      "criterion_id": "crit_execution",
+      "score": 5,
+      "confidence": "low",
+      "rationale": "Creative capacity unconfirmed",
+      "assumption_ids": [
+       "asm_b1"
+      ]
+     },
+     {
+      "criterion_id": "crit_brand",
+      "score": 6,
+      "confidence": "medium",
+      "rationale": "crit_brand = 6",
+      "assumption_ids": [
+       "asm_b1"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "match": {
+    "kind": "generate",
+    "lens": "staging"
+   },
+   "content": {
+    "options": [
+     {
+      "id": "optv_C_v1",
+      "option_id": "opt_C",
+      "title": "Staged 10% pilot with scale gates",
+      "summary": "Move 10% (40k EUR) into short-form video for six weeks; scale to 30% only if incremental ROAS >= 1.2x the search baseline.",
+      "mechanism": "Buys information cheaply before the costly commitment; the gate protects the budget ceiling.",
+      "claims": [
+       {
+        "id": "clm_c1",
+        "text": "A 10% pilot keeps Q1 within budget",
+        "kind": "fact",
+        "evidence_ids": [
+         "ev_u1"
+        ]
+       },
+       {
+        "id": "clm_c2",
+        "text": "Scaling only after a readout caps downside at 40k EUR",
+        "kind": "prediction"
+       }
+      ],
+      "assumptions": [
+       {
+        "id": "asm_c1",
+        "text": "Incrementality can be measured within six weeks",
+        "influential": true,
+        "if_false_effect": "the pilot cannot produce a readout before the Q1 lock"
+       }
+      ],
+      "generation_note": {
+       "how": "staging lens",
+       "resources": "model only",
+       "missing_inputs": []
+      }
+     }
+    ]
+   }
+  },
+  {
+   "match": {
+    "kind": "generate",
+    "lens": "information_option"
+   },
+   "content": {
+    "options": [
+     {
+      "id": "optv_D_v1",
+      "option_id": "opt_D",
+      "title": "Run a four-week incrementality study before reallocating",
+      "summary": "Hold the budget, run a small geo-split video test, decide the reallocation at week 5.",
+      "mechanism": "Resolves the decisive uncertainty before committing money.",
+      "claims": [
+       {
+        "id": "clm_d1",
+        "text": "A geo-split test answers the incrementality question",
+        "kind": "inference"
+       }
+      ],
+      "assumptions": [
+       {
+        "id": "asm_d1",
+        "text": "A four-week study delays any reallocation by a month",
+        "influential": false
+       }
+      ],
+      "generation_note": {
+       "how": "information option lens",
+       "resources": "model only",
+       "missing_inputs": []
+      }
+     }
+    ]
+   }
+  },
+  {
+   "match": {
+    "kind": "generate",
+    "lens": "asymmetric_upside"
+   },
+   "content": {
+    "options": [
+     {
+      "id": "optv_E_v1",
+      "option_id": "opt_E",
+      "title": "Shift 30% with creator partnerships",
+      "summary": "Reallocate 120k EUR to creator-led short-form video to capture outsized organic reach.",
+      "mechanism": "Creator content can earn organic distribution beyond paid impressions.",
+      "claims": [
+       {
+        "id": "clm_e1",
+        "text": "Creator content earns organic reach beyond paid impressions",
+        "kind": "prediction"
+       }
+      ],
+      "assumptions": [
+       {
+        "id": "asm_e1",
+        "text": "Creator deals can be signed within three weeks",
+        "influential": true,
+        "if_false_effect": "spend slips into February"
+       }
+      ],
+      "generation_note": {
+       "how": "asymmetric upside lens",
+       "resources": "model only",
+       "missing_inputs": [
+        "creator rate card"
+       ]
+      }
+     }
+    ]
+   }
+  },
+  {
+   "match": {
+    "kind": "judge",
+    "version_id": "optv_C_v1",
+    "snapshot": "snap-2"
+   },
+   "content": {
+    "gate_results": [
+     {
+      "criterion_id": "crit_gate_budget",
+      "outcome": "pass",
+      "rationale": "10% pilot stays inside 400k",
+      "evidence_ids": [
+       "ev_u1"
+      ]
+     }
+    ],
+    "criterion_scores": [
+     {
+      "criterion_id": "crit_reach",
+      "score": 7,
+      "confidence": "high",
+      "rationale": "Pilot plus scale path",
+      "assumption_ids": [
+       "asm_c1"
+      ]
+     },
+     {
+      "criterion_id": "crit_measurability",
+      "score": 8,
+      "confidence": "high",
+      "rationale": "Gate defined on incremental ROAS",
+      "assumption_ids": [
+       "asm_c1"
+      ]
+     },
+     {
+      "criterion_id": "crit_execution",
+      "score": 8,
+      "confidence": "high",
+      "rationale": "Small spend, current team",
+      "evidence_ids": [
+       "ev_u1"
+      ]
+     },
+     {
+      "criterion_id": "crit_brand",
+      "score": 6,
+      "confidence": "medium",
+      "rationale": "crit_brand = 6",
+      "assumption_ids": [
+       "asm_c1"
+      ]
+     }
+    ],
+    "scenario_scores": {
+     "scn_cpm_spike": 7,
+     "scn_search_saturation": 8
+    }
+   }
+  },
+  {
+   "match": {
+    "kind": "judge",
+    "version_id": "optv_D_v1",
+    "snapshot": "snap-2"
+   },
+   "content": {
+    "gate_results": [
+     {
+      "criterion_id": "crit_gate_budget",
+      "outcome": "pass",
+      "rationale": "No reallocation in the study period",
+      "evidence_ids": [
+       "ev_u1"
+      ]
+     }
+    ],
+    "criterion_scores": [
+     {
+      "criterion_id": "crit_reach",
+      "score": 4,
+      "confidence": "high",
+      "rationale": "Reach only after week 5",
+      "assumption_ids": [
+       "asm_d1"
+      ]
+     },
+     {
+      "criterion_id": "crit_measurability",
+      "score": 9,
+      "confidence": "high",
+      "rationale": "Designed to measure",
+      "assumption_ids": [
+       "asm_d1"
+      ]
+     },
+     {
+      "criterion_id": "crit_execution",
+      "score": 9,
+      "confidence": "high",
+      "rationale": "crit_execution = 9",
+      "evidence_ids": [
+       "ev_u1"
+      ]
+     },
+     {
+      "criterion_id": "crit_brand",
+      "score": 6,
+      "confidence": "medium",
+      "rationale": "crit_brand = 6",
+      "assumption_ids": [
+       "asm_d1"
+      ]
+     }
+    ],
+    "scenario_scores": {
+     "scn_cpm_spike": 8,
+     "scn_search_saturation": 5
+    }
+   }
+  },
+  {
+   "match": {
+    "kind": "judge",
+    "version_id": "optv_E_v1",
+    "snapshot": "snap-2"
+   },
+   "content": {
+    "gate_results": [
+     {
+      "criterion_id": "crit_gate_budget",
+      "outcome": "unverified",
+      "rationale": "30% shift; compliance not shown"
+     }
+    ],
+    "criterion_scores": [
+     {
+      "criterion_id": "crit_reach",
+      "score": 7,
+      "confidence": "medium",
+      "rationale": "crit_reach = 7",
+      "assumption_ids": [
+       "asm_e1"
+      ]
+     },
+     {
+      "criterion_id": "crit_measurability",
+      "score": 4,
+      "confidence": "medium",
+      "rationale": "crit_measurability = 4",
+      "assumption_ids": [
+       "asm_e1"
+      ]
+     },
+     {
+      "criterion_id": "crit_execution",
+      "score": 4,
+      "confidence": "low",
+      "rationale": "crit_execution = 4",
+      "assumption_ids": [
+       "asm_e1"
+      ]
+     },
+     {
+      "criterion_id": "crit_brand",
+      "score": 7,
+      "confidence": "medium",
+      "rationale": "crit_brand = 7",
+      "assumption_ids": [
+       "asm_e1"
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

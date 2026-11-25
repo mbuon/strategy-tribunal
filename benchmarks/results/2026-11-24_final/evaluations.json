@@ -1,0 +1,429 @@
+[
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 164,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 4766
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 7, \"actionability\": 9}, \"B\": {\"defensibility\": 4, \"completeness\": 5, \"actionability\": 3}, \"better\": \"A\", \"reason\": \"Record A gives a concrete staged plan with budgets, a review date, gate and fallback and clear reversal conditions, while Record B's next action is only an internal housekeeping step (merge OPT-6 into OPT-5), it leaves several material objections open, and it is cut off.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 4,
+    "completeness": 5,
+    "actionability": 3
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 7,
+    "actionability": 9
+   }
+  },
+  "winner": "first_pass",
+  "reason": "Record A gives a concrete staged plan with budgets, a review date, gate and fallback and clear reversal conditions, while Record B's next action is only an internal housekeeping step (merge OPT-6 into OPT-5), it leaves several material objections open, and it is cut off.",
+  "case": "open_channel_mix",
+  "repeat": 1,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 1
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 154,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 4766
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 3}, \"B\": {\"defensibility\": 7, \"completeness\": 8, \"actionability\": 9}, \"better\": \"B\", \"reason\": \"B gives a concrete staged plan with a dated review, explicit scale and fallback rules, and reversal conditions, while A's next action is an administrative 'merge OPT-6 into OPT-5' and its record is dominated by unresolved objections.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 3
+   },
+   "first_pass": {
+    "defensibility": 7,
+    "completeness": 8,
+    "actionability": 9
+   }
+  },
+  "winner": "first_pass",
+  "reason": "B gives a concrete staged plan with a dated review, explicit scale and fallback rules, and reversal conditions, while A's next action is an administrative 'merge OPT-6 into OPT-5' and its record is dominated by unresolved objections.",
+  "case": "open_channel_mix",
+  "repeat": 2,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 1
+ },
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 139,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 6154
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"B\": {\"defensibility\": 6, \"completeness\": 8, \"actionability\": 4}, \"better\": \"A\", \"reason\": \"A gives a concrete staged budget split with gates and reversal conditions, whereas B's thorough objection coverage ends in an unclear next action (moving a gate date) and an unresolved recommendation.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 6,
+    "completeness": 8,
+    "actionability": 4
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "first_pass",
+  "reason": "A gives a concrete staged budget split with gates and reversal conditions, whereas B's thorough objection coverage ends in an unclear next action (moving a gate date) and an unresolved recommendation.",
+  "case": "open_channel_mix",
+  "repeat": 1,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 2,
+  "note": "Pass 2 after two in-scope corrections found from pass 1: (a) report.py now orders open objections by relevance to the recommended option before picking the next action (pass 1 surfaced a minor duplicate-merge objection on a third option as the next action); (b) the evaluator input no longer hard-cuts at 6000 characters (the council record was cut mid-sentence and penalised as 'cut off'); both open-case runs were rebuilt with `council rereport` (no model calls) and re-evaluated with 3 repeats."
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 138,
+   "reasoning": 0,
+   "cache": {
+    "read": 2361,
+    "write": 6154
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 8, \"completeness\": 8, \"actionability\": 6}, \"B\": {\"defensibility\": 6, \"completeness\": 5, \"actionability\": 8}, \"better\": \"A\", \"reason\": \"A is better because it states its low confidence, lists its open objections and says what would reverse it, while B reports a 'firm' outcome and no dissent even though its own gates are unverified and its confidence is low.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 8,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 5,
+    "actionability": 8
+   }
+  },
+  "winner": "council_quick",
+  "reason": "A is better because it states its low confidence, lists its open objections and says what would reverse it, while B reports a 'firm' outcome and no dissent even though its own gates are unverified and its confidence is low.",
+  "case": "open_channel_mix",
+  "repeat": 2,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 2,
+  "note": "Pass 2 after two in-scope corrections found from pass 1: (a) report.py now orders open objections by relevance to the recommended option before picking the next action (pass 1 surfaced a minor duplicate-merge objection on a third option as the next action); (b) the evaluator input no longer hard-cuts at 6000 characters (the council record was cut mid-sentence and penalised as 'cut off'); both open-case runs were rebuilt with `council rereport` (no model calls) and re-evaluated with 3 repeats."
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 170,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 8, \"completeness\": 8, \"actionability\": 6}, \"B\": {\"defensibility\": 6, \"completeness\": 5, \"actionability\": 8}, \"better\": \"A\", \"reason\": \"A is better because it is honest about low confidence and about open objections (marginal Meta CAC, kill line above target, attribution and incrementality). B's 'firm' outcome with no dissent conflicts with its low confidence and three unverified gates, though B's concrete staged plan is clearer to act on.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 8,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 5,
+    "actionability": 8
+   }
+  },
+  "winner": "council_quick",
+  "reason": "A is better because it is honest about low confidence and about open objections (marginal Meta CAC, kill line above target, attribution and incrementality). B's 'firm' outcome with no dissent conflicts with its low confidence and three unverified gates, though B's concrete staged plan is clearer to act on.",
+  "case": "open_channel_mix",
+  "repeat": 3,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 2,
+  "note": "Pass 2 after two in-scope corrections found from pass 1: (a) report.py now orders open objections by relevance to the recommended option before picking the next action (pass 1 surfaced a minor duplicate-merge objection on a third option as the next action); (b) the evaluator input no longer hard-cuts at 6000 characters (the council record was cut mid-sentence and penalised as 'cut off'); both open-case runs were rebuilt with `council rereport` (no model calls) and re-evaluated with 3 repeats."
+ },
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 143,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"B\": {\"defensibility\": 6, \"completeness\": 8, \"actionability\": 4}, \"better\": \"A\", \"reason\": \"A gives a concrete staged budget plan with a gate, a review date and a fallback, while B names a 10% test cell but its next action is only to fix a gate date, even though B is more thorough about unknowns and objections.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 6,
+    "completeness": 8,
+    "actionability": 4
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "first_pass",
+  "reason": "A gives a concrete staged budget plan with a gate, a review date and a fallback, while B names a 10% test cell but its next action is only to fix a gate date, even though B is more thorough about unknowns and objections.",
+  "case": "open_channel_mix",
+  "repeat": 1,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 3,
+  "note": "Pass 3, order-balanced: 3 repeats with council_quick shown first (A) and 3 with first_pass shown first; same rebuilt records as pass 2. Added because every pass-2 verdict went to whichever record was shown first."
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 203,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 7, \"completeness\": 8, \"actionability\": 6}, \"B\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"better\": \"A\", \"reason\": \"A is the more honest and complete record: it states low confidence, surfaces the open objections (attribution overlap, margin and LTV, seasonality, kill line above target) and names what would reverse the decision, though its next action is a bit muddled. B gives a cleaner, more concrete staged plan, but it labels the outcome 'firm' with no dissent while its own gates are unverified and its confidence is low.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 7,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "council_quick",
+  "reason": "A is the more honest and complete record: it states low confidence, surfaces the open objections (attribution overlap, margin and LTV, seasonality, kill line above target) and names what would reverse the decision, though its next action is a bit muddled. B gives a cleaner, more concrete staged plan, but it labels the outcome 'firm' with no dissent while its own gates are unverified and its confidence is low.",
+  "case": "open_channel_mix",
+  "repeat": 1,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 3,
+  "note": "Pass 3, order-balanced: 3 repeats with council_quick shown first (A) and 3 with first_pass shown first; same rebuilt records as pass 2. Added because every pass-2 verdict went to whichever record was shown first."
+ },
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 145,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"B\": {\"defensibility\": 6, \"completeness\": 8, \"actionability\": 4}, \"better\": \"A\", \"reason\": \"A gives a concrete, capped, gated plan with budgets, a review date and fallback, while B has richer risk coverage but its next action is an obscure gate-date fix that doesn't tell the user what to do with the budget.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 6,
+    "completeness": 8,
+    "actionability": 4
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "first_pass",
+  "reason": "A gives a concrete, capped, gated plan with budgets, a review date and fallback, while B has richer risk coverage but its next action is an obscure gate-date fix that doesn't tell the user what to do with the budget.",
+  "case": "open_channel_mix",
+  "repeat": 2,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 3,
+  "note": "Pass 3, order-balanced: 3 repeats with council_quick shown first (A) and 3 with first_pass shown first; same rebuilt records as pass 2. Added because every pass-2 verdict went to whichever record was shown first."
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 148,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 7, \"completeness\": 8, \"actionability\": 6}, \"B\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"better\": \"A\", \"reason\": \"A is more candid about uncertainty, open objections and what would reverse the decision, though its next action is less crisp, while B gives a clearer staged plan but labels itself 'firm' with no dissent and leaves three gates unverified.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 7,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "council_quick",
+  "reason": "A is more candid about uncertainty, open objections and what would reverse the decision, though its next action is less crisp, while B gives a clearer staged plan but labels itself 'firm' with no dissent and leaves three gates unverified.",
+  "case": "open_channel_mix",
+  "repeat": 2,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 3,
+  "note": "Pass 3, order-balanced: 3 repeats with council_quick shown first (A) and 3 with first_pass shown first; same rebuilt records as pass 2. Added because every pass-2 verdict went to whichever record was shown first."
+ },
+ {
+  "swap": true,
+  "first": "first_pass",
+  "second": "council_quick",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 146,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 6, \"completeness\": 6, \"actionability\": 8}, \"B\": {\"defensibility\": 6, \"completeness\": 8, \"actionability\": 4}, \"better\": \"A\", \"reason\": \"A gives a concrete budget split, review timing, and pass/fail gates that can be executed immediately, while B has deeper risk coverage but its next action is an obscure fix to a gate date rather than a clear step for the decision.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 6,
+    "completeness": 8,
+    "actionability": 4
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 6,
+    "actionability": 8
+   }
+  },
+  "winner": "first_pass",
+  "reason": "A gives a concrete budget split, review timing, and pass/fail gates that can be executed immediately, while B has deeper risk coverage but its next action is an obscure fix to a gate date rather than a clear step for the decision.",
+  "case": "open_channel_mix",
+  "repeat": 3,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 3,
+  "note": "Pass 3, order-balanced: 3 repeats with council_quick shown first (A) and 3 with first_pass shown first; same rebuilt records as pass 2. Added because every pass-2 verdict went to whichever record was shown first."
+ },
+ {
+  "swap": false,
+  "first": "council_quick",
+  "second": "first_pass",
+  "error": null,
+  "tokens": {
+   "input": 2,
+   "output": 166,
+   "reasoning": 0,
+   "cache": {
+    "read": 8515,
+    "write": 0
+   }
+  },
+  "raw": "{\"A\": {\"defensibility\": 8, \"completeness\": 8, \"actionability\": 6}, \"B\": {\"defensibility\": 6, \"completeness\": 5, \"actionability\": 8}, \"better\": \"A\", \"reason\": \"A is better because it states its low confidence, lists the open objections and what would reverse the decision, and recommends a smaller 10% test, while B calls its outcome 'firm' and reports no dissent even though three gates are unverified and its own confidence is low, although B's next action is the more concrete.\"}",
+  "scores": {
+   "council_quick": {
+    "defensibility": 8,
+    "completeness": 8,
+    "actionability": 6
+   },
+   "first_pass": {
+    "defensibility": 6,
+    "completeness": 5,
+    "actionability": 8
+   }
+  },
+  "winner": "council_quick",
+  "reason": "A is better because it states its low confidence, lists the open objections and what would reverse the decision, and recommends a smaller 10% test, while B calls its outcome 'firm' and reports no dissent even though three gates are unverified and its own confidence is low, although B's next action is the more concrete.",
+  "case": "open_channel_mix",
+  "repeat": 3,
+  "repeat_index": 1,
+  "runs": {
+   "council_quick": "bench_20261124_191503_open_channel_mix_council_quick",
+   "first_pass": "bench_20261124_191503_open_channel_mix_first_pass"
+  },
+  "pass": 3,
+  "note": "Pass 3, order-balanced: 3 repeats with council_quick shown first (A) and 3 with first_pass shown first; same rebuilt records as pass 2. Added because every pass-2 verdict went to whichever record was shown first."
+ }
+]

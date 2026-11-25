@@ -1,0 +1,29 @@
+[1] obj_vendor_ev / council_quick -> bench_20261124_172643_obj_vendor_ev_council_quick
+    state=COMPLETE calls=7 elapsed=159.9s checks={'recommended_matches': True, 'kind_acceptable': True, 'completed': True}
+[2] obj_vendor_ev / first_pass -> bench_20261124_172643_obj_vendor_ev_first_pass
+    state=COMPLETE calls=28 elapsed=874.7s checks={'recommended_matches': True, 'kind_acceptable': True, 'completed': True}
+[3] gate_budget_fail / council_quick -> bench_20261124_172643_gate_budget_fail_council_quick
+    state=COMPLETE calls=39 elapsed=1050.2s checks={'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True}
+[4] gate_budget_fail / first_pass -> bench_20261124_172643_gate_budget_fail_first_pass
+    state=COMPLETE calls=36 elapsed=720.0s checks={'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True}
+# Benchmark campaign 2026-11-24T18:13
+
+In-run model: claude-agent/haiku (OpenCode restricted agent, all roles). Evaluator: claude-agent/sonnet (blinded A/B, 2 repeats, order randomised).
+Runs: 4. Stopped early: no.
+
+| case | system | state | kind | stop | calls | tokens (measured) | elapsed s | cost | checks |
+|---|---|---|---|---|---|---|---|---|---|
+| obj_vendor_ev | council_quick | COMPLETE | shortlist | trivial_question | 7 | 100266 | 159.9 | unavailable | {'recommended_matches': True, 'kind_acceptable': True, 'completed': True} |
+| obj_vendor_ev | first_pass | COMPLETE | shortlist | budget_tokens | 28 | 524688 | 874.7 | unavailable | {'recommended_matches': True, 'kind_acceptable': True, 'completed': True} |
+| gate_budget_fail | council_quick | COMPLETE | conditional | budget_calls | 39 | 748293 | 1050.2 | unavailable | {'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True} |
+| gate_budget_fail | first_pass | COMPLETE | firm | budget_tokens | 36 | 578019 | 720.0 | unavailable | {'recommended_avoids': True, 'gate_failed_on_planted_option': False, 'completed': True} |
+
+
+## Reference systems status
+- llm-council-main (first-pass workflow): compared via the engine's `first_pass` preset (same lenses, no review/challenge); the original Claude Code agents need nested subagent spawning and were not executed
+- council-review-main: deferred under budget: prompt-only Claude Code skill requiring ~12 haiku subagent calls per case driven by hand; not executed
+- council-master: blocked by credentials: needs OpenAI-compatible API keys (Gemini/xAI) as environment variables; none present
+- LLM-Council-Decide-master: blocked by credentials and dependencies: OPENROUTER_API_KEY and Typst not available
+- neuralhats-main: blocked by dependencies: Ollama with gemma4 not installed
+- llm-as-a-verifier-main: blocked by dependencies: needs a logprob backend (DeepSeek, Vertex or OpenAI-compatible with logprobs); none configured
+exit=0
