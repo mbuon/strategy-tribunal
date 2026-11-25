@@ -1,12 +1,30 @@
-# Strategy Tribunal — autonomous 360° decision engine
+# Strategy Tribunal
 
 **Author:** Massimo Buonaiuto
 
+### Every strategic answer you get from an AI is a first draft that nobody cross‑examined.
+
+Ask a model whether to move a quarter of the budget into a new channel and you get a confident page in thirty seconds. Nobody framed the decision, nobody wrote the scoring rules before the ranking, nobody argued the other side, and nobody told you what would have to be true for the answer to be wrong. You then take that page into a meeting as if it had been through a review.
+
+Strategy Tribunal puts the question through the review first. A deterministic controller runs a multi‑round deliberation in which language models play separate roles with separate authority: a framer, a policy setter who registers gates and weighted criteria before any option exists, strategists who propose through sixteen reasoning lenses, reviewers who file typed objections, a verifier, a judge who scores one option at a time without seeing the ranking, and a challenger whose only job is to make the leader lose. The controller validates every reply against a protocol, commits only what passes, promotes a challenger only when its conservative lower bound clears the incumbent's upper bound, and stops for a recorded reason.
+
+What comes out is a decision record you can defend in the room: the recommended action, the strongest alternatives, the decisive evidence, the objections still open, the trade‑offs accepted, a confidence level with its basis, the conditions under which to reverse, one concrete next step, and a follow‑up prompt that carries all of it back into the chat so the plan starts where the deliberation ended.
+
+**Built for people who sign off on strategy.** Founders choosing a market, marketing leads reallocating budget, consultants who need a paper trail behind a recommendation, product teams deciding what to kill. Runs inside Claude Code as `/council <question>`; routes single roles to other models through OpenCode when you want a second opinion from a different vendor; reads your own documents and codebase as evidence.
+
+**Why you can trust the output.** Models propose, the controller commits: every id, score and promotion is checked before it enters the record. The judge never computes its own aggregate. Review payloads hide authorship. An evidence change forces a rescore. 130 deterministic tests cover the protocol, the state machine, the judge arithmetic and the prompt contract, without a single model call. Every run leaves an append‑only event log, the full discussion transcript, every request and raw reply, and a dashboard that shows who said what in which round.
+
+```bash
+pip install -e ".[dev]"        # Python 3.12+, pydantic only
+claude                          # start Claude Code in this folder
+/council Should we move 25 % of the Meta budget into TikTok Shop ads for Q1?
+```
+
+Twenty minutes later you have a report, a decision record, a dashboard, and a prompt to continue with. Read on for how a session runs, the modes, the settings and ten worked examples.
+
 ---
 
-## What it is
-
-Strategy Tribunal turns one question into one defensible recommendation by running a structured, multi‑round deliberation with language models under a deterministic controller.
+## How a session runs
 
 You type a decision, topic or scope (for example *"Should we move 25 % of the Meta budget into TikTok Shop ads for Q1?"*). The engine then:
 
