@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/img/hero.svg" alt="Strategy Tribunal: one question in, a cross-examined decision record out" width="100%"></p>
 
-**Author:** Massimo Buonaiuto
+**Author:** <a href="https://buonaiuto.work/cv/" target="_blank" rel="noopener">Massimo Buonaiuto</a>
 
 <p>
 <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-2E5BFF">
@@ -200,16 +200,16 @@ Setup, commands and the Claude Desktop config: [docs/guide.md](docs/guide.md).
 
 ## Compared with the other councils
 
-Six open‑source councils were read in full before this one was designed. In every one of them the model that writes the verdict also decides whether the debate is over, whether a reply counted and how the options compare. Here those decisions are code: the rules are written before the ranking, models propose and the controller commits, comparisons are matched across rounds, the verdict can be overturned by an unanswered challenge, stopping is a measured condition, and everything is on disk.
+Six open‑source projects were read in full — prompts and orchestration code — before this one was designed. Five of them are debate councils; in all five, the model that writes the verdict also decides when the debate is over, whether a reply counted, and how the options compare. (The sixth, LLM‑as‑a‑Verifier, is a scoring method, not a council.) Here those decisions are code: the rules are written before the ranking, models propose and the controller commits, comparisons are matched across rounds, the verdict can be overturned by an unanswered challenge, stopping is a measured condition, and everything is on disk.
 
-| Project | Pattern | Where it stops |
-|---|---|---|
-| [llm‑council](https://github.com/karpathy/llm-council) pattern (Geoffrey Byers) | five blind advisors, a chairman | no review, no challenge, nothing persisted |
-| [council‑review](https://github.com/ngmeyer/skills) (Neal Meyer) | methods, anonymous review, devil's advocate | anonymity is a promise the model keeps "in its head" |
-| [LLM‑Council‑Decide](https://github.com/danielrosehill/LLM-Council-Projects) (Daniel Rosehill) | fifteen frameworks, a chairman dossier | random model per call, not recorded; silent parse fallback |
-| [NeuralHats](https://github.com/georgekobaidze/neuralhats) (Giorgi Kobaidze) | Six Thinking Hats, rounds, local Ollama | the model decides CONTINUE or STOP; unparseable means CONTINUE |
-| [council](https://github.com/dubs3c/council) (Michael Dubell) | propose, revise/agree/concern, moderator | no ids or versions; a failed turn becomes a concern |
-| [LLM‑as‑a‑Verifier](https://github.com/llm-as-a-verifier/llm-as-a-verifier) | pairwise log‑probability ranking | a judge, not a council; missing results scored 0.5 |
+| Project | Pattern | Where it stops | Here instead |
+|---|---|---|---|
+| llm‑council‑main (Geoffrey Byers) | five blind advisors in parallel, a chairman synthesis | single pass; skeptic lenses argue but nothing is peer‑reviewed, challenged, or persisted | typed objections, a leader challenge, every record on disk |
+| [council‑review](https://github.com/ngmeyer/council-review) (Neal Meyer) | five reasoning methods, anonymous peer review, devil's advocate | the shuffle happens "in the model's head"; convergence numbers are self‑estimated | controller‑assigned pseudonyms; stability measured on comparable judgements |
+| [LLM‑Council‑Decide](https://github.com/danielrosehill/LLM-Council-Decide) (Daniel Rosehill) | fifteen‑framework catalogue, a selector, a chairman dossier | random model per call, never recorded; silent parse fallback; panel‑order review | per‑role routing recorded per participant; reject and retry; seeded shuffle |
+| [NeuralHats](https://github.com/georgekobaidze/neuralhats) (Giorgi Kobaidze) | Six Thinking Hats, facilitator rounds, local UI | the model votes CONTINUE or STOP and unparseable means CONTINUE; each hat sees the previous ones | stopping is a controller rule; malformed replies never advance; hats are observer‑only |
+| [council](https://github.com/dubs3c/council) (Michael Dubell) | REVISE / AGREE / CONCERN turns, moderator consensus | proposals have no ids or versions; a failed approval parse counts as approval; a failed turn becomes a concern | immutable option versions with lineage; validation failures rejected and retried, then logged as events |
+| [LLM‑as‑a‑Verifier](https://github.com/llm-as-a-verifier/llm-as-a-verifier) | criterion‑level pairwise scoring over log‑probabilities | it scores candidates you already have — no framing, no generation, no challenge; missing results silently become 0.5 | criterion‑first scoring and swapped‑order tiebreaks adopted; missing judgements explicit; log‑probabilities optional |
 
 What each gets right, what was taken from them, and where they are still better: [docs/comparison.md](docs/comparison.md).
 

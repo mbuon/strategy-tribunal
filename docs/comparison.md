@@ -18,7 +18,7 @@
 ---
 
 
-Six open‑source projects explore the same idea, a panel of model personas deliberating on a question. Each was read in full, prompts and orchestration code included, before this engine was designed; several of their ideas are in it and are credited below. The difference is where the authority sits. In every one of them the model that writes the verdict also decides whether the debate is over, whether a reply counted, and how the options compare. Here those decisions are code.
+Six open‑source projects explore the same idea, a panel of model personas deliberating on a question. Each was read in full, prompts and orchestration code included, before this engine was designed; several of their ideas are in it and are credited below. The difference is where the authority sits. Five of the six are debate councils, and in all five the model that writes the verdict also decides when the debate is over, whether a reply counted, and how the options compare. (The sixth, LLM‑as‑a‑Verifier, is a scoring method applied to candidates you already have — no framing, no debate, no verdict.) Here those decisions are code.
 
 | Project | Pattern | Where it stops | What Strategy Tribunal does at that point |
 |---|---|---|---|
@@ -31,17 +31,17 @@ Six open‑source projects explore the same idea, a panel of model personas deli
 
 ### Why the controller matters
 
-**The rules are written before the ranking.** A policy setter registers gates, three to six criteria, their anchors and weights before a single option exists, and nobody can amend them for the rest of the run. In the other five councils the chairman decides what mattered after reading the answers.
+**The rules are written before the ranking.** A policy setter registers gates, three to six criteria, their anchors and weights before a single option exists, and nobody can amend them for the rest of the run. In the debate councils with a synthesizer, the chairman or moderator decides what mattered after reading the answers.
 
 **Models propose, code commits.** Every reply is validated against a typed protocol: ids must exist, scores must cite evidence or a stated assumption, a challenge must name a legal target. What fails goes back with the error and the previous reply. In the reference projects a malformed answer is dropped, retried silently, or counted as a vote.
 
-**Comparisons are matched.** Judgements are keyed by brief version, rubric version, evidence snapshot and judge configuration. A challenger is promoted only when its conservative lower bound clears the incumbent's upper bound. When new evidence lands, the affected options are rescored. None of the six projects compares across rounds on matched inputs; four of them have no rounds at all.
+**Comparisons are matched.** Judgements are keyed by brief version, rubric version, evidence snapshot and judge configuration. A challenger is promoted only when its conservative lower bound clears the incumbent's upper bound. When new evidence lands, the affected options are rescored. None of the six compares across rounds on matched inputs — and only three of them iterate across rounds at all (council‑master's debate turns, NeuralHats' facilitator rounds, council‑review's convergence rounds); the rest run a fixed pass.
 
 **The verdict can be overturned.** The challenger's case is a record with a losing scenario, a strongest alternative and the evidence that would separate them. If it could alter the action and stays unanswered, a firm recommendation becomes a conditional one and the report says so. The devil's advocate in council‑review is the closest relative; its output is advice to the chairman.
 
 **Stopping is a measured condition.** Two comparable rounds within the materiality threshold, no blocking objection, budget intact. Not agreement counts, not a model's CONTINUE token, not a fixed number of turns.
 
-**Everything is auditable.** Append‑only event log, every request and raw reply, the discussion transcript in order, who answered with which model, measured tokens where the provider reports them. The reference projects keep a transcript at best.
+**Everything is auditable.** Append‑only event log, every request and raw reply, the discussion transcript in order, who answered with which model, measured tokens where the provider reports them. The reference projects keep a transcript at best; none keeps scores, promotions and stops in an auditable record.
 
 ### What was taken from them, with thanks
 
