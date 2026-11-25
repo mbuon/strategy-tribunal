@@ -16,6 +16,7 @@ from __future__ import annotations
 import html
 import json
 import os
+import re
 import secrets
 import shutil
 import subprocess
@@ -287,7 +288,9 @@ def settings_page(root: Path, message: str = "", error: str = "") -> str:
 
 
 # Settings the web form may never write: they name executables or file locations the server would then use.
-WEB_FORM_DENIED = ("routing.opencode.binary", "routing.opencode.config_dir", "storage.runs_root", "storage.legacy_runs_root", "fixture_path")
+WEB_FORM_DENIED = ("routing.opencode.binary", "routing.opencode.config_dir", "routing.opencode.agent", "routing.opencode.standalone",
+                   "routing.opencode.env", "storage.runs_root", "storage.legacy_runs_root", "fixture_path")
+_FORM_KEY = re.compile(r"[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*")
 
 
 def _leaf_paths(key: str, value: Any) -> list[str]:
@@ -311,6 +314,8 @@ def web_form_allowed(form: dict[str, Any]) -> Optional[str]:
     Checks the leaves a field would write, and refuses writing any ancestor of a denied path as a whole object."""
     bad: set[str] = set()
     for key, value in form.items():
+        if not _FORM_KEY.fullmatch(key):
+            return f"{key!r}: not a setting name (letters, digits, underscores and dots only)"
         for leaf in _leaf_paths(key, value):
             if any(leaf == d or leaf.startswith(d + ".") or d.startswith(leaf + ".") for d in WEB_FORM_DENIED):
                 bad.add(key)
@@ -370,7 +375,8 @@ class Handler(BaseHTTPRequestHandler):
                 return False
         if mutating:
             origin = self.headers.get("Origin") or ""
-            if origin and not self._host_allowed(urllib.parse.urlparse(origin).netloc):
+            host = (self.headers.get("Host") or "").lower()
+            if origin and urllib.parse.urlparse(origin).netloc.lower() != host:
                 self._send(HTTPStatus.FORBIDDEN, b"forbidden: cross-origin request")
                 return False
             fetch_site = self.headers.get("Sec-Fetch-Site")

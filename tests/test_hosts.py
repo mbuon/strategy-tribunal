@@ -146,6 +146,7 @@ def test_ui_requires_a_token_off_loopback_and_blocks_cross_origin_and_dangerous_
     # writing the parent object, or the whole section, is refused too
     assert web_form_allowed({"routing.opencode": '{"binary": "/tmp/x"}'}) and web_form_allowed({"routing": '{"opencode": {"binary": "x"}}'})
     assert web_form_allowed({"storage": '{"legacy_runs_root": "/etc"}'}) and web_form_allowed({"routing.opencode.default_model": "x"}) is None
+    assert web_form_allowed({"routing.opencode.agent": "x"}) and web_form_allowed({"limits.max_rounds=3": ""}) and web_form_allowed({"a=b.c": "1"})
 
 
 def test_mcp_question_is_never_parsed_as_options(tmp_path):
