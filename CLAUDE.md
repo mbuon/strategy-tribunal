@@ -17,7 +17,7 @@ Claude Code starts in this folder). Design and delivery record: `docs/llm_counci
 - Subset: `.venv/bin/python -m pytest tests/test_judge.py` (one file), `… tests/test_judge.py::<test_name>` (one test),
   `… -k tiebreak` (by name).
 - Interface: `cd web && npm install` once, then `npm run build` (see Interface below). Restart a running server after
-  Python changes: `lsof -ti tcp:8771 | xargs kill`, then `.venv/bin/council ui` or `/council … --ui`.
+  Python changes: `lsof -ti tcp:8771 -sTCP:LISTEN | xargs kill`, then `.venv/bin/council ui` or `/council … --ui`.
 - Whole deliberation with no model calls, in a throwaway root (the question must match the fixture's):
   ```bash
   D=$(mktemp -d); cp council.config.json "$D/"

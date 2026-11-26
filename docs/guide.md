@@ -50,7 +50,7 @@ council/
 │                                              `npm run build` writes src/llm_council/static/dashboard.{js,css}
 ├── src/llm_council/                           ontology, config, settings, lenses, prompts, phases, judge, budget, discussion,
 │                                              trail, state, engine, report, dashboard, ui, static/, providers/{fixture,opencode,driver}, cli
-└── tests/                                     130 deterministic tests; fixtures built by tests/fixtures/build_fixtures.py
+└── tests/                                     135 deterministic tests; fixtures built by tests/fixtures/build_fixtures.py
 ```
 
 ---
@@ -67,7 +67,7 @@ python3 -m venv .venv                     # keep the venv at .venv: the Claude C
 source .venv/bin/activate
 pip install -e ".[dev]"                   # pydantic 2 + the `council` command (+ pytest)
 council --version                         # council 0.1.0
-python -m pytest                          # optional check: 130 passed, no model calls (use python -m: a Homebrew pytest may shadow the venv one)
+python -m pytest                          # optional check: 135 passed, no model calls (use python -m: a Homebrew pytest may shadow the venv one)
 ```
 
 Dependencies are declared in `pyproject.toml` (runtime: `pydantic>=2.7,<3`; dev: `pytest>=8`). Plain `pip` and `venv` are the only tools needed.
@@ -250,7 +250,31 @@ Each run lives in `council_outcomes/<YYYY-MM-DD_HH-MM-SS_first-words-of-the-ques
 
 ### Web interface
 
-See **The interface** above: pages, URLs, screenshots and how to start it.
+How to start the server, the URL table and the works, verdict and follow-up screenshots are in the README, [The interface](../README.md#the-interface). The other pages:
+
+#### Reasoning workflow: what the models did
+
+<p align="center"><img src="img/ui-run-reasoning.png" alt="Reasoning workflow tab: every step with phase, role, provider and model, what was produced and the record ids" width="100%"></p>
+
+One row per step of the deliberation: the brief, the rubric with its gates and weights, the options per lens, the objections, the verifications, the responses, the scores, the controller's adjudications, the leader challenge, the decision. Every row names the role, the provider and the model that produced it and the record ids it created. The **Orchestration** tab is the other workflow: every controller request in order with tokens, latency and result, plus who answered per participant and the request/response log.
+
+#### Discussion: what every role read
+
+<p align="center"><img src="img/ui-run-discussion.png" alt="Discussion tab: every contribution in order with who said it, the outcome and a summary, each linked to its full text" width="100%"></p>
+
+The transcript as the later roles received it: D‑numbers in order, round, phase, role and lens, who answered, committed or rejected, the summary, and the full Markdown one click away in a dialog. The input documents the council read are listed with their evidence ids.
+
+#### Files: who wrote what, and why
+
+<p align="center"><img src="img/ui-run-files.png" alt="Files tab: every file in the run folder with its author, round and phase, purpose, size and time" width="100%"></p>
+
+Every file in the run folder with its author (the controller or a model with its provider), the round and phase it belongs to, what it is for, size and time. Markdown opens formatted in place.
+
+#### Settings
+
+<p align="center"><img src="img/ui-settings.png" alt="Settings page: defaults panel with route, OpenCode model, preset and per-role models, each explained" width="100%"></p>
+
+Defaults first: the route every role takes (chat or OpenCode), the default OpenCode model picked from what `opencode models` returns, the preset, the chat model identity, and a provider and model per role. Below, every key with its value, the layer it came from (default, project, saved, preset), its explanation and its allowed values; a form sets, unsets or resets any of them. Every write is validated against the whole configuration before it lands in `.council/settings.json`, and keys that name executables or paths are terminal‑only.
 
 ---
 
@@ -259,7 +283,7 @@ See **The interface** above: pages, URLs, screenshots and how to start it.
 ## Verification
 
 ```bash
-python -m pytest   # 130 deterministic tests: protocol validation, state machine, judge arithmetic, promotion/regression,
+python -m pytest   # 135 deterministic tests: protocol validation, state machine, judge arithmetic, promotion/regression,
                      # matched rescoring, budgets, cancellation/resume, OpenCode route, validation fallbacks (fake binary),
                      # settings, rubric weights, reframe/reinstate/tiebreak/jury fixtures, benchmark checkers,
                      # discussion transcript and documents, dashboard/UI state and server, prompt contract

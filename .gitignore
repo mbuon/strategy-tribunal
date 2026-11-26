@@ -13,3 +13,5 @@ prompt.md.old
 .claude/settings.local.json
 benchmarks/results/
 !docs/img/*.png
+.claude/worktrees/
+.serena/
